@@ -1,0 +1,43 @@
+{
+  "version": "3.5",
+  "engine_name": "Strict Zero-Hallucination Moving Vision Engine",
+  "negative_constraints": {
+    "forbid_speculative_detection": true,
+    "description": "사진 프레임 내에 100% 육안으로 확인되지 않는 물품은 절대 추측하여 추가하지 않음 (기본값: 0)",
+    "critical_exclusions": {
+      "fridge_small": "주방/싱크대 구역이 아니거나 냉장고 본체가 보이지 않으면 반드시 0개",
+      "fridge_large": "양문형 도어 및 손잡이가 보이지 않으면 반드시 0개",
+      "washer_dryer": "베란다/세탁실이 아니거나 드럼/통돌이 도어가 보이지 않으면 반드시 0개",
+      "system_hanger": "드레스룸 철제 기둥/선반형 행거가 명확히 보이지 않으면 반드시 0개 (장롱 옷과 분리)"
+    }
+  },
+  "space_scope_filters": {
+    "bedroom": {
+      "allowed_categories": ["bed_sofa", "storage"],
+      "forced_zero_items": ["fridge_small", "fridge_large", "kimchi_fridge", "washer_dryer", "wash_tower"],
+      "default_containers": ["box_quilt", "box_clothes", "box_medium"]
+    },
+    "kitchen": {
+      "allowed_categories": ["appliance", "storage"],
+      "forced_zero_items": ["bed_ss", "bed_qk", "mattress_only", "sofa_2p", "sofa_4p"],
+      "default_containers": ["basket_large", "box_medium"]
+    },
+    "living": {
+      "allowed_categories": ["bed_sofa", "appliance", "storage"],
+      "forced_zero_items": ["washer_dryer", "wash_tower", "bed_ss", "bed_qk"],
+      "default_containers": ["box_large", "box_medium"]
+    },
+    "balcony": {
+      "allowed_categories": ["appliance"],
+      "forced_zero_items": ["bed_ss", "bed_qk", "sofa_2p", "sofa_4p", "fridge_large", "fridge_small"],
+      "default_containers": ["basket_large", "box_large"]
+    }
+  },
+  "moving_containers_spec_cbm": {
+    "box_quilt": { "name": "이불박스", "dims_mm": "800x500x500", "cbm": 0.200 },
+    "box_clothes": { "name": "옷박스", "dims_mm": "900x500x400", "cbm": 0.180 },
+    "box_large": { "name": "대박스", "dims_mm": "700x450x500", "cbm": 0.158 },
+    "box_medium": { "name": "중박스", "dims_mm": "600x410x470", "cbm": 0.116 },
+    "basket_large": { "name": "이사바구니", "dims_mm": "725x470x330", "cbm": 0.112 }
+  }
+}
