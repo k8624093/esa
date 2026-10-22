@@ -48,7 +48,7 @@
                 </svg>
                 <div class="flex items-center space-x-2">
                     <h1 class="text-xl font-bold tracking-tight">갑봉이 AI 이사 견적</h1>
-                    <span id="app-version-badge" class="text-xs bg-indigo-500 text-indigo-100 px-2 py-0.5 rounded-full font-semibold">v4.9 (견적서 짤림 방지 및 반응형 레이아웃)</span>
+                    <span id="app-version-badge" class="text-xs bg-indigo-500 text-indigo-100 px-2 py-0.5 rounded-full font-semibold">v5.2 (엘베/계단 상하차 개별 및 고객부담 표기)</span>
                 </div>
             </div>
             <div class="flex items-center space-x-2">
@@ -326,14 +326,14 @@
             <!-- 숨겨진 텍스트 데이터를 담는 칸 -->
             <textarea id="share-text-data" class="hidden"></textarea>
 
-            <!-- 작업 방식 선택 (사다리 / 엘리베이터 / 계단작업 및 층수) -->
+            <!-- 작업 방식 선택 (사다리 / 엘리베이터 / 계단작업 - 상하차 개별 선택 및 고객부담 표기) -->
             <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-5 space-y-4">
                 <div class="flex items-center justify-between">
                     <span class="text-xs font-bold text-slate-700 flex items-center space-x-2">
                         <svg class="w-4 h-4 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
                         </svg>
-                        <span>이동 및 상하차 작업 방식 선택:</span>
+                        <span>이동 및 상하차 작업 방식 선택 (체크 시 견적서에 자동 표기):</span>
                     </span>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs font-medium text-slate-700">
@@ -341,58 +341,90 @@
                     <div class="bg-slate-50 p-3 rounded-xl border border-slate-200 space-y-3">
                         <span class="font-bold text-slate-800 block">사다리차 이용</span>
                         <div class="space-y-2 pt-1">
-                            <div class="bg-white p-2 rounded-lg border border-slate-200 space-y-2">
-                                <div class="flex items-center justify-between">
-                                    <label class="flex items-center space-x-2 cursor-pointer">
-                                        <input type="checkbox" id="check-ladder-load" class="w-4 h-4 text-indigo-600 rounded border-slate-300 focus:ring-indigo-500">
-                                        <span>상차 사다리</span>
-                                    </label>
-                                    <input type="number" id="input-ladder-cost-load" value="120000" class="w-24 border border-slate-300 rounded p-1 text-right text-xs font-semibold">
+                            <div class="bg-white p-2.5 rounded-lg border border-slate-200 flex items-center justify-between">
+                                <label class="flex items-center space-x-2 cursor-pointer font-semibold text-slate-800">
+                                    <input type="checkbox" id="check-ladder-load" class="w-4 h-4 text-indigo-600 rounded border-slate-300 focus:ring-indigo-500">
+                                    <span>상차 사다리</span>
+                                </label>
+                                <div class="flex items-center space-x-1">
+                                    <input type="number" id="input-ladder-cost-load" value="120000" step="10000" class="w-24 border border-slate-300 rounded p-1 text-right text-xs font-semibold">
+                                    <span class="text-slate-600">원</span>
                                 </div>
-                                <div class="flex items-center justify-end pl-6">
-                                    <label class="flex items-center space-x-1.5 cursor-pointer text-[11px] text-slate-500">
-                                        <input type="checkbox" id="check-ladder-load-owner" class="w-3.5 h-3.5 text-indigo-600 rounded border-slate-300 focus:ring-indigo-500">
-                                        <span>주인지급 (총액 제외)</span>
+                            </div>
+                            <div class="bg-white p-2.5 rounded-lg border border-slate-200 flex items-center justify-between">
+                                <label class="flex items-center space-x-2 cursor-pointer font-semibold text-slate-800">
+                                    <input type="checkbox" id="check-ladder-unload" class="w-4 h-4 text-indigo-600 rounded border-slate-300 focus:ring-indigo-500">
+                                    <span>하차 사다리</span>
+                                </label>
+                                <div class="flex items-center space-x-1">
+                                    <input type="number" id="input-ladder-cost-unload" value="120000" step="10000" class="w-24 border border-slate-300 rounded p-1 text-right text-xs font-semibold">
+                                    <span class="text-slate-600">원</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 엘리베이터 작업 (상/하차 개별 및 고객부담) -->
+                    <div class="bg-slate-50 p-3 rounded-xl border border-slate-200 space-y-3">
+                        <span class="font-bold text-slate-800 block">엘리베이터 작업</span>
+                        <div class="space-y-2 pt-1">
+                            <div class="bg-white p-2.5 rounded-lg border border-slate-200 space-y-1.5">
+                                <div class="flex items-center justify-between">
+                                    <label class="flex items-center space-x-2 cursor-pointer font-semibold text-slate-800">
+                                        <input type="checkbox" id="check-elevator-load" class="w-4 h-4 text-indigo-600 rounded border-slate-300 focus:ring-indigo-500">
+                                        <span>상차 엘리베이터</span>
+                                    </label>
+                                    <label class="flex items-center space-x-1 cursor-pointer text-[11px] text-slate-500">
+                                        <input type="checkbox" id="check-elevator-load-owner" class="w-3.5 h-3.5 text-indigo-600 rounded border-slate-300">
+                                        <span>고객부담</span>
                                     </label>
                                 </div>
                             </div>
-                            <div class="bg-white p-2 rounded-lg border border-slate-200 space-y-2">
+                            <div class="bg-white p-2.5 rounded-lg border border-slate-200 space-y-1.5">
                                 <div class="flex items-center justify-between">
-                                    <label class="flex items-center space-x-2 cursor-pointer">
-                                        <input type="checkbox" id="check-ladder-unload" class="w-4 h-4 text-indigo-600 rounded border-slate-300 focus:ring-indigo-500">
-                                        <span>하차 사다리</span>
+                                    <label class="flex items-center space-x-2 cursor-pointer font-semibold text-slate-800">
+                                        <input type="checkbox" id="check-elevator-unload" class="w-4 h-4 text-indigo-600 rounded border-slate-300 focus:ring-indigo-500">
+                                        <span>하차 엘리베이터</span>
                                     </label>
-                                    <input type="number" id="input-ladder-cost-unload" value="120000" class="w-24 border border-slate-300 rounded p-1 text-right text-xs font-semibold">
-                                </div>
-                                <div class="flex items-center justify-end pl-6">
-                                    <label class="flex items-center space-x-1.5 cursor-pointer text-[11px] text-slate-500">
-                                        <input type="checkbox" id="check-ladder-unload-owner" class="w-3.5 h-3.5 text-indigo-600 rounded border-slate-300 focus:ring-indigo-500">
-                                        <span>주인지급 (총액 제외)</span>
+                                    <label class="flex items-center space-x-1 cursor-pointer text-[11px] text-slate-500">
+                                        <input type="checkbox" id="check-elevator-unload-owner" class="w-3.5 h-3.5 text-indigo-600 rounded border-slate-300">
+                                        <span>고객부담</span>
                                     </label>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <!-- 엘리베이터 -->
-                    <div class="bg-slate-50 p-3 rounded-xl border border-slate-200 space-y-2">
-                        <label class="flex items-center space-x-2 cursor-pointer font-bold">
-                            <input type="checkbox" id="check-elevator" class="w-4 h-4 text-indigo-600 rounded border-slate-300 focus:ring-indigo-500">
-                            <span>엘리베이터 작업</span>
-                        </label>
-                        <div class="flex items-center space-x-1 pt-1 text-[11px] text-slate-500">
-                            <span>* 관리비/사용료 별도 반영 가능</span>
-                        </div>
-                    </div>
-                    <!-- 계단작업 -->
-                    <div class="bg-slate-50 p-3 rounded-xl border border-slate-200 space-y-2">
-                        <label class="flex items-center space-x-2 cursor-pointer font-bold">
-                            <input type="checkbox" id="check-stairs" class="w-4 h-4 text-indigo-600 rounded border-slate-300 focus:ring-indigo-500">
-                            <span>계단작업</span>
-                        </label>
-                        <div class="flex items-center space-x-2 pt-1">
-                            <span class="text-slate-500">층수:</span>
-                            <input type="number" id="input-stairs-floor" value="2" min="1" class="w-16 border border-slate-300 rounded p-1 text-center bg-white">
-                            <span class="text-slate-500">층</span>
+                    <!-- 계단 작업 (상/하차 개별 및 층수/비용) -->
+                    <div class="bg-slate-50 p-3 rounded-xl border border-slate-200 space-y-3">
+                        <span class="font-bold text-slate-800 block">계단 작업 (인력운반)</span>
+                        <div class="space-y-2 pt-1">
+                            <div class="bg-white p-2 rounded-lg border border-slate-200 space-y-1">
+                                <div class="flex items-center justify-between">
+                                    <label class="flex items-center space-x-2 cursor-pointer font-semibold text-slate-800">
+                                        <input type="checkbox" id="check-stairs-load" class="w-4 h-4 text-indigo-600 rounded border-slate-300 focus:ring-indigo-500">
+                                        <span>상차 계단</span>
+                                    </label>
+                                    <div class="flex items-center space-x-1">
+                                        <input type="number" id="input-stairs-floor-load" value="2" min="1" max="20" class="w-10 border border-slate-300 rounded p-0.5 text-center text-xs font-bold">
+                                        <span class="text-slate-600 text-[11px]">층</span>
+                                        <input type="number" id="input-stairs-cost-load" value="50000" step="10000" class="w-16 border border-slate-300 rounded p-0.5 text-right text-xs font-semibold">
+                                        <span class="text-slate-600 text-[11px]">원</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="bg-white p-2 rounded-lg border border-slate-200 space-y-1">
+                                <div class="flex items-center justify-between">
+                                    <label class="flex items-center space-x-2 cursor-pointer font-semibold text-slate-800">
+                                        <input type="checkbox" id="check-stairs-unload" class="w-4 h-4 text-indigo-600 rounded border-slate-300 focus:ring-indigo-500">
+                                        <span>하차 계단</span>
+                                    </label>
+                                    <div class="flex items-center space-x-1">
+                                        <input type="number" id="input-stairs-floor-unload" value="2" min="1" max="20" class="w-10 border border-slate-300 rounded p-0.5 text-center text-xs font-bold">
+                                        <span class="text-slate-600 text-[11px]">층</span>
+                                        <input type="number" id="input-stairs-cost-unload" value="50000" step="10000" class="w-16 border border-slate-300 rounded p-0.5 text-right text-xs font-semibold">
+                                        <span class="text-slate-600 text-[11px]">원</span>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -491,7 +523,7 @@
 
     </main>
 
-    <!-- Modal: Detailed Estimate Invoice (견적서 보기 - 공간별 짐 배치 포함) -->
+    <!-- Modal: Detailed Estimate Invoice -->
     <div id="invoice-modal" class="fixed inset-0 bg-slate-900/60 z-50 hidden overflow-y-auto p-2 sm:p-4 md:p-6 flex items-start justify-center">
         <div id="invoice-modal-content" class="bg-white rounded-2xl max-w-4xl w-full p-4 sm:p-6 md:p-8 shadow-2xl space-y-5 my-auto relative max-h-[92vh] overflow-y-auto">
             
@@ -782,7 +814,7 @@
             closeApiKeyModal();
         };
 
-        // Invoice Modal Logic (견적서 보기 - 공간별 짐 배치 포함)
+        // Invoice Modal Logic (견적서 보기 - 공간별 짐 배치 및 엘베/계단 상하차 및 고객부담 표기 포함)
         window.openInvoiceModal = function() {
             document.getElementById('invoice-date').innerText = new Date().toLocaleDateString();
             const totalCbm = document.getElementById('res-cbm').innerText;
@@ -896,17 +928,53 @@
                 { name: '여성 인건비 (주방이모)', condition: `${womanCount}명`, cost: wCost }
             ];
 
-            // 옵션 추가비 합산
-            if(document.getElementById('check-ladder-load').checked && !document.getElementById('check-ladder-load-owner').checked) {
-                costRows.push({ name: '상차 사다리차', condition: '업체부담', cost: parseFloat(document.getElementById('input-ladder-cost-load').value)||0 });
+            // 사다리차 옵션
+            if(document.getElementById('check-ladder-load').checked) {
+                costRows.push({ name: '상차 사다리차', condition: '사용', cost: parseFloat(document.getElementById('input-ladder-cost-load').value)||0 });
             }
-            if(document.getElementById('check-ladder-unload').checked && !document.getElementById('check-ladder-unload-owner').checked) {
-                costRows.push({ name: '하차 사다리차', condition: '업체부담', cost: parseFloat(document.getElementById('input-ladder-cost-unload').value)||0 });
+            if(document.getElementById('check-ladder-unload').checked) {
+                costRows.push({ name: '하차 사다리차', condition: '사용', cost: parseFloat(document.getElementById('input-ladder-cost-unload').value)||0 });
             }
-            if(document.getElementById('check-stairs').checked) {
-                const floors = parseInt(document.getElementById('input-stairs-floor').value)||1;
-                costRows.push({ name: '계단작업비', condition: `${floors}층`, cost: floors * 30000 });
+
+            // 엘리베이터 작업 (상차/하차 및 고객부담 표기)
+            if(document.getElementById('check-elevator-load').checked) {
+                const isOwner = document.getElementById('check-elevator-load-owner').checked;
+                costRows.push({
+                    name: '상차 엘리베이터 작업',
+                    condition: isOwner ? '고객부담 (비용 제외)' : '진행',
+                    cost: 0
+                });
             }
+            if(document.getElementById('check-elevator-unload').checked) {
+                const isOwner = document.getElementById('check-elevator-unload-owner').checked;
+                costRows.push({
+                    name: '하차 엘리베이터 작업',
+                    condition: isOwner ? '고객부담 (비용 제외)' : '진행',
+                    cost: 0
+                });
+            }
+
+            // 계단 작업 (상차/하차 및 층수/비용)
+            if(document.getElementById('check-stairs-load').checked) {
+                const floor = parseInt(document.getElementById('input-stairs-floor-load').value) || 2;
+                const cost = parseFloat(document.getElementById('input-stairs-cost-load').value) || 0;
+                costRows.push({
+                    name: '상차 계단 운반 작업',
+                    condition: `${floor}층 인력운반`,
+                    cost: cost
+                });
+            }
+            if(document.getElementById('check-stairs-unload').checked) {
+                const floor = parseInt(document.getElementById('input-stairs-floor-unload').value) || 2;
+                const cost = parseFloat(document.getElementById('input-stairs-cost-unload').value) || 0;
+                costRows.push({
+                    name: '하차 계단 운반 작업',
+                    condition: `${floor}층 인력운반`,
+                    cost: cost
+                });
+            }
+
+            // 특수옵션 추가비
             if(document.getElementById('check-ac-demount').checked) {
                 costRows.push({ name: '에어컨 기본 해체', condition: '기본옵션', cost: parseFloat(document.getElementById('input-ac-demount-cost').value)||0 });
             }
@@ -944,7 +1012,28 @@
             const manCount = document.getElementById('manual-man-count') ? document.getElementById('manual-man-count').value : '0';
             const womanCount = document.getElementById('manual-woman-count') ? document.getElementById('manual-woman-count').value : '0';
             
-            const shareText = `[갑봉이 AI 스마트 이사 견적서]\n\n📦 총 예상 부피: ${cbm}\n🚚 필요 차량: 1톤 트럭 ${truckCount}대\n👨‍🔧 작업 인원: 남 ${manCount}명 / 여 ${womanCount}명\n💰 총 예상 비용: ${cost}\n\n* 견적서 보기에서 방(공간)별 상세 짐 배치 현황을 확인하실 수 있습니다.`;
+            let workMethods = [];
+            if(document.getElementById('check-ladder-load').checked) workMethods.push("상차사다리");
+            if(document.getElementById('check-ladder-unload').checked) workMethods.push("하차사다리");
+            if(document.getElementById('check-elevator-load').checked) {
+                const owner = document.getElementById('check-elevator-load-owner').checked ? "(고객부담)" : "";
+                workMethods.push(`상차엘베${owner}`);
+            }
+            if(document.getElementById('check-elevator-unload').checked) {
+                const owner = document.getElementById('check-elevator-unload-owner').checked ? "(고객부담)" : "";
+                workMethods.push(`하차엘베${owner}`);
+            }
+            if(document.getElementById('check-stairs-load').checked) {
+                const fl = document.getElementById('input-stairs-floor-load').value || '2';
+                workMethods.push(`상차계단(${fl}층)`);
+            }
+            if(document.getElementById('check-stairs-unload').checked) {
+                const fl = document.getElementById('input-stairs-floor-unload').value || '2';
+                workMethods.push(`하차계단(${fl}층)`);
+            }
+            const workMethodStr = workMethods.length > 0 ? `\n🪜 작업방식: ${workMethods.join(', ')}` : '';
+
+            const shareText = `[갑봉이 AI 스마트 이사 견적서]\n\n📦 총 예상 부피: ${cbm}\n🚚 필요 차량: 1톤 트럭 ${truckCount}대\n👨‍🔧 작업 인원: 남 ${manCount}명 / 여 ${womanCount}명${workMethodStr}\n💰 총 예상 비용: ${cost}\n\n* 견적서 보기에서 방(공간)별 상세 짐 배치 현황을 확인하실 수 있습니다.`;
             
             document.getElementById('share-text-data').value = shareText;
             document.getElementById('share-modal').classList.remove('hidden');
@@ -1030,6 +1119,20 @@
                     manualTruckCount: document.getElementById('manual-truck-count').value,
                     manualManCount: document.getElementById('manual-man-count').value,
                     manualWomanCount: document.getElementById('manual-woman-count').value,
+                    checkLadderLoad: document.getElementById('check-ladder-load').checked,
+                    inputLadderCostLoad: document.getElementById('input-ladder-cost-load').value,
+                    checkLadderUnload: document.getElementById('check-ladder-unload').checked,
+                    inputLadderCostUnload: document.getElementById('input-ladder-cost-unload').value,
+                    checkElevatorLoad: document.getElementById('check-elevator-load').checked,
+                    checkElevatorLoadOwner: document.getElementById('check-elevator-load-owner').checked,
+                    checkElevatorUnload: document.getElementById('check-elevator-unload').checked,
+                    checkElevatorUnloadOwner: document.getElementById('check-elevator-unload-owner').checked,
+                    checkStairsLoad: document.getElementById('check-stairs-load').checked,
+                    inputStairsFloorLoad: document.getElementById('input-stairs-floor-load').value,
+                    inputStairsCostLoad: document.getElementById('input-stairs-cost-load').value,
+                    checkStairsUnload: document.getElementById('check-stairs-unload').checked,
+                    inputStairsFloorUnload: document.getElementById('input-stairs-floor-unload').value,
+                    inputStairsCostUnload: document.getElementById('input-stairs-cost-unload').value,
                     checkAcDemount: document.getElementById('check-ac-demount').checked,
                     inputAcDemountCost: document.getElementById('input-ac-demount-cost').value,
                     checkTvExtra: document.getElementById('check-tv-extra').checked,
@@ -1085,6 +1188,20 @@
                 document.getElementById('manual-truck-count').value = s.manualTruckCount;
                 document.getElementById('manual-man-count').value = s.manualManCount;
                 document.getElementById('manual-woman-count').value = s.manualWomanCount;
+                if (s.checkLadderLoad !== undefined) document.getElementById('check-ladder-load').checked = s.checkLadderLoad;
+                if (s.inputLadderCostLoad !== undefined) document.getElementById('input-ladder-cost-load').value = s.inputLadderCostLoad;
+                if (s.checkLadderUnload !== undefined) document.getElementById('check-ladder-unload').checked = s.checkLadderUnload;
+                if (s.inputLadderCostUnload !== undefined) document.getElementById('input-ladder-cost-unload').value = s.inputLadderCostUnload;
+                if (s.checkElevatorLoad !== undefined) document.getElementById('check-elevator-load').checked = s.checkElevatorLoad;
+                if (s.checkElevatorLoadOwner !== undefined) document.getElementById('check-elevator-load-owner').checked = s.checkElevatorLoadOwner;
+                if (s.checkElevatorUnload !== undefined) document.getElementById('check-elevator-unload').checked = s.checkElevatorUnload;
+                if (s.checkElevatorUnloadOwner !== undefined) document.getElementById('check-elevator-unload-owner').checked = s.checkElevatorUnloadOwner;
+                if (s.checkStairsLoad !== undefined) document.getElementById('check-stairs-load').checked = s.checkStairsLoad;
+                if (s.inputStairsFloorLoad !== undefined) document.getElementById('input-stairs-floor-load').value = s.inputStairsFloorLoad;
+                if (s.inputStairsCostLoad !== undefined) document.getElementById('input-stairs-cost-load').value = s.inputStairsCostLoad;
+                if (s.checkStairsUnload !== undefined) document.getElementById('check-stairs-unload').checked = s.checkStairsUnload;
+                if (s.inputStairsFloorUnload !== undefined) document.getElementById('input-stairs-floor-unload').value = s.inputStairsFloorUnload;
+                if (s.inputStairsCostUnload !== undefined) document.getElementById('input-stairs-cost-unload').value = s.inputStairsCostUnload;
                 document.getElementById('check-ac-demount').checked = s.checkAcDemount;
                 document.getElementById('input-ac-demount-cost').value = s.inputAcDemountCost;
                 document.getElementById('check-tv-extra').checked = s.checkTvExtra;
@@ -1188,7 +1305,17 @@
             advice: "액체가 샐 수 있는 양념류와 주방 식기류가 안전한 바구니로 정밀하게 분할 배정되었습니다."
         };
 
-        const setupInputs = ['setting-truck-cbm-limit', 'setting-truck-cost', 'setting-man-wage', 'setting-woman-wage', 'manual-truck-count', 'manual-man-count', 'manual-woman-count', 'check-ladder-load', 'check-ladder-unload', 'check-ladder-load-owner', 'check-ladder-unload-owner', 'check-elevator', 'check-stairs', 'input-ladder-cost-load', 'input-ladder-cost-unload', 'input-stairs-floor', 'check-ac-demount', 'input-ac-demount-cost', 'check-tv-extra', 'input-tv-extra-cost', 'check-special-work', 'input-special-work-desc', 'input-special-work-cost'];
+        const setupInputs = [
+            'setting-truck-cbm-limit', 'setting-truck-cost', 'setting-man-wage', 'setting-woman-wage', 
+            'manual-truck-count', 'manual-man-count', 'manual-woman-count', 
+            'check-ladder-load', 'input-ladder-cost-load', 'check-ladder-unload', 'input-ladder-cost-unload', 
+            'check-elevator-load', 'check-elevator-load-owner', 'check-elevator-unload', 'check-elevator-unload-owner', 
+            'check-stairs-load', 'input-stairs-floor-load', 'input-stairs-cost-load', 
+            'check-stairs-unload', 'input-stairs-floor-unload', 'input-stairs-cost-unload', 
+            'check-ac-demount', 'input-ac-demount-cost', 
+            'check-tv-extra', 'input-tv-extra-cost', 
+            'check-special-work', 'input-special-work-desc', 'input-special-work-cost'
+        ];
         setupInputs.forEach(id => {
             const el = document.getElementById(id);
             if(el) { el.addEventListener('input', () => recalculateTotals(false)); el.addEventListener('change', () => recalculateTotals(false)); }
@@ -1407,7 +1534,6 @@
         window.openAddItemModal = function() {
             document.getElementById('new-item-name').value = '';
             
-            // Populate spaces select
             const spaceSelect = document.getElementById('new-item-space');
             spaceSelect.innerHTML = '';
             spaces.forEach(s => {
@@ -1491,9 +1617,13 @@
             }
 
             let extraCost = 0;
-            if(document.getElementById('check-ladder-load').checked && !document.getElementById('check-ladder-load-owner').checked) extraCost += parseFloat(document.getElementById('input-ladder-cost-load').value)||0;
-            if(document.getElementById('check-ladder-unload').checked && !document.getElementById('check-ladder-unload-owner').checked) extraCost += parseFloat(document.getElementById('input-ladder-cost-unload').value)||0;
-            if(document.getElementById('check-stairs').checked) extraCost += (parseInt(document.getElementById('input-stairs-floor').value)||1) * 30000;
+            if(document.getElementById('check-ladder-load').checked) extraCost += parseFloat(document.getElementById('input-ladder-cost-load').value)||0;
+            if(document.getElementById('check-ladder-unload').checked) extraCost += parseFloat(document.getElementById('input-ladder-cost-unload').value)||0;
+            
+            // 계단 작업 비용 (상하차 개별)
+            if(document.getElementById('check-stairs-load').checked) extraCost += parseFloat(document.getElementById('input-stairs-cost-load').value)||0;
+            if(document.getElementById('check-stairs-unload').checked) extraCost += parseFloat(document.getElementById('input-stairs-cost-unload').value)||0;
+
             if(document.getElementById('check-ac-demount').checked) extraCost += parseFloat(document.getElementById('input-ac-demount-cost').value)||0;
             if(document.getElementById('check-tv-extra').checked) extraCost += parseFloat(document.getElementById('input-tv-extra-cost').value)||0;
             if(document.getElementById('check-special-work').checked) extraCost += parseFloat(document.getElementById('input-special-work-cost').value)||0;
