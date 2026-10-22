@@ -23,8 +23,8 @@
                 </svg>
                 <div class="flex items-center space-x-2">
                     <h1 class="text-xl font-bold tracking-tight">갑봉이 AI 이사 견적</h1>
-                    <!-- Version controlled strictly by AI code updates (v1.2: Added robust Web Audio API sound alerts) -->
-                    <span id="app-version-badge" class="text-xs bg-indigo-500 text-indigo-100 px-2 py-0.5 rounded-full font-semibold">v1.2</span>
+                    <!-- Version v1.3: GitHub deployment stability & error handling fix -->
+                    <span id="app-version-badge" class="text-xs bg-indigo-500 text-indigo-100 px-2 py-0.5 rounded-full font-semibold">v1.3</span>
                 </div>
             </div>
             <div class="flex items-center space-x-2">
@@ -780,6 +780,10 @@ CRITICAL RULES:
                     });
                     clearTimeout(timeoutId);
 
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+
                     const result = await response.json();
                     const candidate = result.candidates?.[0];
                     if (candidate && candidate.content?.parts?.[0]?.text) {
@@ -807,7 +811,7 @@ CRITICAL RULES:
                     recalculateTotals(true);
                     speakMessage("갑봉이 이사 사진 판독이 완료되었습니다. 총 부피와 예상 견적을 확인하세요.");
                 } else {
-                    showModal("알림", "AI 분석 시간이 초과되었거나 응답이 올바르지 않습니다. 다시 시도해주세요.");
+                    showModal("GitHub 배포 안내", "AI 분석에 실패했거나 API 키 권한(CORS/Referer 제한)이 설정되어 있습니다. 로컬 환경에서 테스트하거나 API 키 설정을 확인해주세요.");
                     speakMessage("이사 사진 판독 중 오류가 발생했습니다. 다시 시도해 주세요.");
                 }
             });
