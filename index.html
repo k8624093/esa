@@ -23,8 +23,8 @@
                 </svg>
                 <div class="flex items-center space-x-2">
                     <h1 class="text-xl font-bold tracking-tight">갑봉이 AI 이사 견적</h1>
-                    <!-- Version v3.8: Complete Parser Fix & Performance Optimization -->
-                    <span id="app-version-badge" class="text-xs bg-indigo-500 text-indigo-100 px-2 py-0.5 rounded-full font-semibold">v3.8</span>
+                    <!-- Version v4.5: Fixed Critical JS Syntax Error -->
+                    <span id="app-version-badge" class="text-xs bg-indigo-500 text-indigo-100 px-2 py-0.5 rounded-full font-semibold">v4.5</span>
                 </div>
             </div>
             <div class="flex items-center space-x-2">
@@ -32,13 +32,13 @@
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"></path>
                     </svg>
-                    <span>API 키 설정</span>
+                    <span class="hidden sm:inline">API 설정</span>
                 </button>
                 <button onclick="openSavedQuotesModal()" class="bg-indigo-700 hover:bg-indigo-800 text-white px-3 py-1.5 rounded-xl text-xs font-semibold transition-colors flex items-center space-x-1 cursor-pointer">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
                     </svg>
-                    <span>저장된 견적함</span>
+                    <span class="hidden sm:inline">저장된 견적함</span>
                 </button>
             </div>
         </div>
@@ -61,23 +61,24 @@
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
                         </svg>
-                        <span>전체 초기화</span>
+                        <span>초기화</span>
                     </button>
                 </div>
             </div>
             <p class="text-slate-600 text-sm mb-3">
-                거실, 안방, 주방, 화장실 등 공간별 사진을 업로드하여 정밀 AI 판독을 진행하세요. <span class="text-indigo-600 font-semibold">💡 촬영 팁: 장롱이나 수납장은 가급적 문을 열고 촬영하시면 내부 수납짐(옷/이불) 인식 정확도가 훨씬 높아집니다!</span>
+                공간별 사진을 업로드하여 정밀 AI 판독을 진행하세요. <br class="sm:hidden" /><span class="text-indigo-600 font-semibold">💡 액체가 샐 수 있는 실온 양념류는 종이박스가 아닌 바구니에 담기도록 산출됩니다!</span>
             </p>
             <div class="flex flex-wrap gap-2 text-xs text-indigo-700 bg-indigo-50 p-3 rounded-xl items-center justify-between">
-                <div class="flex flex-wrap gap-2 items-center">
-                    <span class="font-semibold">📦 정밀 박스 및 바구니 규격 CBM:</span>
+                <div class="flex flex-wrap gap-2 items-center leading-relaxed">
+                    <span class="font-semibold">📦 정밀 박스·바구니 규격 CBM:</span>
                     <span>• 바구니(0.112)</span>
+                    <span>• 아이스박스(0.12)</span>
                     <span>• 중박스(0.116)</span>
                     <span>• 대박스(0.158)</span>
                     <span>• 옷박스(0.18)</span>
                     <span>• 이불박스(0.27)</span>
                 </div>
-                <div class="flex items-center space-x-2 bg-white px-3 py-1.5 rounded-lg border border-indigo-200">
+                <div class="flex items-center space-x-2 bg-white px-3 py-1.5 rounded-lg border border-indigo-200 shrink-0 mt-2 sm:mt-0">
                     <span class="font-semibold text-slate-700">트럭 기준 CBM:</span>
                     <input type="number" id="setting-truck-cbm-limit" value="10" step="0.5" min="1" class="w-16 border border-slate-300 rounded p-1 text-center font-bold text-indigo-600 focus:ring-2 focus:ring-indigo-500 focus:outline-none text-xs">
                     <span class="font-semibold text-slate-700">CBM</span>
@@ -104,7 +105,9 @@
                             <span>공간 추가</span>
                         </button>
                     </div>
-                    <p class="text-xs text-slate-500 mb-4">각 방과 거실 사진을 올려주시면 정밀 비전 AI가 가전/가구 및 잔짐을 자동 판독합니다.</p>
+                    <p class="text-xs text-slate-500 mb-4 bg-slate-50 p-2 rounded-lg border border-slate-100">
+                        * 장롱/수납장은 가급적 문을 열고 촬영하시면 내부(이불/접힌옷/잡짐) 분석 정확도가 훨씬 높아집니다.
+                    </p>
 
                     <!-- Spaces Container -->
                     <div id="spaces-container" class="space-y-4 max-h-[380px] overflow-y-auto pr-1 mb-4">
@@ -160,7 +163,7 @@
                                 <li class="text-slate-400 italic text-xs">등록된 품목 없음</li>
                             </ul>
                         </div>
-                        <!-- Boxes & Clutter -->
+                        <!-- Boxes, Baskets & Ice Boxes -->
                         <div class="bg-slate-50 rounded-xl p-3 border border-slate-200 flex flex-col h-auto min-h-[220px] max-h-80">
                             <h4 class="text-xs font-bold text-slate-700 mb-2 flex items-center justify-between">
                                 <span>잔짐 (박스/바구니)</span>
@@ -179,9 +182,9 @@
                                 <svg class="w-4 h-4 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                                 </svg>
-                                <span>공간별 잔짐 정밀 산출 근거 (박스·바구니 추가 이유)</span>
+                                <span>잔짐 정밀 산출 근거 (의류, 양념, 파손주의 반영)</span>
                             </span>
-                            <span class="text-[10px] text-amber-700 font-semibold bg-amber-100 px-2 py-0.5 rounded-full">공간별 균형 수납 추정</span>
+                            <span class="text-[10px] text-amber-700 font-semibold bg-amber-100 px-2 py-0.5 rounded-full">실제 이사 완충 포장 기준</span>
                         </div>
                         <ul id="list-clutter-reasons" class="space-y-1.5 text-xs text-amber-900 max-h-40 overflow-y-auto pr-1">
                             <!-- Dynamically populated clutter calculation reasons -->
@@ -190,11 +193,13 @@
                 </div>
 
                 <!-- AI Advice or Status Bar -->
-                <div class="bg-indigo-50/70 border border-indigo-100 rounded-xl p-3 text-xs text-indigo-900 flex items-center space-x-2">
-                    <svg class="w-4 h-4 text-indigo-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                    </svg>
-                    <p id="res-advice" class="truncate font-medium">원하는 공간에 사진을 업로드하고 AI 정밀 판독을 시작해보세요.</p>
+                <div class="bg-indigo-50/70 border border-indigo-100 rounded-xl p-3 text-xs text-indigo-900 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                    <div class="flex items-center space-x-2">
+                        <svg class="w-4 h-4 text-indigo-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        <p id="res-advice" class="truncate font-medium">원하는 공간에 사진을 업로드하고 AI 정밀 판독을 시작해보세요.</p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -208,7 +213,7 @@
         <div id="results-section" class="space-y-6">
             <!-- Summary Overview Cards -->
             <div class="grid grid-cols-1 sm:grid-cols-4 gap-4">
-                <!-- Total CBM Card with Percentage and Truck Capacity Visualizer -->
+                <!-- Total CBM Card -->
                 <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-5 flex flex-col justify-between space-y-3">
                     <div>
                         <div class="flex items-center justify-between">
@@ -217,7 +222,6 @@
                         </div>
                         <p id="res-cbm" class="text-2xl font-bold text-slate-900 mt-1">0 CBM</p>
                     </div>
-                    <!-- Truck Fill Progress & Icons Display -->
                     <div class="space-y-1.5 pt-1 border-t border-slate-100">
                         <div class="w-full bg-slate-100 rounded-full h-2 overflow-hidden">
                             <div id="volume-progress-bar" class="bg-indigo-600 h-full transition-all duration-300" style="width: 0%"></div>
@@ -265,17 +269,30 @@
                             </div>
                         </div>
                     </div>
-                    <span class="text-[11px] text-slate-400 mt-2">주방 포장 전문 여성인력 반영</span>
+                    <span class="text-[11px] text-slate-400 mt-2">주방 감지 시 여성 인부 자동 반영</span>
                 </div>
 
-                <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-5 flex flex-col justify-between">
-                    <div>
+                <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-5 flex flex-col justify-between relative overflow-hidden">
+                    <div class="relative z-10">
                         <p class="text-xs font-medium text-slate-500 uppercase tracking-wider">총 예상 견적 비용</p>
                         <p id="res-cost" class="text-2xl font-bold text-emerald-600 mt-1">0원</p>
                     </div>
-                    <span class="text-[11px] text-slate-400 mt-2">운임 + 인건비 + 옵션 포함</span>
+                    <span class="text-[11px] text-slate-400 mt-2 relative z-10">운임 + 인건비 + 특수옵션 포함</span>
+                    <div class="absolute -right-4 -bottom-4 opacity-10">
+                        <svg class="w-24 h-24 text-emerald-600" fill="currentColor" viewBox="0 0 20 20"><path d="M4 4a2 2 0 00-2 2v4a2 2 0 002 2V6h10a2 2 0 00-2-2H4zm2 6a2 2 0 012-2h8a2 2 0 012 2v4a2 2 0 01-2 2H8a2 2 0 01-2-2v-4zm6 4a2 2 0 100-4 2 2 0 000 4z"></path></svg>
+                    </div>
                 </div>
             </div>
+
+            <!-- 견적서 공유하기 버튼 추가 -->
+            <button onclick="openShareModal()" class="w-full bg-indigo-50 hover:bg-indigo-100 border border-indigo-200 text-indigo-700 font-bold py-3.5 px-4 rounded-xl text-sm transition-colors flex items-center justify-center space-x-2 shadow-sm cursor-pointer mt-2">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"></path>
+                </svg>
+                <span>이 견적서 카톡/문자로 공유하기</span>
+            </button>
+            <!-- 숨겨진 텍스트 데이터를 담는 칸 -->
+            <textarea id="share-text-data" class="hidden"></textarea>
 
             <!-- 작업 방식 선택 (사다리 / 엘리베이터 / 계단작업 및 층수) -->
             <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-5 space-y-4">
@@ -349,6 +366,71 @@
                 </div>
             </div>
 
+            <!-- 특수작업 추가비 작성칸 -->
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-5 space-y-4">
+                <div class="flex items-center justify-between">
+                    <span class="text-xs font-bold text-slate-700 flex items-center space-x-2">
+                        <svg class="w-4 h-4 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"></path>
+                        </svg>
+                        <span>특수작업 및 가전/가구 옵션 추가비:</span>
+                    </span>
+                    <span class="text-[11px] text-slate-400">* 필요 옵션 체크 시 총 견적에 자동 합산됩니다</span>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs font-medium text-slate-700">
+                    <!-- 에어컨 해체비 -->
+                    <div class="bg-slate-50 p-3 rounded-xl border border-slate-200 space-y-2">
+                        <div class="flex items-center justify-between">
+                            <label class="flex items-center space-x-2 cursor-pointer font-bold text-slate-800">
+                                <input type="checkbox" id="check-ac-demount" class="w-4 h-4 text-indigo-600 rounded border-slate-300 focus:ring-indigo-500">
+                                <span>에어컨 기본 해체비</span>
+                            </label>
+                        </div>
+                        <div class="flex items-center justify-between pt-1">
+                            <span class="text-slate-500 text-[11px]">해체 비용:</span>
+                            <div class="flex items-center space-x-1">
+                                <input type="number" id="input-ac-demount-cost" value="50000" step="5000" class="w-24 border border-slate-300 rounded p-1 text-right text-xs font-semibold bg-white">
+                                <span class="text-slate-600">원</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 대형 TV 추가비 -->
+                    <div class="bg-slate-50 p-3 rounded-xl border border-slate-200 space-y-2">
+                        <div class="flex items-center justify-between">
+                            <label class="flex items-center space-x-2 cursor-pointer font-bold text-slate-800">
+                                <input type="checkbox" id="check-tv-extra" class="w-4 h-4 text-indigo-600 rounded border-slate-300 focus:ring-indigo-500">
+                                <span>대형 TV 특수 포장비</span>
+                            </label>
+                        </div>
+                        <div class="flex items-center justify-between pt-1">
+                            <span class="text-slate-500 text-[11px]">추가 비용 (65인치 이상):</span>
+                            <div class="flex items-center space-x-1">
+                                <input type="number" id="input-tv-extra-cost" value="50000" step="5000" class="w-24 border border-slate-300 rounded p-1 text-right text-xs font-semibold bg-white">
+                                <span class="text-slate-600">원</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 기타 특수작업 추가비 -->
+                    <div class="bg-slate-50 p-3 rounded-xl border border-slate-200 space-y-2">
+                        <div class="flex items-center justify-between">
+                            <label class="flex items-center space-x-2 cursor-pointer font-bold text-slate-800">
+                                <input type="checkbox" id="check-special-work" class="w-4 h-4 text-indigo-600 rounded border-slate-300 focus:ring-indigo-500">
+                                <span>기타 특수작업 추가비</span>
+                            </label>
+                        </div>
+                        <div class="flex items-center justify-between pt-1">
+                            <input type="text" id="input-special-work-desc" placeholder="내역 (예: 돌침대/금고)" class="w-28 border border-slate-300 rounded p-1 text-[11px] bg-white">
+                            <div class="flex items-center space-x-1">
+                                <input type="number" id="input-special-work-cost" value="100000" step="10000" class="w-20 border border-slate-300 rounded p-1 text-right text-xs font-semibold bg-white">
+                                <span class="text-slate-600">원</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <!-- 운임 및 임금 단가 설정 카드 -->
             <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-5 space-y-4">
                 <h3 class="text-xs font-bold text-slate-700 flex items-center space-x-2">
@@ -376,6 +458,29 @@
         </div>
 
     </main>
+
+    <!-- Modal: Share Quote -->
+    <div id="share-modal" class="fixed inset-0 bg-slate-900/50 flex items-center justify-center p-4 hidden z-50">
+        <div class="bg-white rounded-2xl max-w-sm w-full p-6 shadow-xl space-y-4 text-center">
+            <h3 class="text-base font-bold text-slate-900 mb-2">견적서 공유하기</h3>
+            <p class="text-xs text-slate-600 mb-4">현재 산출된 견적 내역을 전송할 방법을 선택하세요.</p>
+            <div class="space-y-3">
+                <button onclick="shareViaNative()" class="w-full bg-[#FEE500] hover:bg-[#FEE500]/80 text-[#191919] font-bold py-3 px-4 rounded-xl text-sm transition-colors flex items-center justify-center space-x-2">
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 3c-4.97 0-9 3.18-9 7.1 0 2.54 1.63 4.77 4.1 5.92-.18.66-.66 2.37-.69 2.53-.04.22.08.23.2.14.09-.07 2.39-1.57 3.37-2.22.65.09 1.33.13 2.02.13 4.97 0 9-3.18 9-7.1C21 6.18 16.97 3 12 3z"/></svg>
+                    <span>스마트폰 기본 공유 (카톡 등)</span>
+                </button>
+                <button onclick="shareViaSMS()" class="w-full bg-slate-800 hover:bg-slate-900 text-white font-bold py-3 px-4 rounded-xl text-sm transition-colors flex items-center justify-center space-x-2">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path></svg>
+                    <span>기본 문자(SMS)로 보내기</span>
+                </button>
+                <button onclick="copyShareText()" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold py-3 px-4 rounded-xl text-sm transition-colors flex items-center justify-center space-x-2">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"></path></svg>
+                    <span>텍스트 직접 복사하기</span>
+                </button>
+            </div>
+            <button onclick="closeShareModal()" class="mt-4 w-full text-slate-400 hover:text-slate-600 text-xs font-semibold underline p-2">닫기</button>
+        </div>
+    </div>
 
     <!-- Modal: Save Quote -->
     <div id="save-quote-modal" class="fixed inset-0 bg-slate-900/50 flex items-center justify-center p-4 hidden z-50">
@@ -417,17 +522,17 @@
         </div>
     </div>
 
-    <!-- Modal: API Key Setup for GitHub Pages -->
+    <!-- Modal: API Key Setup -->
     <div id="api-key-modal" class="fixed inset-0 bg-slate-900/50 flex items-center justify-center p-4 hidden z-50">
         <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-xl space-y-4">
             <div class="flex items-center justify-between">
-                <h3 class="text-base font-bold text-slate-900">GitHub 배포용 Gemini API 키 설정</h3>
+                <h3 class="text-base font-bold text-slate-900">Gemini API 키 설정</h3>
                 <button onclick="closeApiKeyModal()" class="text-slate-400 hover:text-slate-600 cursor-pointer">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
                 </button>
             </div>
             <p class="text-xs text-slate-600 leading-relaxed">
-                깃허브 페이지(GitHub Pages) 등 외부 도메인에 배포하여 사용할 때는 Google AI Studio에서 발급받은 API 키를 브라우저에 입력해야 CORS 오류 없이 AI 판독 기능을 사용할 수 있습니다. (입력된 키는 브라우저 로컬 스토리지에만 안전하게 저장됩니다.)
+                구글 AI Studio에서 발급받은 API 키를 브라우저에 입력해야 AI 판독 기능을 사용할 수 있습니다.
             </p>
             <div>
                 <label class="block font-semibold text-slate-700 text-xs mb-1">Gemini API 키</label>
@@ -451,7 +556,6 @@
                     </svg>
                 </button>
             </div>
-            
             <div class="space-y-4 mb-6 text-xs">
                 <div>
                     <label class="block font-semibold text-slate-600 mb-1">공간 선택 또는 직접 입력</label>
@@ -469,10 +573,10 @@
                         <option value="서재/공부방">서재/공부방</option>
                         <option value="직접입력">직접 입력...</option>
                     </select>
+                    <!-- v4.5 FIX: '액' syntax error removed from JS, logic bound to this input works again -->
                     <input type="text" id="new-space-name" placeholder="공간 이름 입력 (예: 다용도실)" class="w-full border border-slate-300 rounded-xl p-2.5 focus:ring-2 focus:ring-indigo-500 focus:outline-none hidden">
                 </div>
             </div>
-
             <div class="flex justify-end space-x-2">
                 <button onclick="closeAddSpaceModal()" class="bg-slate-100 text-slate-600 px-4 py-2 rounded-xl text-xs font-semibold hover:bg-slate-200 transition-colors cursor-pointer">취소</button>
                 <button onclick="confirmAddSpace()" class="bg-indigo-600 text-white px-4 py-2 rounded-xl text-xs font-semibold hover:bg-indigo-700 transition-colors cursor-pointer">추가</button>
@@ -491,7 +595,6 @@
                     </svg>
                 </button>
             </div>
-            
             <div class="space-y-4 mb-6 text-xs">
                 <div>
                     <label class="block font-semibold text-slate-600 mb-1">품목 분류</label>
@@ -502,15 +605,14 @@
                     </select>
                 </div>
                 <div>
-                    <label class="block font-semibold text-slate-600 mb-1">품목명 (예: 옷박스 또는 이불박스)</label>
-                    <input type="text" id="new-item-name" placeholder="예: 옷박스" class="w-full border border-slate-300 rounded-xl p-2.5 focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+                    <label class="block font-semibold text-slate-600 mb-1">품목명 (예: 대박스, 바구니 등)</label>
+                    <input type="text" id="new-item-name" placeholder="예: 바구니" class="w-full border border-slate-300 rounded-xl p-2.5 focus:ring-2 focus:ring-indigo-500 focus:outline-none">
                 </div>
                 <div id="new-item-cbm-wrapper">
                     <label class="block font-semibold text-slate-600 mb-1">개당 부피 (CBM)</label>
                     <input type="number" id="new-item-cbm" value="0.116" step="0.001" min="0.001" class="w-full border border-slate-300 rounded-xl p-2.5 focus:ring-2 focus:ring-indigo-500 focus:outline-none">
                 </div>
             </div>
-
             <div class="flex justify-end space-x-2">
                 <button onclick="closeAddItemModal()" class="bg-slate-100 text-slate-600 px-4 py-2 rounded-xl text-xs font-semibold hover:bg-slate-200 transition-colors cursor-pointer">취소</button>
                 <button onclick="confirmAddItem()" class="bg-indigo-600 text-white px-4 py-2 rounded-xl text-xs font-semibold hover:bg-indigo-700 transition-colors cursor-pointer">추가</button>
@@ -528,31 +630,28 @@
     </div>
 
     <script>
+        // Modal logic
         function showModal(title, message) {
             document.getElementById('modal-title').innerText = title;
             document.getElementById('modal-message').innerText = message;
             document.getElementById('custom-modal').classList.remove('hidden');
         }
-
         document.getElementById('modal-close-btn').addEventListener('click', () => {
             document.getElementById('custom-modal').classList.add('hidden');
         });
 
+        // API Key Logic
         window.openApiKeyModal = function() {
             const savedKey = localStorage.getItem('gemini_custom_api_key') || '';
             document.getElementById('custom-api-key-input').value = savedKey;
             document.getElementById('api-key-modal').classList.remove('hidden');
         };
-
-        window.closeApiKeyModal = function() {
-            document.getElementById('api-key-modal').classList.add('hidden');
-        };
-
+        window.closeApiKeyModal = function() { document.getElementById('api-key-modal').classList.add('hidden'); };
         window.saveApiKey = function() {
             const key = document.getElementById('custom-api-key-input').value.trim();
             if (key) {
                 localStorage.setItem('gemini_custom_api_key', key);
-                showModal("저장 완료", "Gemini API 키가 브라우저에 안전하게 저장되었습니다.");
+                showModal("저장 완료", "API 키가 안전하게 저장되었습니다.");
             } else {
                 localStorage.removeItem('gemini_custom_api_key');
                 showModal("삭제 완료", "저장된 API 키가 제거되었습니다.");
@@ -560,65 +659,126 @@
             closeApiKeyModal();
         };
 
-        // Save & Load Quotation Functions (including CBM settings)
+        // Quote Share Logic
+        window.openShareModal = function() {
+            const cbm = document.getElementById('res-cbm') ? document.getElementById('res-cbm').innerText : '0 CBM';
+            const cost = document.getElementById('res-cost') ? document.getElementById('res-cost').innerText : '0원';
+            const truckCount = document.getElementById('manual-truck-count') ? document.getElementById('manual-truck-count').value : '1';
+            const manCount = document.getElementById('manual-man-count') ? document.getElementById('manual-man-count').value : '0';
+            const womanCount = document.getElementById('manual-woman-count') ? document.getElementById('manual-woman-count').value : '0';
+            
+            const shareText = `[갑봉이 AI 스마트 이사 견적서]\n\n📦 총 예상 부피: ${cbm}\n🚚 필요 차량: 1톤 트럭 ${truckCount}대\n👨‍🔧 작업 인원: 남 ${manCount}명 / 여 ${womanCount}명\n💰 총 예상 비용: ${cost}\n\n* 위 금액과 수량은 AI 판독 기반 예상치이며 실제 현장 상황에 따라 다를 수 있습니다.`;
+            
+            document.getElementById('share-text-data').value = shareText;
+            document.getElementById('share-modal').classList.remove('hidden');
+        };
+        
+        window.closeShareModal = function() { document.getElementById('share-modal').classList.add('hidden'); };
+
+        window.shareViaNative = function() {
+            const text = document.getElementById('share-text-data').value;
+            if (navigator.share && window.isSecureContext) {
+                navigator.share({
+                    title: '갑봉이 AI 이사 견적',
+                    text: text
+                }).then(() => closeShareModal()).catch((error) => {
+                    if (error.name !== 'AbortError') {
+                        showModal('안내', '현재 기기에서 카카오톡 등 기본 앱 호출을 지원하지 않습니다. 텍스트 복사 버튼을 이용해주세요.');
+                    }
+                });
+            } else {
+                showModal('안내', '현재 기기(PC 등)에서는 기본 공유 앱을 띄울 수 없습니다. 아래의 "텍스트 직접 복사하기"를 이용해 직접 붙여넣기 해주세요.');
+            }
+        };
+
+        window.shareViaSMS = function() {
+            const text = document.getElementById('share-text-data').value;
+            // 모바일 환경에서 문자앱 호출
+            window.location.href = `sms:?body=${encodeURIComponent(text)}`;
+            closeShareModal();
+        };
+
+        window.copyShareText = function() {
+            const text = document.getElementById('share-text-data').value;
+            
+            // 1. 최신 Clipboard API 시도
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(text).then(() => {
+                    showModal('복사 완료', '견적 내용이 성공적으로 복사되었습니다. 카카오톡이나 문자에 바로 붙여넣기 해보세요.');
+                    closeShareModal();
+                }).catch(() => {
+                    fallbackCopyTextToClipboard(text);
+                });
+            } else {
+                // 2. 우회 방식
+                fallbackCopyTextToClipboard(text);
+            }
+        };
+
+        function fallbackCopyTextToClipboard(text) {
+            const textArea = document.createElement("textarea");
+            textArea.value = text;
+            // 화면 밖으로 밀어내어 사용자에게는 보이지 않도록 처리
+            textArea.style.position = "fixed";
+            textArea.style.top = "-9999px";
+            textArea.style.left = "-9999px";
+            document.body.appendChild(textArea);
+            
+            textArea.focus();
+            textArea.select();
+            
+            try {
+                const successful = document.execCommand('copy');
+                if (successful) {
+                    showModal('복사 완료', '견적 내용이 클립보드에 성공적으로 복사되었습니다. 원하는 곳에 붙여넣기 하세요.');
+                    closeShareModal();
+                } else {
+                    showModal('복사 실패', '이 브라우저 환경에서는 복사 기능을 사용할 수 없습니다.');
+                }
+            } catch (err) {
+                showModal('오류', '브라우저 설정으로 인해 텍스트를 복사할 수 없습니다.');
+            }
+            document.body.removeChild(textArea);
+        }
+
+        // Save/Load Quotes Logic
         window.openSaveQuoteModal = function() {
-            const defaultTitle = "이사 견적 (" + new Date().toLocaleDateString() + ")";
-            document.getElementById('save-quote-title-input').value = defaultTitle;
+            document.getElementById('save-quote-title-input').value = "이사 견적 (" + new Date().toLocaleDateString() + ")";
             document.getElementById('save-quote-modal').classList.remove('hidden');
         };
-
-        window.closeSaveQuoteModal = function() {
-            document.getElementById('save-quote-modal').classList.add('hidden');
-        };
-
+        window.closeSaveQuoteModal = function() { document.getElementById('save-quote-modal').classList.add('hidden'); };
         window.confirmSaveQuote = function() {
-            const titleInput = document.getElementById('save-quote-title-input');
-            const title = titleInput.value.trim() || "나의 이사 견적";
-            
+            const title = document.getElementById('save-quote-title-input').value.trim() || "나의 이사 견적";
             const quoteData = {
-                id: 'quote_' + Date.now(),
-                title: title,
-                date: new Date().toLocaleString(),
-                spaces: spaces,
-                currentAnalysisData: currentAnalysisData,
+                id: 'quote_' + Date.now(), title: title, date: new Date().toLocaleString(),
+                spaces: spaces, currentAnalysisData: currentAnalysisData,
                 settings: {
-                    truckCbmLimit: truckCbmLimitInput ? truckCbmLimitInput.value : 10,
-                    truckCost: truckCostInput ? truckCostInput.value : 240000,
-                    manWage: manWageInput ? manWageInput.value : 0,
-                    womanWage: womanWageInput ? womanWageInput.value : 150000,
-                    manualTruckCount: manualTruckCountInput ? manualTruckCountInput.value : 1,
-                    manualManCount: manualManCountInput ? manualManCountInput.value : 1,
-                    manualWomanCount: manualWomanCountInput ? manualWomanCountInput.value : 0
+                    truckCbmLimit: document.getElementById('setting-truck-cbm-limit').value,
+                    truckCost: document.getElementById('setting-truck-cost').value,
+                    manWage: document.getElementById('setting-man-wage').value,
+                    womanWage: document.getElementById('setting-woman-wage').value,
+                    manualTruckCount: document.getElementById('manual-truck-count').value,
+                    manualManCount: document.getElementById('manual-man-count').value,
+                    manualWomanCount: document.getElementById('manual-woman-count').value,
+                    checkAcDemount: document.getElementById('check-ac-demount').checked,
+                    inputAcDemountCost: document.getElementById('input-ac-demount-cost').value,
+                    checkTvExtra: document.getElementById('check-tv-extra').checked,
+                    inputTvExtraCost: document.getElementById('input-tv-extra-cost').value,
+                    checkSpecialWork: document.getElementById('check-special-work').checked,
+                    inputSpecialWorkDesc: document.getElementById('input-special-work-desc').value,
+                    inputSpecialWorkCost: document.getElementById('input-special-work-cost').value
                 }
             };
-
-            let savedQuotes = [];
-            try {
-                const existing = localStorage.getItem('gabong_saved_quotes');
-                if (existing) savedQuotes = JSON.parse(existing);
-            } catch (e) {
-                savedQuotes = [];
-            }
-
+            let savedQuotes = JSON.parse(localStorage.getItem('gabong_saved_quotes') || '[]');
             savedQuotes.unshift(quoteData);
             localStorage.setItem('gabong_saved_quotes', JSON.stringify(savedQuotes));
             closeSaveQuoteModal();
-            showModal("저장 성공", `"${title}" 견적이 브라우저에 성공적으로 저장되었습니다.`);
+            showModal("저장 성공", `"${title}" 견적이 성공적으로 저장되었습니다.`);
         };
-
         window.openSavedQuotesModal = function() {
             const container = document.getElementById('saved-quotes-list-container');
-            if (!container) return;
             container.innerHTML = '';
-
-            let savedQuotes = [];
-            try {
-                const existing = localStorage.getItem('gabong_saved_quotes');
-                if (existing) savedQuotes = JSON.parse(existing);
-            } catch (e) {
-                savedQuotes = [];
-            }
-
+            let savedQuotes = JSON.parse(localStorage.getItem('gabong_saved_quotes') || '[]');
             if (savedQuotes.length === 0) {
                 container.innerHTML = '<p class="text-slate-400 text-xs italic text-center py-6">저장된 견적이 없습니다.</p>';
             } else {
@@ -628,127 +788,70 @@
                     div.innerHTML = `
                         <div class="space-y-1">
                             <h4 class="font-bold text-slate-900">${q.title}</h4>
-                            <p class="text-[11px] text-slate-500">${q.date} • 공간 ${q.spaces ? q.spaces.length : 0}개 • 기준 CBM: ${q.settings ? q.settings.truckCbmLimit : 10}</p>
+                            <p class="text-[11px] text-slate-500">${q.date}</p>
                         </div>
                         <div class="flex items-center space-x-2">
-                            <button onclick="loadQuote(${idx})" class="bg-indigo-600 hover:bg-indigo-700 text-white px-3 py-1.5 rounded-lg font-semibold transition-colors cursor-pointer">불러오기</button>
-                            <button onclick="deleteQuote(${idx})" class="bg-slate-200 hover:bg-rose-100 text-slate-600 hover:text-rose-600 px-2.5 py-1.5 rounded-lg font-semibold transition-colors cursor-pointer">삭제</button>
-                        </div>
-                    `;
+                            <button onclick="loadQuote(${idx})" class="bg-indigo-600 hover:bg-indigo-700 text-white px-3 py-1.5 rounded-lg font-semibold cursor-pointer">불러오기</button>
+                            <button onclick="deleteQuote(${idx})" class="bg-slate-200 hover:bg-rose-100 text-slate-600 hover:text-rose-600 px-2.5 py-1.5 rounded-lg font-semibold cursor-pointer">삭제</button>
+                        </div>`;
                     container.appendChild(div);
                 });
             }
             document.getElementById('saved-quotes-modal').classList.remove('hidden');
         };
-
-        window.closeSavedQuotesModal = function() {
-            document.getElementById('saved-quotes-modal').classList.add('hidden');
-        };
-
+        window.closeSavedQuotesModal = function() { document.getElementById('saved-quotes-modal').classList.add('hidden'); };
         window.loadQuote = function(index) {
-            let savedQuotes = [];
-            try {
-                const existing = localStorage.getItem('gabong_saved_quotes');
-                if (existing) savedQuotes = JSON.parse(existing);
-            } catch (e) {
-                return;
-            }
-
+            let savedQuotes = JSON.parse(localStorage.getItem('gabong_saved_quotes') || '[]');
             const q = savedQuotes[index];
             if (!q) return;
-
             if (q.spaces) spaces = q.spaces;
             if (q.currentAnalysisData) currentAnalysisData = q.currentAnalysisData;
             if (q.settings) {
-                if (truckCbmLimitInput && q.settings.truckCbmLimit) truckCbmLimitInput.value = q.settings.truckCbmLimit;
-                if (truckCostInput && q.settings.truckCost) truckCostInput.value = q.settings.truckCost;
-                if (manWageInput && q.settings.manWage) manWageInput.value = q.settings.manWage;
-                if (womanWageInput && q.settings.womanWage) womanWageInput.value = q.settings.womanWage;
-                if (manualTruckCountInput && q.settings.manualTruckCount) manualTruckCountInput.value = q.settings.manualTruckCount;
-                if (manualManCountInput && q.settings.manualManCount) manualManCountInput.value = q.settings.manualManCount;
-                if (manualWomanCountInput && q.settings.manualWomanCount) manualWomanCountInput.value = q.settings.manualWomanCount;
+                const s = q.settings;
+                document.getElementById('setting-truck-cbm-limit').value = s.truckCbmLimit;
+                document.getElementById('setting-truck-cost').value = s.truckCost;
+                document.getElementById('setting-man-wage').value = s.manWage;
+                document.getElementById('setting-woman-wage').value = s.womanWage;
+                document.getElementById('manual-truck-count').value = s.manualTruckCount;
+                document.getElementById('manual-man-count').value = s.manualManCount;
+                document.getElementById('manual-woman-count').value = s.manualWomanCount;
+                document.getElementById('check-ac-demount').checked = s.checkAcDemount;
+                document.getElementById('input-ac-demount-cost').value = s.inputAcDemountCost;
+                document.getElementById('check-tv-extra').checked = s.checkTvExtra;
+                document.getElementById('input-tv-extra-cost').value = s.inputTvExtraCost;
+                document.getElementById('check-special-work').checked = s.checkSpecialWork;
+                document.getElementById('input-special-work-desc').value = s.inputSpecialWorkDesc;
+                document.getElementById('input-special-work-cost').value = s.inputSpecialWorkCost;
             }
-
             closeSavedQuotesModal();
             renderSpaces();
             recalculateTotals(false);
             showModal("불러오기 완료", `"${q.title}" 견적을 성공적으로 불러왔습니다.`);
         };
-
         window.deleteQuote = function(index) {
-            let savedQuotes = [];
-            try {
-                const existing = localStorage.getItem('gabong_saved_quotes');
-                if (existing) savedQuotes = JSON.parse(existing);
-            } catch (e) {
-                return;
-            }
-
+            let savedQuotes = JSON.parse(localStorage.getItem('gabong_saved_quotes') || '[]');
             savedQuotes.splice(index, 1);
             localStorage.setItem('gabong_saved_quotes', JSON.stringify(savedQuotes));
             openSavedQuotesModal();
         };
 
-        // Web Audio API custom chime notification sound
-        function playCompletionChime() {
+        // Chime Audio
+        function playDingDong() {
             try {
-                const AudioContext = window.AudioContext || window.webkitAudioContext;
-                if (!AudioContext) return;
-                const ctx = new AudioContext();
-
-                if (ctx.state === 'suspended') {
-                    ctx.resume();
-                }
-
+                const ctx = new (window.AudioContext || window.webkitAudioContext)();
+                if (ctx.state === 'suspended') ctx.resume();
                 const now = ctx.currentTime;
-                
-                const osc1 = ctx.createOscillator();
-                const gain1 = ctx.createGain();
-                osc1.type = 'sine';
-                osc1.frequency.setValueAtTime(523.25, now); // C5
-                gain1.gain.setValueAtTime(0.25, now);
-                gain1.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
-                osc1.connect(gain1);
-                gain1.connect(ctx.destination);
-                osc1.start(now);
-                osc1.stop(now + 0.35);
-
-                const osc2 = ctx.createOscillator();
-                const gain2 = ctx.createGain();
-                osc2.type = 'sine';
-                osc2.frequency.setValueAtTime(783.99, now + 0.15); // G5
-                gain2.gain.setValueAtTime(0.25, now + 0.15);
-                gain2.gain.exponentialRampToValueAtTime(0.001, now + 0.6);
-                osc2.connect(gain2);
-                gain2.connect(ctx.destination);
-                osc2.start(now + 0.15);
-                osc2.stop(now + 0.6);
-            } catch (e) {
-                console.log('Audio playback prevented or not supported:', e);
-            }
-        }
-
-        function speakMessage(text) {
-            playCompletionChime();
-            if ('speechSynthesis' in window) {
-                try {
-                    window.speechSynthesis.cancel();
-                    const utterance = new SpeechSynthesisUtterance(text);
-                    utterance.lang = 'ko-KR';
-                    utterance.rate = 1.0;
-                    utterance.pitch = 1.0;
-                    
-                    const voices = window.speechSynthesis.getVoices();
-                    const koreanVoice = voices.find(v => v.lang.includes('ko'));
-                    if (koreanVoice) {
-                        utterance.voice = koreanVoice;
-                    }
-
-                    window.speechSynthesis.speak(utterance);
-                } catch (e) {
-                    console.log('TTS failed:', e);
-                }
-            }
+                const osc1 = ctx.createOscillator(); const gain1 = ctx.createGain();
+                osc1.type = 'sine'; osc1.frequency.setValueAtTime(659.25, now);
+                gain1.gain.setValueAtTime(0.28, now); gain1.gain.exponentialRampToValueAtTime(0.001, now + 0.45);
+                osc1.connect(gain1); gain1.connect(ctx.destination);
+                osc1.start(now); osc1.stop(now + 0.45);
+                const osc2 = ctx.createOscillator(); const gain2 = ctx.createGain();
+                osc2.type = 'sine'; osc2.frequency.setValueAtTime(523.25, now + 0.22);
+                gain2.gain.setValueAtTime(0.32, now + 0.22); gain2.gain.exponentialRampToValueAtTime(0.001, now + 0.85);
+                osc2.connect(gain2); gain2.connect(ctx.destination);
+                osc2.start(now + 0.22); osc2.stop(now + 0.85);
+            } catch (e) { console.log('Audio error:', e); }
         }
 
         let spaces = [
@@ -764,55 +867,35 @@
             { id: 'dressroom', name: '드레스룸', images: [] }
         ];
 
-        const STANDARD_CBM_BENCHMARKS = {
-            "양문형 냉장고": 1.6,
-            "4도어 냉장고": 1.8,
-            "일반 냉장고": 1.0,
-            "김치냉장고": 0.9,
-            "드럼세탁기": 0.85,
-            "통돌이 세탁기": 0.7,
-            "의류건조기": 0.8,
-            "워시타워": 1.65,
-            "스탠드 에어컨": 1.1,
-            "벽걸이 에어컨": 0.25,
-            "TV (65인치)": 0.45,
-            "TV (75인치)": 0.6,
-            "식기세척기": 0.4,
-            "전자레인지": 0.1,
-            "공기청정기": 0.2,
-            "퀸 침대 및 매트리스": 2.5,
-            "킹 침대 및 매트리스": 2.8,
-            "슈퍼싱글 침대": 1.6,
-            "3인용 소파": 1.6,
-            "4인용 소파": 2.2,
-            "카우치 소파": 2.8,
-            "5단 서랍장": 0.8,
-            "3단 서랍장": 0.45,
-            "거실 TV장": 0.9,
-            "식탁 세트 (4인용)": 1.8,
-            "식탁 세트 (6인용)": 2.4,
-            "장롱 (1통)": 1.1,
-            "책상 세트": 0.9,
-            "책장": 0.8
+        // V4.1~v4.2 실측 규격 반영
+        const STANDARD_CBM = {
+            "양문형 냉장고": 1.5, "4도어 냉장고": 1.65, "일반 냉장고": 0.7, "김치냉장고": 0.85, "스탠드 김치냉장고": 0.85,
+            "드럼세탁기": 0.55, "통돌이 세탁기": 0.45, "의류건조기": 0.4, "워시타워": 1.1,
+            "스탠드 에어컨": 0.5, "벽걸이 에어컨": 0.2, "TV (65인치)": 0.35, "TV (75인치)": 0.48,
+            "식기세척기": 0.32, "전자레인지": 0.07, "공기청정기": 0.1,
+            "퀸 침대": 1.6, "킹 침대": 1.9, "슈퍼싱글 침대": 1.1,
+            "3인용 소파": 1.6, "4인용 소파": 2.2, "카우치 소파": 2.8, "1인용 안락의자": 0.55, "안마의자": 1.3,
+            "5단 서랍장": 0.5, "3단 서랍장": 0.3, "거실 TV장": 0.4, "장롱 (1통)": 1.25,
+            "식탁 세트 (4인용)": 1.2, "식탁 세트 (6인용)": 1.7, "책상 세트": 0.75, "책장": 0.5
         };
 
-        // Strict exact box and basket CBM mapping with max packing density
         function getStrictBoxCbm(name) {
             if (!name) return null;
-            if (name.includes("이불박스")) return 0.27;   // 90x50x60 cm max packing density
-            if (name.includes("옷박스")) return 0.18;     // 90x50x40 cm max packing density
-            if (name.includes("대박스")) return 0.158;    // 70x45x50 cm
-            if (name.includes("중박스")) return 0.116;    // 60x41x47 cm
-            if (name.includes("바구니")) return 0.112;    // 72.5x47x33 cm
+            if (name.includes("이불박스")) return 0.27;
+            if (name.includes("옷박스")) return 0.18;
+            if (name.includes("대박스")) return 0.158;
+            if (name.includes("아이스박스")) return 0.12;
+            if (name.includes("중박스")) return 0.116;
+            if (name.includes("바구니")) return 0.112;
             return null;
         }
 
-        // Clean name normalizer for boxes & baskets so CBM is locked
         function getCleanItemName(rawName) {
             if (!rawName) return "품목";
             if (rawName.includes("이불박스")) return "이불박스";
             if (rawName.includes("옷박스")) return "옷박스";
             if (rawName.includes("대박스")) return "대박스";
+            if (rawName.includes("아이스박스")) return "아이스박스";
             if (rawName.includes("중박스")) return "중박스";
             if (rawName.includes("바구니")) return "바구니";
             return rawName;
@@ -820,124 +903,70 @@
 
         let currentAnalysisData = {
             appliances: [
-                { name: "양문형 냉장고", cbm: 1.6, count: 1 },
-                { name: "드럼세탁기", cbm: 0.85, count: 1 },
-                { name: "의류건조기", cbm: 0.8, count: 1 },
-                { name: "스탠드 에어컨", cbm: 1.1, count: 1 },
-                { name: "TV (65인치)", cbm: 0.45, count: 1 }
+                { name: "양문형 냉장고", cbm: 1.5, count: 1 },
+                { name: "워시타워", cbm: 1.1, count: 1 },
+                { name: "TV (65인치)", cbm: 0.35, count: 1 }
             ],
             furniture: [
-                { name: "퀸 침대 및 매트리스", cbm: 2.5, count: 1 },
-                { name: "3인용 소파", cbm: 1.6, count: 1 },
-                { name: "5단 서랍장", cbm: 0.8, count: 1 },
-                { name: "거실 TV장", cbm: 0.9, count: 1 },
-                { name: "식탁 세트 (4인용)", cbm: 1.8, count: 1 }
+                { name: "퀸 침대", cbm: 1.6, count: 1 },
+                { name: "장롱 (1통)", cbm: 1.25, count: 2 }
             ],
             clutterAndBoxes: [
-                { name: "이불박스", cbm: 0.27, count: 2 },
-                { name: "옷박스", cbm: 0.18, count: 4 },
+                { name: "이불박스", cbm: 0.27, count: 1 },
+                { name: "옷박스", cbm: 0.18, count: 2 },
                 { name: "대박스", cbm: 0.158, count: 2 },
+                { name: "아이스박스", cbm: 0.12, count: 2 },
                 { name: "중박스", cbm: 0.116, count: 4 },
-                { name: "바구니", cbm: 0.112, count: 3 }
+                { name: "바구니", cbm: 0.112, count: 10 }
             ],
             clutterReasons: [
-                { boxType: "이불박스", count: "2개", reason: "[안방/침실] 침대 위 겨울 이불 및 토퍼류 수납 (0.27 CBM)" },
-                { boxType: "옷박스", count: "4개", reason: "[드레스룸/장롱] 10자 장롱 평균 수납 기준 의류 및 외투류 균형 포장 (0.18 CBM)" },
-                { boxType: "대박스", count: "2개", reason: "[거실/아이방] 컴퓨터 모니터, 대형 오븐 및 부피 큰 장난감 전담 완충 포장 (0.158 CBM)" },
-                { boxType: "중박스", count: "4개", reason: "[서재/거실] 도서류, 수납장 잡화 및 생활용품 수납 (0.116 CBM)" },
-                { boxType: "바구니", count: "3개", reason: "[주방/서재] 소형가전(밥솥/토스터) 및 파손 위험 식기류 전담 (0.112 CBM)" }
+                { boxType: "바구니", count: "10개", reason: "[주방 식기 및 양념류] 파손 위험이 있는 그릇/유리잔 완충 포장, 그리고 액체가 샐 위험이 있는 실온 양념(간장/식용유 등) 및 세제류 등 전용 플라스틱 바구니 배정 (0.112 CBM)" },
+                { boxType: "아이스박스", count: "2개", reason: "[냉장고 음식물] 냉장/냉동 식재료 부패 방지를 위해 전용 아이스박스 보냉 포장 (0.12 CBM)" },
+                { boxType: "옷박스", count: "2개", reason: "[옷장/행거] 구겨지면 안 되는 롱코트, 정장 등 걸어두는 외투 전담 (장롱 1통당 1~2개로 엄격 제한 산출)" },
+                { boxType: "중박스", count: "4개", reason: "[서랍장 접힌 옷/잡화] 파손이나 누수 위험이 없는 생활 잡화 및 서랍장에 뉘어둔 접힌 옷 분할 포장 (0.116 CBM)" },
+                { boxType: "이불박스", count: "1개", reason: "[침실/이불칸] 부피가 큰 겨울 이불 및 차렵이불 꽉 채워 수납 (0.27 CBM)" },
+                { boxType: "대박스", count: "2개", reason: "[거실/아이방] 컴퓨터 본체/모니터 및 대형 오븐, 특대형 장난감 전담 (0.158 CBM)" }
             ],
-            advice: "10자 장롱 평균 수납 짐 분석 및 모니터·오븐·대형장난감 대박스 배정이 반영된 정밀 CBM이 적용되었습니다."
+            advice: "액체가 샐 수 있는 양념류와 주방 식기류가 안전한 바구니로 정밀하게 분할 배정되었습니다."
         };
 
-        const analyzeBtn = document.getElementById('analyze-btn');
-        const loadingState = document.getElementById('loading-state');
-        const resultsSection = document.getElementById('results-section');
-
-        const truckCbmLimitInput = document.getElementById('setting-truck-cbm-limit');
-        const truckCostInput = document.getElementById('setting-truck-cost');
-        const manWageInput = document.getElementById('setting-man-wage');
-        const womanWageInput = document.getElementById('setting-woman-wage');
-
-        const manualTruckCountInput = document.getElementById('manual-truck-count');
-        const manualManCountInput = document.getElementById('manual-man-count');
-        const manualWomanCountInput = document.getElementById('manual-woman-count');
-
-        const checkLadderLoad = document.getElementById('check-ladder-load');
-        const checkLadderUnload = document.getElementById('check-ladder-unload');
-        const checkLadderLoadOwner = document.getElementById('check-ladder-load-owner');
-        const checkLadderUnloadOwner = document.getElementById('check-ladder-unload-owner');
-        const checkElevator = document.getElementById('check-elevator');
-        const checkStairs = document.getElementById('check-stairs');
-        const inputLadderCostLoad = document.getElementById('input-ladder-cost-load');
-        const inputLadderCostUnload = document.getElementById('input-ladder-cost-unload');
-        const inputStairsFloor = document.getElementById('input-stairs-floor');
-
-        [
-            truckCbmLimitInput, truckCostInput, manWageInput, womanWageInput, 
-            manualTruckCountInput, manualManCountInput, manualWomanCountInput, 
-            checkLadderLoad, checkLadderUnload, checkLadderLoadOwner, checkLadderUnloadOwner, checkElevator, checkStairs, inputLadderCostLoad, inputLadderCostUnload, inputStairsFloor
-        ].forEach(input => {
-            if (input) {
-                input.addEventListener('input', () => recalculateTotals(false));
-                input.addEventListener('change', () => recalculateTotals(false));
-            }
+        const setupInputs = ['setting-truck-cbm-limit', 'setting-truck-cost', 'setting-man-wage', 'setting-woman-wage', 'manual-truck-count', 'manual-man-count', 'manual-woman-count', 'check-ladder-load', 'check-ladder-unload', 'check-ladder-load-owner', 'check-ladder-unload-owner', 'check-elevator', 'check-stairs', 'input-ladder-cost-load', 'input-ladder-cost-unload', 'input-stairs-floor', 'check-ac-demount', 'input-ac-demount-cost', 'check-tv-extra', 'input-tv-extra-cost', 'check-special-work', 'input-special-work-desc', 'input-special-work-cost'];
+        setupInputs.forEach(id => {
+            const el = document.getElementById(id);
+            if(el) { el.addEventListener('input', () => recalculateTotals(false)); el.addEventListener('change', () => recalculateTotals(false)); }
         });
 
         window.resetAllData = function() {
             spaces.forEach(s => s.images = []);
-            currentAnalysisData = {
-                appliances: [],
-                furniture: [],
-                clutterAndBoxes: [],
-                clutterReasons: [],
-                advice: "초기화되었습니다."
-            };
-            renderSpaces();
-            recalculateTotals(true);
+            currentAnalysisData = { appliances: [], furniture: [], clutterAndBoxes: [], clutterReasons: [], advice: "초기화되었습니다." };
+            renderSpaces(); recalculateTotals(true);
         };
 
         function renderSpaces() {
             const container = document.getElementById('spaces-container');
-            if (!container) return;
             container.innerHTML = '';
-
             spaces.forEach(space => {
                 const spaceDiv = document.createElement('div');
                 spaceDiv.className = 'bg-slate-50 p-3.5 rounded-xl border border-slate-200 space-y-2';
-
                 let imagesHtml = '';
                 space.images.forEach((img, idx) => {
-                    imagesHtml += `
-                        <div class="relative group aspect-square rounded-lg overflow-hidden border border-slate-200 bg-white">
-                            <img src="${img.previewUrl}" class="w-full h-full object-cover">
-                            <button onclick="removeImage('${space.id}', ${idx})" class="absolute top-1 right-1 bg-rose-600 text-white rounded-full p-1 opacity-80 hover:opacity-100 transition-opacity cursor-pointer">
-                                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-                            </button>
-                        </div>
-                    `;
+                    imagesHtml += `<div class="relative group aspect-square rounded-lg overflow-hidden border border-slate-200 bg-white">
+                        <img src="${img.previewUrl}" class="w-full h-full object-cover">
+                        <button onclick="removeImage('${space.id}', ${idx})" class="absolute top-1 right-1 bg-rose-600 text-white rounded-full p-1 opacity-80 hover:opacity-100 transition-opacity cursor-pointer">
+                            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                        </button></div>`;
                 });
-
-                spaceDiv.innerHTML = `
-                    <div class="flex items-center justify-between">
-                        <span class="text-xs font-bold text-slate-800 flex items-center space-x-1.5">
-                            <span class="w-2 h-2 rounded-full bg-indigo-500"></span>
-                            <span>${space.name}</span>
-                            <span class="text-[10px] text-slate-400">(${space.images.length}장)</span>
-                        </span>
-                        <div class="flex items-center space-x-2">
-                            <label class="bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-semibold px-2 py-1 rounded transition-colors text-[11px] cursor-pointer">
-                                사진추가
-                                <input type="file" multiple accept="image/*" class="hidden" onchange="handleSpaceImageUpload('${space.id}', event)">
-                            </label>
-                            <button type="button" onclick="removeSpace('${space.id}')" class="text-slate-400 hover:text-rose-600 transition-colors p-1 cursor-pointer" title="공간 삭제"><svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg></button>
-                        </div>
-                    </div>
-                    ${space.images.length > 0 ? `<div class="grid grid-cols-4 gap-2 pt-1">${imagesHtml}</div>` : `<div class="text-[11px] text-slate-400 italic py-1">등록된 사진 없음</div>`}
-                `;
+                spaceDiv.innerHTML = `<div class="flex items-center justify-between">
+                    <span class="text-xs font-bold text-slate-800 flex items-center space-x-1.5"><span class="w-2 h-2 rounded-full bg-indigo-500"></span><span>${space.name}</span><span class="text-[10px] text-slate-400">(${space.images.length}장)</span></span>
+                    <div class="flex items-center space-x-2">
+                        <label class="bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-semibold px-2 py-1 rounded transition-colors text-[11px] cursor-pointer">사진추가
+                            <input type="file" multiple accept="image/*" class="hidden" onchange="handleSpaceImageUpload('${space.id}', event)"></label>
+                        <button type="button" onclick="removeSpace('${space.id}')" class="text-slate-400 hover:text-rose-600 transition-colors p-1 cursor-pointer"><svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg></button>
+                    </div></div>
+                    ${space.images.length > 0 ? `<div class="grid grid-cols-4 gap-2 pt-1">${imagesHtml}</div>` : `<div class="text-[11px] text-slate-400 italic py-1">등록된 사진 없음</div>`}`;
                 container.appendChild(spaceDiv);
             });
-            checkAnalyzeButtonState();
+            document.getElementById('analyze-btn').disabled = spaces.reduce((acc, s) => acc + s.images.length, 0) === 0;
         }
 
         window.openAddSpaceModal = function() {
@@ -946,579 +975,257 @@
             document.getElementById('new-space-name').classList.add('hidden');
             document.getElementById('add-space-modal').classList.remove('hidden');
         };
-
-        window.closeAddSpaceModal = function() {
-            document.getElementById('add-space-modal').classList.add('hidden');
-        };
-
+        window.closeAddSpaceModal = function() { document.getElementById('add-space-modal').classList.add('hidden'); };
+        
+        // v4.5 BUG FIX: 문법 오류('액') 제거 완료. 이제 동작합니다.
         window.onSpaceSelectChange = function(val) {
             const nameInput = document.getElementById('new-space-name');
-            if (val === '직접입력') {
-                nameInput.classList.remove('hidden');
-                nameInput.value = '';
-                nameInput.focus();
-            } else {
-                nameInput.classList.add('hidden');
+            if (val === '직접입력') { 
+                nameInput.classList.remove('hidden'); 
+                nameInput.focus(); 
+            } else { 
+                nameInput.classList.add('hidden'); 
             }
         };
-
+        
         window.confirmAddSpace = function() {
-            const selectEl = document.getElementById('new-space-select');
-            const nameInput = document.getElementById('new-space-name');
-            let spaceName = selectEl.value;
-
+            let spaceName = document.getElementById('new-space-select').value;
             if (spaceName === '직접입력') {
-                spaceName = nameInput.value.trim();
-                if (!spaceName) {
-                    showModal("입력 오류", "공간 이름을 입력해주세요.");
-                    return;
-                }
+                spaceName = document.getElementById('new-space-name').value.trim();
+                if (!spaceName) return showModal("입력 오류", "공간 이름을 입력해주세요.");
             }
-
-            if (spaces.some(s => s.name === spaceName)) {
-                showModal("중복 안내", "이미 존재하는 공간 이름입니다.");
-                return;
-            }
-
-            spaces.push({
-                id: 'space_' + Date.now(),
-                name: spaceName,
-                images: []
-            });
-
-            closeAddSpaceModal();
-            renderSpaces();
+            if (spaces.some(s => s.name === spaceName)) return showModal("중복", "이미 존재하는 공간입니다.");
+            spaces.push({ id: 'space_' + Date.now(), name: spaceName, images: [] });
+            closeAddSpaceModal(); renderSpaces();
         };
+        window.removeSpace = function(spaceId) { spaces = spaces.filter(s => s.id !== spaceId); renderSpaces(); };
 
-        window.removeSpace = function(spaceId) {
-            spaces = spaces.filter(s => s.id !== spaceId);
-            renderSpaces();
-        };
-
-        function compressImage(file, maxWidth = 800, maxHeight = 800, quality = 0.7) {
+        function compressImage(file, maxWidth = 800, maxHeight = 800, quality = 0.8) {
             return new Promise((resolve) => {
-                const reader = new FileReader();
-                reader.readAsDataURL(file);
+                const reader = new FileReader(); reader.readAsDataURL(file);
                 reader.onload = (event) => {
-                    const img = new Image();
-                    img.src = event.target.result;
+                    const img = new Image(); img.src = event.target.result;
                     img.onload = () => {
-                        let width = img.width;
-                        let height = img.height;
-
-                        if (width > height) {
-                            if (width > maxWidth) {
-                                height = Math.round((height * maxWidth) / width);
-                                width = maxWidth;
-                            }
-                        } else {
-                            if (height > maxHeight) {
-                                width = Math.round((width * maxHeight) / height);
-                                height = maxHeight;
-                            }
-                        }
-
-                        const canvas = document.createElement('canvas');
-                        canvas.width = width;
-                        canvas.height = height;
-                        const ctx = canvas.getContext('2d');
-                        ctx.drawImage(img, 0, 0, width, height);
-
+                        let width = img.width, height = img.height;
+                        if (width > height) { if (width > maxWidth) { height = Math.round((height * maxWidth) / width); width = maxWidth; } } 
+                        else { if (height > maxHeight) { width = Math.round((width * maxHeight) / height); height = maxHeight; } }
+                        const canvas = document.createElement('canvas'); canvas.width = width; canvas.height = height;
+                        const ctx = canvas.getContext('2d'); ctx.drawImage(img, 0, 0, width, height);
                         const dataUrl = canvas.toDataURL('image/jpeg', quality);
-                        const base64Data = dataUrl.split(',')[1];
-                        resolve({
-                            base64: base64Data,
-                            previewUrl: dataUrl,
-                            mimeType: 'image/jpeg'
-                        });
-                    };
-                    img.onerror = () => {
-                        const base64Full = event.target.result;
-                        const base64Data = base64Full.includes(',') ? base64Full.split(',')[1] : base64Full;
-                        resolve({
-                            base64: base64Data,
-                            previewUrl: base64Full,
-                            mimeType: file.type || 'image/jpeg'
-                        });
+                        resolve({ base64: dataUrl.split(',')[1], previewUrl: dataUrl, mimeType: 'image/jpeg' });
                     };
                 };
             });
         }
-
         window.handleSpaceImageUpload = async function(spaceId, event) {
             const files = Array.from(event.target.files);
-            if (files.length === 0) return;
-
             const space = spaces.find(s => s.id === spaceId);
-            if (!space) return;
-
+            if (!space || files.length === 0) return;
             for (const file of files) {
-                try {
-                    const compressed = await compressImage(file);
-                    space.images.push({
-                        data: compressed.base64,
-                        mimeType: compressed.mimeType,
-                        previewUrl: compressed.previewUrl
-                    });
-                } catch (err) {
-                    console.error('Image compression error:', err);
-                }
+                const compressed = await compressImage(file);
+                space.images.push({ data: compressed.base64, mimeType: compressed.mimeType, previewUrl: compressed.previewUrl });
             }
-            event.target.value = '';
-            renderSpaces();
+            event.target.value = ''; renderSpaces();
         };
-
         window.removeImage = function(spaceId, imgIndex) {
             const space = spaces.find(s => s.id === spaceId);
-            if (space) {
-                space.images.splice(imgIndex, 1);
-                renderSpaces();
-            }
+            if (space) { space.images.splice(imgIndex, 1); renderSpaces(); }
         };
 
-        function checkAnalyzeButtonState() {
-            const totalImages = spaces.reduce((acc, s) => acc + s.images.length, 0);
-            if (analyzeBtn) analyzeBtn.disabled = totalImages === 0;
-        }
+        document.getElementById('analyze-btn').addEventListener('click', async () => {
+            const apiKey = localStorage.getItem('gemini_custom_api_key') || "";
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${apiKey}`;
 
-        if (analyzeBtn) {
-            analyzeBtn.addEventListener('click', async () => {
-                const totalImages = spaces.reduce((acc, s) => acc + s.images.length, 0);
-                if (totalImages === 0) return;
+            document.getElementById('loading-state').classList.remove('hidden');
+            document.getElementById('results-section').classList.add('opacity-50');
+            document.getElementById('analyze-btn').disabled = true;
 
-                const customKey = localStorage.getItem('gemini_custom_api_key') || "";
-                const apiKey = customKey;
-                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${apiKey}`;
-
-                if (loadingState) loadingState.classList.remove('hidden');
-                if (resultsSection) resultsSection.classList.add('opacity-50');
-                analyzeBtn.disabled = true;
-
-                const systemPrompt = `You are an elite Korean professional moving estimator (이사화물 공인 견적사) with advanced computer vision expertise.
-Analyze all provided space photos with extreme technical precision and high recognition sensitivity.
-
-CRITICAL INSTRUCTIONS FOR RECOGNITION & WARDROBE/STORAGE INFERENCE:
-1. Detect ALL visible appliances, furniture, and clutter items with extreme clarity. Do not miss small or dimly lit items.
-2. WARDROBE & STORAGE INFERENCE (장롱/수납장 추론 지침):
-   - If a wardrobe (장롱) or storage unit is captured with closed doors, apply realistic statistical averages for a standard 10-foot wardrobe (10자 장롱): balanced distribution of clothing, bedding, and storage bins.
-   - If doors are open, inspect the visible hanging clothes and upper shelves directly.
-3. SPECIFIC BOX ASSIGNMENTS:
-   - '옷박스' (0.18 CBM): Wardrobe clothing and folded garments (balanced average for 10-foot wardrobe around 4-5 boxes).
-   - '이불박스' (0.27 CBM): Thick bedding and duvets on beds or top shelves.
-   - '대박스' (0.158 CBM): STRICTLY for computers, computer monitors, large ovens, and bulky children's toys/large plastic bins.
-   - '중박스' (0.116 CBM): General shelf items, toys, books, and medium clutter.
-   - '바구니' (0.112 CBM): Compact kitchen appliances (rice cooker, toaster, microwave), books, and fragile/breakable items.
-
-Return ONLY a pure JSON object structured as:
+            const systemPrompt = `You are an elite Korean moving estimator. Output JSON exactly matching:
 {
   "appliances": [{"name": "string", "cbm": number, "count": number}],
   "furniture": [{"name": "string", "cbm": number, "count": number}],
   "clutterAndBoxes": [{"name": "string", "cbm": number, "count": number}],
   "clutterReasons": [{"boxType": "string", "count": "string", "reason": "string"}],
   "advice": "string"
-}`;
+}
 
-                const userParts = [
-                    { text: "등록된 모든 공간별 사진을 고정밀 비전 AI로 정밀 분석하여 가전, 가구 CBM을 산출하고, 장롱/수납장 내부 수납짐(옷/이불/중박스)을 현실적으로 추론하여 JSON으로 출력해주세요." }
-                ];
+1. CLUTTER/BOX RULES (CRITICAL):
+- '아이스박스' (0.12 CBM): MUST add 2~4 for refrigerators (cold food).
+- '바구니' (0.112 CBM): ALL LEAKABLE LIQUIDS (간장/식용유/세제 등 실온 양념류) MUST go in baskets, NEVER boxes. Also fragile dishes. Kitchen needs 6~10 baskets.
+- '옷박스' (0.18 CBM): ONLY for hanging coats/suits. Max 1-2 per wardrobe.
+- '중박스' (0.116 CBM): Folded clothes (티셔츠/바지/니트) in drawers, non-fragile items.
+- '이불박스' (0.27 CBM): Heavy winter bedding (1-2 per bedroom).
+- '대박스' (0.158 CBM): Computers, monitors, ovens, large toys.
 
-                spaces.forEach(space => {
-                    space.images.forEach(img => {
-                        userParts.push({ text: `[공간: ${space.name}]` });
-                        userParts.push({
-                            inlineData: {
-                                mimeType: img.mimeType,
-                                data: img.data
-                            }
-                        });
-                    });
+2. CBM BENCHMARKS:
+- 장롱 1통: 1.25, 퀸침대: 1.6, 킹침대: 1.9, 서랍장 5단: 0.5, 3단: 0.3
+- 양문형 냉장고: 1.5, 드럼세탁기: 0.55, 워시타워: 1.1, 에어컨(스탠드): 0.5, TV(65): 0.35, 4인 식탁세트: 1.2`;
+
+            const userParts = [{ text: "모든 공간 사진 정밀 분석. 액체류/양념/세제는 종이박스 금지, 무조건 플라스틱 바구니 배정. 옷박스는 최소화하고 접힌 옷은 중박스로. JSON 출력" }];
+            spaces.forEach(s => s.images.forEach(img => {
+                userParts.push({ text: `[공간: ${s.name}]` });
+                userParts.push({ inlineData: { mimeType: img.mimeType, data: img.data } });
+            }));
+
+            let success = false, resultJson = null;
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), 35000);
+
+            try {
+                const response = await fetch(apiUrl, {
+                    method: 'POST', headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        contents: [{ role: "user", parts: userParts }],
+                        systemInstruction: { parts: [{ text: systemPrompt }] },
+                        generationConfig: { responseMimeType: "application/json", temperature: 0.1 }
+                    }), signal: controller.signal
                 });
+                clearTimeout(timeoutId);
+                const result = await response.json();
+                let rawText = result.candidates[0].content.parts[0].text;
+                rawText = rawText.replace(/^```json\s*/i, '').replace(/^```\s*/i, '').replace(/\s*```$/, '').trim();
+                resultJson = JSON.parse(rawText);
+                success = true;
+            } catch (err) { console.warn('API error:', err); }
 
-                const payload = {
-                    contents: [{ role: "user", parts: userParts }],
-                    systemInstruction: { parts: [{ text: systemPrompt }] },
-                    generationConfig: {
-                        responseMimeType: "application/json",
-                        temperature: 0.1
-                    }
-                };
+            document.getElementById('loading-state').classList.add('hidden');
+            document.getElementById('results-section').classList.remove('opacity-50');
+            document.getElementById('analyze-btn').disabled = false;
 
-                let success = false;
-                let resultJson = null;
-
-                const controller = new AbortController();
-                const timeoutId = setTimeout(() => controller.abort(), 35000);
-
-                try {
-                    const response = await fetch(apiUrl, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(payload),
-                        signal: controller.signal
-                    });
-                    clearTimeout(timeoutId);
-
-                    if (!response.ok) {
-                        throw new Error(`HTTP error! status: ${response.status}`);
-                    }
-
-                    const result = await response.json();
-                    const candidate = result.candidates?.[0];
-                    if (candidate && candidate.content?.parts?.[0]?.text) {
-                        let rawText = candidate.content.parts[0].text;
-                        rawText = rawText.replace(/^```json\s*/i, '').replace(/^```\s*/i, '').replace(/\s*```$/, '').trim();
-                        resultJson = JSON.parse(rawText);
-                        success = true;
-                    } else {
-                        throw new Error("Invalid response structure");
-                    }
-                } catch (err) {
-                    console.warn('AI analysis request failed or timed out:', err);
-                }
-
-                if (loadingState) loadingState.classList.add('hidden');
-                if (resultsSection) resultsSection.classList.remove('opacity-50');
-                analyzeBtn.disabled = false;
-
-                if (success && resultJson) {
-                    const sanitizeAppliancesOrFurniture = (items, defaultCbm) => {
-                        if (!Array.isArray(items)) return [];
-                        return items.map(item => {
-                            let itemName = item.name || "품목";
-                            let cbmVal = parseFloat(item.cbm);
-                            if (isNaN(cbmVal) || cbmVal <= 0) {
-                                const matchedKey = Object.keys(STANDARD_CBM_BENCHMARKS).find(k => itemName.includes(k));
-                                cbmVal = matchedKey ? STANDARD_CBM_BENCHMARKS[matchedKey] : defaultCbm;
-                            }
-                            return {
-                                name: itemName,
-                                cbm: Math.round(cbmVal * 1000) / 1000,
-                                count: parseInt(item.count, 10) || 1
-                            };
-                        });
-                    };
-
-                    const sanitizeBoxes = (items) => {
-                        if (!Array.isArray(items)) return [];
-                        return items.map(item => {
-                            let rawName = item.name || "바구니";
-                            let cleanName = getCleanItemName(rawName);
-                            let cbmVal = getStrictBoxCbm(cleanName) || 0.112;
-                            let countVal = parseInt(item.count, 10) || 1;
-
-                            return {
-                                name: cleanName,
-                                cbm: cbmVal,
-                                count: countVal
-                            };
-                        });
-                    };
-
-                    currentAnalysisData.appliances = sanitizeAppliancesOrFurniture(resultJson.appliances, 1.0);
-                    currentAnalysisData.furniture = sanitizeAppliancesOrFurniture(resultJson.furniture, 1.5);
-                    currentAnalysisData.clutterAndBoxes = sanitizeBoxes(resultJson.clutterAndBoxes);
-                    currentAnalysisData.clutterReasons = resultJson.clutterReasons || [];
-                    currentAnalysisData.advice = resultJson.advice || "고정밀 비전 AI 분석 및 장롱 내부 평균 짐 추정치가 반영되었습니다.";
-                    
-                    recalculateTotals(true);
-                    
-                    const kitchenDetected = spaces.some(s => (s.name.includes('주방') || s.id === 'kitchen') && s.images.length > 0);
-                    const voiceNotice = kitchenDetected 
-                        ? "갑봉이 이사 고정밀 판독이 완료되었습니다. 주방 공간이 확인되어 주방 포장 여성 인원 1명이 자동 추가되었습니다."
-                        : "갑봉이 이사 고정밀 판독이 완료되었습니다. 장롱 및 부피짐 분석이 반영되었습니다.";
-                    speakMessage(voiceNotice);
-                } else {
-                    showModal("분석 안내", "멀티 공간 판독 중 요청 용량이 초과되었거나 응답이 지연되었습니다. 네트워크 상태를 확인하시거나 API 키 설정을 확인해주세요.");
-                    speakMessage("이사 사진 판독 중 오류가 발생했습니다. 다시 시도해 주세요.");
-                }
-            });
-        }
-
-        function displayResults(totalCbm, truckCount, totalCost, data) {
-            const cbmEl = document.getElementById('res-cbm');
-            const percentageEl = document.getElementById('res-percentage');
-            const progressBarEl = document.getElementById('volume-progress-bar');
-            const truckRemainingDescEl = document.getElementById('truck-remaining-desc');
-            const truckIconsContainerEl = document.getElementById('truck-icons-container');
-            const costEl = document.getElementById('res-cost');
-            const adviceEl = document.getElementById('res-advice');
-
-            if (cbmEl) cbmEl.innerText = `${totalCbm} CBM`;
-            if (costEl) costEl.innerText = `${totalCost.toLocaleString()}원`;
-            if (adviceEl) adviceEl.innerText = data.advice;
-
-            const capacityPerTruck = truckCbmLimitInput ? parseFloat(truckCbmLimitInput.value) || 10 : 10;
-            const totalTrucksNeeded = totalCbm === 0 ? 1 : Math.ceil(totalCbm / capacityPerTruck);
-            const totalCapacity = totalTrucksNeeded * capacityPerTruck;
-            const percentage = totalCapacity > 0 ? Math.min(100, Math.round((totalCbm / totalCapacity) * 100)) : 0;
-            
-            if (percentageEl) percentageEl.innerText = `${percentage}% (트럭기준)`;
-            if (progressBarEl) progressBarEl.style.width = `${percentage}%`;
-
-            const currentTruckRemainder = ((capacityPerTruck - (totalCbm % capacityPerTruck)) % capacityPerTruck).toFixed(2);
-            if (truckRemainingDescEl) {
-                if (totalCbm === 0) {
-                    truckRemainingDescEl.innerText = `남은 용량: ${capacityPerTruck} CBM`;
-                } else if (currentTruckRemainder == 0) {
-                    truckRemainingDescEl.innerText = `현재 트럭 꽉 참 (여유 0 CBM)`;
-                } else {
-                    truckRemainingDescEl.innerText = `현재 트럭 잔여: ${currentTruckRemainder} CBM`;
-                }
+            if (success && resultJson) {
+                currentAnalysisData.appliances = (resultJson.appliances || []).map(i => ({name: i.name, cbm: parseFloat(i.cbm)||0.5, count: parseInt(i.count)||1}));
+                currentAnalysisData.furniture = (resultJson.furniture || []).map(i => ({name: i.name, cbm: parseFloat(i.cbm)||1.0, count: parseInt(i.count)||1}));
+                currentAnalysisData.clutterAndBoxes = (resultJson.clutterAndBoxes || []).map(i => {
+                    let cn = getCleanItemName(i.name); return {name: cn, cbm: getStrictBoxCbm(cn)||0.112, count: parseInt(i.count)||1};
+                });
+                currentAnalysisData.clutterReasons = resultJson.clutterReasons || [];
+                currentAnalysisData.advice = resultJson.advice || "분석 완료";
+                recalculateTotals(true); playDingDong();
+            } else {
+                showModal("분석 지연", "데이터 처리 중 시간이 초과되었거나 API 응답 오류가 발생했습니다. 다시 시도해주세요.");
+                playDingDong();
             }
-
-            if (truckIconsContainerEl) {
-                truckIconsContainerEl.innerHTML = '';
-                for (let i = 0; i < totalTrucksNeeded; i++) {
-                    const truckSpan = document.createElement('span');
-                    truckSpan.className = 'inline-flex items-center space-x-0.5 bg-indigo-50 border border-indigo-200 text-indigo-700 px-1.5 py-0.5 rounded text-[10px] font-bold';
-                    truckSpan.innerHTML = `🚚 ${i + 1}트럭`;
-                    truckIconsContainerEl.appendChild(truckSpan);
-                }
-            }
-
-            const sumCat = (arr) => Math.round((arr || []).reduce((acc, it) => {
-                let strictCbm = getStrictBoxCbm(it.name);
-                let cbmVal = strictCbm !== null ? strictCbm : (parseFloat(it.cbm) || 0);
-                return acc + (cbmVal * (parseInt(it.count, 10) || 1));
-            }, 0) * 1000) / 1000;
-
-            const bApp = document.getElementById('badge-appliances-cbm');
-            const bFurn = document.getElementById('badge-furniture-cbm');
-            const bClut = document.getElementById('badge-clutter-cbm');
-            if (bApp) bApp.innerText = `${sumCat(data.appliances)} CBM`;
-            if (bFurn) bFurn.innerText = `${sumCat(data.furniture)} CBM`;
-            if (bClut) bClut.innerText = `${sumCat(data.clutterAndBoxes)} CBM`;
-
-            populateList('list-appliances', data.appliances, 'appliances');
-            populateList('list-furniture', data.furniture, 'furniture');
-            populateList('list-boxes', data.clutterAndBoxes, 'clutterAndBoxes');
-            renderClutterReasons(data.clutterReasons);
-        }
-
-        function renderClutterReasons(reasons) {
-            const container = document.getElementById('list-clutter-reasons');
-            if (!container) return;
-            container.innerHTML = '';
-            if (!reasons || reasons.length === 0) {
-                container.innerHTML = '<li class="text-amber-700/70 italic text-xs">등록된 잔짐 정밀 산출 근거가 없습니다.</li>';
-                return;
-            }
-            reasons.forEach(item => {
-                const li = document.createElement('li');
-                li.className = 'flex flex-col sm:flex-row sm:items-baseline gap-1.5 bg-white p-2.5 rounded-lg border border-amber-200 shadow-sm';
-                li.innerHTML = `
-                    <div class="flex items-center space-x-1.5 shrink-0">
-                        <span class="inline-block px-2 py-0.5 bg-amber-200 text-amber-900 rounded font-bold text-[11px]">${item.boxType || '박스'} ${item.count ? `(${item.count})` : ''}</span>
-                    </div>
-                    <p class="text-slate-700 text-xs leading-relaxed"><span class="font-semibold text-amber-900">산출 이유:</span> ${item.reason || '물품 분할 포장 및 공간 적재'}</p>
-                `;
-                container.appendChild(li);
-            });
-        }
+        });
 
         function populateList(elementId, items, categoryKey) {
             const ul = document.getElementById(elementId);
-            if (!ul) return;
-            ul.innerHTML = '';
-            if (!items || items.length === 0) {
-                ul.innerHTML = `<li class="text-slate-400 italic text-xs">등록된 품목 없음</li>`;
-                return;
-            }
-            items.forEach((item, index) => {
+            ul.innerHTML = items.length ? '' : `<li class="text-slate-400 italic text-xs">등록된 품목 없음</li>`;
+            items.forEach((item, idx) => {
+                let name = categoryKey === 'clutterAndBoxes' ? getCleanItemName(item.name) : item.name;
+                let cbm = categoryKey === 'clutterAndBoxes' ? getStrictBoxCbm(name) : item.cbm;
+                let tot = Math.round(cbm * item.count * 1000)/1000;
+                
                 const li = document.createElement('li');
                 li.className = 'flex items-start justify-between bg-white p-2.5 rounded-lg border border-slate-200 shadow-sm hover:border-indigo-200 transition-colors gap-2';
-                
-                let itemName = categoryKey === 'clutterAndBoxes' ? getCleanItemName(item.name) : (item.name || "");
-                let strictCbm = getStrictBoxCbm(itemName);
-                let itemCbm = strictCbm !== null ? strictCbm : (parseFloat(item.cbm) || 0);
-
-                const itemCount = parseInt(item.count, 10) || 1;
-                const totalItemCbm = Math.round((itemCbm * itemCount) * 1000) / 1000;
-                
                 li.innerHTML = `
                     <div class="flex items-start space-x-1.5 min-w-0 flex-1">
                         <span class="w-1.5 h-1.5 rounded-full bg-indigo-600 mt-1.5 shrink-0"></span>
                         <div class="flex flex-wrap items-baseline gap-x-1.5 gap-y-0.5 min-w-0">
-                            <span class="text-sm font-bold text-slate-900 break-keep leading-snug">${itemName}</span>
-                            <span class="text-[10px] text-slate-400 font-normal bg-slate-100 px-1 py-0.2 rounded shrink-0">${totalItemCbm}m³</span>
+                            <span class="text-sm font-bold text-slate-900 break-keep leading-snug">${name}</span>
+                            <span class="text-[10px] text-slate-400 bg-slate-100 px-1 py-0.5 rounded shrink-0">${tot}m³</span>
                         </div>
                     </div>
                     <div class="flex items-center space-x-1 shrink-0 self-center">
-                        <button type="button" onclick="adjustItemCount('${categoryKey}', ${index}, -1)" class="w-5 h-5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded font-bold flex items-center justify-center cursor-pointer text-xs active:bg-slate-300">-</button>
-                        <span class="w-5 text-center font-bold text-indigo-700 text-xs">${itemCount}</span>
-                        <button type="button" onclick="adjustItemCount('${categoryKey}', ${index}, 1)" class="w-5 h-5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded font-bold flex items-center justify-center cursor-pointer text-xs active:bg-slate-300">+</button>
-                        <button type="button" onclick="removeItem('${categoryKey}', ${index})" class="text-slate-300 hover:text-rose-600 transition-colors ml-1 p-0.5 cursor-pointer" title="품목 삭제">
-                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                            </svg>
-                        </button>
-                    </div>
-                `;
+                        <button type="button" onclick="adjustItemCount('${categoryKey}', ${idx}, -1)" class="w-5 h-5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded font-bold text-xs">-</button>
+                        <span class="w-5 text-center font-bold text-indigo-700 text-xs">${item.count}</span>
+                        <button type="button" onclick="adjustItemCount('${categoryKey}', ${idx}, 1)" class="w-5 h-5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded font-bold text-xs">+</button>
+                        <button type="button" onclick="removeItem('${categoryKey}', ${idx})" class="text-slate-300 hover:text-rose-600 ml-1 p-0.5"><svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg></button>
+                    </div>`;
                 ul.appendChild(li);
             });
         }
-
-        window.adjustItemCount = function(categoryKey, index, amount) {
-            if (currentAnalysisData[categoryKey] && currentAnalysisData[categoryKey][index]) {
-                currentAnalysisData[categoryKey][index].count = (parseInt(currentAnalysisData[categoryKey][index].count, 10) || 1) + amount;
-                if (currentAnalysisData[categoryKey][index].count < 1) {
-                    currentAnalysisData[categoryKey][index].count = 1;
-                }
-                recalculateTotals(false);
-            }
-        };
-
-        window.removeItem = function(categoryKey, index) {
-            if (currentAnalysisData[categoryKey]) {
-                currentAnalysisData[categoryKey].splice(index, 1);
-                recalculateTotals(false);
-            }
-        };
-
-        window.openAddItemModal = function() {
-            const nameInput = document.getElementById('new-item-name');
-            const cbmInput = document.getElementById('new-item-cbm');
-            const catSelect = document.getElementById('new-item-category');
-            if (nameInput) nameInput.value = '';
-            if (cbmInput) cbmInput.value = '0.116';
-            if (catSelect) catSelect.value = 'appliances';
-            document.getElementById('new-item-cbm-wrapper').style.display = 'block';
-            
-            catSelect.onchange = function() {
-                if (this.value === 'clutterAndBoxes') {
-                    document.getElementById('new-item-cbm-wrapper').style.display = 'none';
-                } else {
-                    document.getElementById('new-item-cbm-wrapper').style.display = 'block';
-                }
-            };
-
-            document.getElementById('add-item-modal').classList.remove('hidden');
-        };
-
-        window.closeAddItemModal = function() {
-            document.getElementById('add-item-modal').classList.add('hidden');
-        };
-
-        window.confirmAddItem = function() {
-            const categorySelect = document.getElementById('new-item-category');
-            const nameInput = document.getElementById('new-item-name');
-            const cbmInput = document.getElementById('new-item-cbm');
-            
-            if (!categorySelect || !nameInput || !cbmInput) return;
-
-            const category = categorySelect.value;
-            let name = nameInput.value.trim();
-            if (!name) {
-                showModal("입력 오류", "품목명을 입력해주세요.");
-                return;
-            }
-
-            let cbm = 0.112;
-            if (category === 'clutterAndBoxes') {
-                name = getCleanItemName(name);
-                cbm = getStrictBoxCbm(name) || 0.112;
-            } else {
-                cbm = parseFloat(cbmInput.value) || 1.0;
-            }
-
-            if (!currentAnalysisData[category]) {
-                currentAnalysisData[category] = [];
-            }
-
-            currentAnalysisData[category].push({
-                name: name,
-                cbm: Math.round(cbm * 1000) / 1000,
-                count: 1
-            });
-
-            closeAddItemModal();
+        window.adjustItemCount = function(c, i, amt) {
+            currentAnalysisData[c][i].count = Math.max(1, currentAnalysisData[c][i].count + amt);
             recalculateTotals(false);
         };
+        window.removeItem = function(c, i) { currentAnalysisData[c].splice(i, 1); recalculateTotals(false); };
 
-        window.adjustCount = function(elementId, amount) {
-            const el = document.getElementById(elementId);
-            if (!el) return;
-            let currentVal = parseInt(el.value, 10) || 0;
-            let newVal = currentVal + amount;
-            if (newVal < (el.min !== "" ? parseInt(el.min, 10) : 0)) {
-                newVal = el.min !== "" ? parseInt(el.min, 10) : 0;
-            }
-            el.value = newVal;
+        window.openAddItemModal = function() {
+            document.getElementById('new-item-name').value = '';
+            document.getElementById('add-item-modal').classList.remove('hidden');
+        };
+        window.closeAddItemModal = function() { document.getElementById('add-item-modal').classList.add('hidden'); };
+        window.confirmAddItem = function() {
+            const cat = document.getElementById('new-item-category').value;
+            let name = document.getElementById('new-item-name').value.trim();
+            if (!name) return showModal("오류", "품목명을 입력하세요.");
+            let cbm = cat === 'clutterAndBoxes' ? (getStrictBoxCbm(getCleanItemName(name)) || 0.112) : (parseFloat(document.getElementById('new-item-cbm').value) || 1.0);
+            if (cat === 'clutterAndBoxes') name = getCleanItemName(name);
+            currentAnalysisData[cat].push({ name, cbm, count: 1 });
+            closeAddItemModal(); recalculateTotals(false);
+        };
+        window.adjustCount = function(id, amt) {
+            const el = document.getElementById(id);
+            el.value = Math.max(0, parseInt(el.value||0) + amt);
             recalculateTotals(false);
         };
 
         window.recalculateTotals = function(updateManualInputs = false) {
             let totalCbmSum = 0;
-
-            const sumCbm = (arr, isBox = false) => {
-                if (!arr) return;
-                arr.forEach(item => {
-                    let itemName = isBox ? getCleanItemName(item.name) : item.name;
-                    let strictCbm = getStrictBoxCbm(itemName);
-                    let itemCbm = strictCbm !== null ? strictCbm : (parseFloat(item.cbm) || 0);
-                    const itemCount = parseInt(item.count, 10) || 1;
-                    totalCbmSum += itemCbm * itemCount;
+            ['appliances', 'furniture', 'clutterAndBoxes'].forEach(k => {
+                let catSum = 0;
+                currentAnalysisData[k].forEach(i => {
+                    let cbm = k==='clutterAndBoxes' ? getStrictBoxCbm(getCleanItemName(i.name)) : i.cbm;
+                    catSum += cbm * i.count;
                 });
-            };
-
-            sumCbm(currentAnalysisData.appliances, false);
-            sumCbm(currentAnalysisData.furniture, false);
-            sumCbm(currentAnalysisData.clutterAndBoxes, true);
-
+                totalCbmSum += catSum;
+                const badge = document.getElementById(`badge-${k === 'clutterAndBoxes' ? 'clutter' : k}-cbm`);
+                if (badge) badge.innerText = `${Math.round(catSum * 1000)/1000} CBM`;
+                populateList(`list-${k === 'clutterAndBoxes' ? 'boxes' : k}`, currentAnalysisData[k], k);
+            });
             totalCbmSum = Math.round(totalCbmSum * 1000) / 1000;
 
-            const truckLimit = truckCbmLimitInput ? parseFloat(truckCbmLimitInput.value) || 10 : 10;
-
-            const kitchenSpace = spaces.find(s => (s.name.includes('주방') || s.id === 'kitchen'));
-            const hasKitchenImages = kitchenSpace && kitchenSpace.images && kitchenSpace.images.length > 0;
-            const hasKitchenBaskets = (currentAnalysisData.clutterAndBoxes || []).some(b => b.name && b.name.includes('바구니'));
-            const isKitchenPresent = hasKitchenImages || hasKitchenBaskets;
-
+            const truckLimit = parseFloat(document.getElementById('setting-truck-cbm-limit').value) || 10;
+            const hasKitchenImages = spaces.some(s => s.name.includes('주방') && s.images.length > 0);
+            const hasKitchenBoxes = currentAnalysisData.clutterAndBoxes.some(b => b.name.includes('바구니') || b.name.includes('아이스박스'));
+            
             if (updateManualInputs) {
-                const calculatedTrucks = Math.max(1, Math.ceil(totalCbmSum / truckLimit));
-                if (manualTruckCountInput) manualTruckCountInput.value = calculatedTrucks;
-                if (manualManCountInput) manualManCountInput.value = calculatedTrucks >= 2 ? 2 : 1;
-                if (manualWomanCountInput) {
-                    manualWomanCountInput.value = isKitchenPresent ? 1 : 0;
-                }
+                const trucks = Math.max(1, Math.ceil(totalCbmSum / truckLimit));
+                document.getElementById('manual-truck-count').value = trucks;
+                document.getElementById('manual-man-count').value = trucks >= 2 ? 2 : 1;
+                document.getElementById('manual-woman-count').value = (hasKitchenImages || hasKitchenBoxes) ? 1 : 0;
             }
 
-            let truckCount = manualTruckCountInput ? parseInt(manualTruckCountInput.value, 10) : 0;
-            let manCount = manualManCountInput ? parseInt(manualManCountInput.value, 10) : 0;
-            let womanCount = manualWomanCountInput ? parseInt(manualWomanCountInput.value, 10) : 0;
+            const rContainer = document.getElementById('list-clutter-reasons');
+            rContainer.innerHTML = currentAnalysisData.clutterReasons.length ? '' : '<li class="text-amber-700/70 italic text-xs">산출 근거가 없습니다.</li>';
+            currentAnalysisData.clutterReasons.forEach(r => {
+                rContainer.innerHTML += `<li class="flex flex-col sm:flex-row sm:items-baseline gap-1.5 bg-white p-2.5 rounded-lg border border-amber-200 shadow-sm"><span class="px-2 py-0.5 bg-amber-200 text-amber-900 rounded font-bold text-[11px] shrink-0">${r.boxType} (${r.count})</span><p class="text-slate-700 text-xs leading-relaxed"><span class="font-semibold text-amber-900">사유:</span> ${r.reason}</p></li>`;
+            });
 
-            if (isNaN(truckCount)) truckCount = 0;
-            if (isNaN(manCount)) manCount = 0;
-            if (isNaN(womanCount)) womanCount = 0;
+            document.getElementById('res-cbm').innerText = `${totalCbmSum} CBM`;
+            document.getElementById('res-advice').innerText = currentAnalysisData.advice;
 
-            const truckUnitCost = truckCostInput ? parseFloat(truckCostInput.value) || 0 : 0;
-            const manWage = manWageInput ? parseFloat(manWageInput.value) || 0 : 0;
-            const womanWage = womanWageInput ? parseFloat(womanWageInput.value) || 0 : 0;
-
-            const isLadderLoadChecked = checkLadderLoad ? checkLadderLoad.checked : false;
-            const isLadderUnloadChecked = checkLadderUnload ? checkLadderUnload.checked : false;
-            const isLadderLoadOwner = checkLadderLoadOwner ? checkLadderLoadOwner.checked : false;
-            const isLadderUnloadOwner = checkLadderUnloadOwner ? checkLadderUnloadOwner.checked : false;
-            const isStairsChecked = checkStairs ? checkStairs.checked : false;
+            const truckCount = parseInt(document.getElementById('manual-truck-count').value)||0;
+            const manCount = parseInt(document.getElementById('manual-man-count').value)||0;
+            const womanCount = parseInt(document.getElementById('manual-woman-count').value)||0;
             
-            const ladderLoadCost = (isLadderLoadChecked && !isLadderLoadOwner && inputLadderCostLoad) ? parseFloat(inputLadderCostLoad.value) || 0 : 0;
-            const ladderUnloadCost = (isLadderUnloadChecked && !isLadderUnloadOwner && inputLadderCostUnload) ? parseFloat(inputLadderCostUnload.value) || 0 : 0;
-            const stairsFloor = inputStairsFloor ? parseInt(inputStairsFloor.value, 10) || 1 : 1;
-
-            const activeLadderCost = ladderLoadCost + ladderUnloadCost;
-            const activeStairsCost = isStairsChecked ? (stairsFloor * 30000) : 0;
-
-            const totalCost = (truckCount * truckUnitCost) + activeLadderCost + activeStairsCost + (manCount * manWage) + (womanCount * womanWage);
+            const totalCapacity = truckCount * truckLimit;
+            const percentage = totalCapacity > 0 ? Math.min(100, Math.round((totalCbmSum / totalCapacity) * 100)) : 0;
+            document.getElementById('res-percentage').innerText = `${percentage}%`;
+            document.getElementById('volume-progress-bar').style.width = `${percentage}%`;
+            document.getElementById('truck-remaining-desc').innerText = `남은 용량: ${totalCbmSum === 0 ? truckLimit : (totalCapacity - totalCbmSum).toFixed(2)} CBM`;
             
-            const kitchenAdviceText = isKitchenPresent ? " (주방 포장 전담 여성 인원 1명 자동 반영)" : "";
-            currentAnalysisData.advice = `산정된 총 부피(${totalCbmSum} CBM) 기준, 트럭 ${truckCount}대와 인력 [남자인부 ${manCount}명, 여성인부 ${womanCount}명]이 최적 반영되었습니다.${kitchenAdviceText}`;
+            const icontainer = document.getElementById('truck-icons-container'); icontainer.innerHTML='';
+            for(let i=0; i<Math.max(1, Math.ceil(totalCbmSum/truckLimit)); i++){
+                icontainer.innerHTML += `<span class="inline-flex items-center space-x-0.5 bg-indigo-50 border border-indigo-200 text-indigo-700 px-1.5 py-0.5 rounded text-[10px] font-bold">🚚 ${i+1}트럭</span>`;
+            }
 
-            displayResults(totalCbmSum, truckCount, totalCost, currentAnalysisData);
+            let extraCost = 0;
+            if(document.getElementById('check-ladder-load').checked && !document.getElementById('check-ladder-load-owner').checked) extraCost += parseFloat(document.getElementById('input-ladder-cost-load').value)||0;
+            if(document.getElementById('check-ladder-unload').checked && !document.getElementById('check-ladder-unload-owner').checked) extraCost += parseFloat(document.getElementById('input-ladder-cost-unload').value)||0;
+            if(document.getElementById('check-stairs').checked) extraCost += (parseInt(document.getElementById('input-stairs-floor').value)||1) * 30000;
+            if(document.getElementById('check-ac-demount').checked) extraCost += parseFloat(document.getElementById('input-ac-demount-cost').value)||0;
+            if(document.getElementById('check-tv-extra').checked) extraCost += parseFloat(document.getElementById('input-tv-extra-cost').value)||0;
+            if(document.getElementById('check-special-work').checked) extraCost += parseFloat(document.getElementById('input-special-work-cost').value)||0;
+
+            const tCost = (parseFloat(document.getElementById('setting-truck-cost').value)||0) * truckCount;
+            const mCost = (parseFloat(document.getElementById('setting-man-wage').value)||0) * manCount;
+            const wCost = (parseFloat(document.getElementById('setting-woman-wage').value)||0) * womanCount;
+            
+            document.getElementById('res-cost').innerText = `${(tCost + mCost + wCost + extraCost).toLocaleString()}원`;
         };
 
-        // Initialize display on load
-        renderSpaces();
-        recalculateTotals(true);
+        renderSpaces(); recalculateTotals(true);
     </script>
 </body>
 </html>
