@@ -9,7 +9,7 @@
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Pretendard', sans-serif; }
+        body { font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif; }
     </style>
 </head>
 <body class="bg-slate-50 text-slate-800 h-full flex flex-col">
@@ -23,16 +23,22 @@
                 </svg>
                 <div class="flex items-center space-x-2">
                     <h1 class="text-xl font-bold tracking-tight">갑봉이 AI 이사 견적</h1>
-                    <!-- Version v1.4: GitHub Pages API Key configuration support -->
-                    <span id="app-version-badge" class="text-xs bg-indigo-500 text-indigo-100 px-2 py-0.5 rounded-full font-semibold">v1.4</span>
+                    <!-- Version v3.8: Complete Parser Fix & Performance Optimization -->
+                    <span id="app-version-badge" class="text-xs bg-indigo-500 text-indigo-100 px-2 py-0.5 rounded-full font-semibold">v3.8</span>
                 </div>
             </div>
             <div class="flex items-center space-x-2">
-                <button onclick="openApiKeyModal()" class="bg-indigo-500 hover:bg-indigo-400 text-white text-xs px-3 py-1.5 rounded-xl font-semibold transition-colors flex items-center space-x-1 cursor-pointer">
+                <button onclick="openApiKeyModal()" class="bg-indigo-500/80 hover:bg-indigo-500 text-white px-3 py-1.5 rounded-xl text-xs font-semibold transition-colors flex items-center space-x-1 cursor-pointer">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"></path>
                     </svg>
                     <span>API 키 설정</span>
+                </button>
+                <button onclick="openSavedQuotesModal()" class="bg-indigo-700 hover:bg-indigo-800 text-white px-3 py-1.5 rounded-xl text-xs font-semibold transition-colors flex items-center space-x-1 cursor-pointer">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
+                    </svg>
+                    <span>저장된 견적함</span>
                 </button>
             </div>
         </div>
@@ -44,28 +50,36 @@
         <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
             <div class="flex items-center justify-between mb-2">
                 <h2 class="text-lg font-bold text-slate-900">공간별 스마트 셀프 이사 견적 판독기 📦</h2>
-                <button onclick="resetAllData()" class="bg-slate-100 hover:bg-rose-50 text-slate-600 hover:text-rose-600 px-3 py-1.5 rounded-xl text-xs font-semibold transition-colors flex items-center space-x-1 border border-slate-200 cursor-pointer">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
-                    </svg>
-                    <span>전체 초기화</span>
-                </button>
+                <div class="flex items-center space-x-2">
+                    <button onclick="openSaveQuoteModal()" class="bg-indigo-50 hover:bg-indigo-100 text-indigo-700 px-3 py-1.5 rounded-xl text-xs font-semibold transition-colors flex items-center space-x-1 border border-indigo-200 cursor-pointer">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"></path>
+                        </svg>
+                        <span>현재 견적 저장</span>
+                    </button>
+                    <button onclick="resetAllData()" class="bg-slate-100 hover:bg-rose-50 text-slate-600 hover:text-rose-600 px-3 py-1.5 rounded-xl text-xs font-semibold transition-colors flex items-center space-x-1 border border-slate-200 cursor-pointer">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                        </svg>
+                        <span>전체 초기화</span>
+                    </button>
+                </div>
             </div>
-            <p class="text-slate-600 text-sm mb-4">
-                거실, 안방, 주방, 베란다 등 공간별로 사진을 업로드하고 AI 분석을 통해 가전, 가구, 표준 잔짐(이불박스, 옷박스, 대/중박스, 바구니 등)을 정밀 판독해보세요.
+            <p class="text-slate-600 text-sm mb-3">
+                거실, 안방, 주방, 화장실 등 공간별 사진을 업로드하여 정밀 AI 판독을 진행하세요. <span class="text-indigo-600 font-semibold">💡 촬영 팁: 장롱이나 수납장은 가급적 문을 열고 촬영하시면 내부 수납짐(옷/이불) 인식 정확도가 훨씬 높아집니다!</span>
             </p>
             <div class="flex flex-wrap gap-2 text-xs text-indigo-700 bg-indigo-50 p-3 rounded-xl items-center justify-between">
                 <div class="flex flex-wrap gap-2 items-center">
-                    <span class="font-semibold">💡 잔짐 표준 규격:</span>
-                    <span>• 이불박스(~0.165CBM)</span>
-                    <span>• 옷박스(~0.12CBM)</span>
-                    <span>• 대박스(~0.15CBM)</span>
-                    <span>• 중박스(~0.1CBM)</span>
-                    <span>• 바구니(~0.1CBM)</span>
+                    <span class="font-semibold">📦 정밀 박스 및 바구니 규격 CBM:</span>
+                    <span>• 바구니(0.112)</span>
+                    <span>• 중박스(0.116)</span>
+                    <span>• 대박스(0.158)</span>
+                    <span>• 옷박스(0.18)</span>
+                    <span>• 이불박스(0.27)</span>
                 </div>
                 <div class="flex items-center space-x-2 bg-white px-3 py-1.5 rounded-lg border border-indigo-200">
-                    <span class="font-semibold text-slate-700">1톤 트럭 기준 CBM:</span>
-                    <input type="number" id="setting-truck-cbm-limit" value="7.5" step="0.5" min="1" class="w-16 border border-slate-300 rounded p-1 text-center font-bold text-indigo-600 focus:ring-2 focus:ring-indigo-500 focus:outline-none text-xs">
+                    <span class="font-semibold text-slate-700">트럭 기준 CBM:</span>
+                    <input type="number" id="setting-truck-cbm-limit" value="10" step="0.5" min="1" class="w-16 border border-slate-300 rounded p-1 text-center font-bold text-indigo-600 focus:ring-2 focus:ring-indigo-500 focus:outline-none text-xs">
                     <span class="font-semibold text-slate-700">CBM</span>
                 </div>
             </div>
@@ -90,7 +104,7 @@
                             <span>공간 추가</span>
                         </button>
                     </div>
-                    <p class="text-xs text-slate-500 mb-4">원하는 공간에 사진을 업로드한 뒤 AI 판독을 진행하세요.</p>
+                    <p class="text-xs text-slate-500 mb-4">각 방과 거실 사진을 올려주시면 정밀 비전 AI가 가전/가구 및 잔짐을 자동 판독합니다.</p>
 
                     <!-- Spaces Container -->
                     <div id="spaces-container" class="space-y-4 max-h-[380px] overflow-y-auto pr-1 mb-4">
@@ -102,7 +116,7 @@
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
                     </svg>
-                    <span>전체 공간 AI 자동 판독 시작</span>
+                    <span>전체 공간 AI 자동 고정밀 판독</span>
                 </button>
             </div>
 
@@ -114,45 +128,64 @@
                             <svg class="w-5 h-5 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012-2m-6 9l2 2 4-4"></path>
                             </svg>
-                            <span>이삿짐 리스트 (수량 조절 및 추가·삭제 가능)</span>
+                            <span>이삿짐 상세 체적 리스트</span>
                         </h3>
                         <button onclick="openAddItemModal()" class="bg-indigo-50 hover:bg-indigo-100 text-indigo-700 px-3 py-1.5 rounded-xl text-xs font-semibold transition-colors flex items-center space-x-1 cursor-pointer">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
                             </svg>
-                            <span>품목 추가</span>
+                            <span>품목 직접 추가</span>
                         </button>
                     </div>
 
                     <!-- Category Lists Grid -->
                     <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4">
                         <!-- Appliances -->
-                        <div class="bg-slate-50 rounded-xl p-3 border border-slate-200 flex flex-col h-48">
+                        <div class="bg-slate-50 rounded-xl p-3 border border-slate-200 flex flex-col h-auto min-h-[220px] max-h-80">
                             <h4 class="text-xs font-bold text-slate-700 mb-2 flex items-center justify-between">
-                                <span>가전 (냉장고/세탁기 등)</span>
+                                <span>가전 체적 리스트</span>
+                                <span id="badge-appliances-cbm" class="text-[10px] bg-slate-200 text-slate-700 px-1.5 py-0.5 rounded font-bold">0 CBM</span>
                             </h4>
-                            <ul id="list-appliances" class="space-y-1.5 overflow-y-auto flex-1 pr-1 text-xs">
+                            <ul id="list-appliances" class="space-y-2 overflow-y-auto flex-1 pr-1 text-xs">
                                 <li class="text-slate-400 italic text-xs">등록된 품목 없음</li>
                             </ul>
                         </div>
                         <!-- Furniture -->
-                        <div class="bg-slate-50 rounded-xl p-3 border border-slate-200 flex flex-col h-48">
+                        <div class="bg-slate-50 rounded-xl p-3 border border-slate-200 flex flex-col h-auto min-h-[220px] max-h-80">
                             <h4 class="text-xs font-bold text-slate-700 mb-2 flex items-center justify-between">
-                                <span>가구 (침대/소파 등)</span>
+                                <span>가구 체적 리스트</span>
+                                <span id="badge-furniture-cbm" class="text-[10px] bg-slate-200 text-slate-700 px-1.5 py-0.5 rounded font-bold">0 CBM</span>
                             </h4>
-                            <ul id="list-furniture" class="space-y-1.5 overflow-y-auto flex-1 pr-1 text-xs">
+                            <ul id="list-furniture" class="space-y-2 overflow-y-auto flex-1 pr-1 text-xs">
                                 <li class="text-slate-400 italic text-xs">등록된 품목 없음</li>
                             </ul>
                         </div>
                         <!-- Boxes & Clutter -->
-                        <div class="bg-slate-50 rounded-xl p-3 border border-slate-200 flex flex-col h-48">
+                        <div class="bg-slate-50 rounded-xl p-3 border border-slate-200 flex flex-col h-auto min-h-[220px] max-h-80">
                             <h4 class="text-xs font-bold text-slate-700 mb-2 flex items-center justify-between">
-                                <span>잔짐 (표준 박스/바구니)</span>
+                                <span>잔짐 (박스/바구니)</span>
+                                <span id="badge-clutter-cbm" class="text-[10px] bg-slate-200 text-slate-700 px-1.5 py-0.5 rounded font-bold">0 CBM</span>
                             </h4>
-                            <ul id="list-boxes" class="space-y-1.5 overflow-y-auto flex-1 pr-1 text-xs">
+                            <ul id="list-boxes" class="space-y-2 overflow-y-auto flex-1 pr-1 text-xs">
                                 <li class="text-slate-400 italic text-xs">등록된 품목 없음</li>
                             </ul>
                         </div>
+                    </div>
+
+                    <!-- Clutter Reasons & Calculation Rationale Card -->
+                    <div class="bg-amber-50/80 border border-amber-200 rounded-xl p-3 mb-4 space-y-2">
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs font-bold text-amber-900 flex items-center space-x-1.5">
+                                <svg class="w-4 h-4 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                                <span>공간별 잔짐 정밀 산출 근거 (박스·바구니 추가 이유)</span>
+                            </span>
+                            <span class="text-[10px] text-amber-700 font-semibold bg-amber-100 px-2 py-0.5 rounded-full">공간별 균형 수납 추정</span>
+                        </div>
+                        <ul id="list-clutter-reasons" class="space-y-1.5 text-xs text-amber-900 max-h-40 overflow-y-auto pr-1">
+                            <!-- Dynamically populated clutter calculation reasons -->
+                        </ul>
                     </div>
                 </div>
 
@@ -161,14 +194,14 @@
                     <svg class="w-4 h-4 text-indigo-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                     </svg>
-                    <p id="res-advice" class="truncate font-medium">원하는 공간에 사진을 업로드하고 AI 판독을 시작해보세요.</p>
+                    <p id="res-advice" class="truncate font-medium">원하는 공간에 사진을 업로드하고 AI 정밀 판독을 시작해보세요.</p>
                 </div>
             </div>
         </div>
 
-        <div id="loading-state" class="hidden bg-white/90 backdrop-blur-xs rounded-2xl p-8 border border-slate-200 text-center space-y-3 shadow-sm">
+        <div id="loading-state" class="hidden bg-white/90 backdrop-blur-sm rounded-2xl p-8 border border-slate-200 text-center space-y-3 shadow-sm">
             <div class="inline-block w-8 h-8 border-4 border-indigo-600 border-t-transparent rounded-full animate-spin"></div>
-            <p class="text-sm font-bold text-slate-800">AI가 각 공간별 사진 속 가전, 가구, 표준 잔짐의 부피를 정밀 분석 중입니다...</p>
+            <p class="text-sm font-bold text-slate-800">모든 공간의 사진을 압축하고 고정밀 AI 비전으로 이삿짐을 분석 중입니다...</p>
             <p class="text-xs text-slate-500">잠시만 기다려주세요 (약 3~5초 소요)</p>
         </div>
 
@@ -190,8 +223,8 @@
                             <div id="volume-progress-bar" class="bg-indigo-600 h-full transition-all duration-300" style="width: 0%"></div>
                         </div>
                         <div class="flex items-center justify-between text-[11px] text-slate-500">
-                            <span id="truck-fill-desc">1톤 트럭 적재율</span>
-                            <span id="truck-remaining-desc" class="font-semibold text-indigo-600">남은 용량: 7.5 CBM</span>
+                            <span id="truck-fill-desc">트럭 적재율</span>
+                            <span id="truck-remaining-desc" class="font-semibold text-indigo-600">남은 용량: 10 CBM</span>
                         </div>
                         <div id="truck-icons-container" class="flex flex-wrap gap-1 pt-1">
                             <!-- Dynamically populated truck icons -->
@@ -201,7 +234,7 @@
 
                 <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-5 flex flex-col justify-between">
                     <div>
-                        <p class="text-xs font-medium text-slate-500 uppercase tracking-wider">필요 1톤 트럭 (기준)</p>
+                        <p class="text-xs font-medium text-slate-500 uppercase tracking-wider">필요 트럭 (기준)</p>
                         <div class="flex items-center space-x-1.5 mt-2">
                             <button type="button" onclick="adjustCount('manual-truck-count', -1)" class="w-8 h-8 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg font-bold flex items-center justify-center transition-colors text-sm cursor-pointer">-</button>
                             <input type="number" id="manual-truck-count" value="0" min="0" class="w-12 border border-slate-300 rounded-lg p-1 text-lg font-bold text-indigo-600 text-center focus:ring-2 focus:ring-indigo-500 focus:outline-none">
@@ -232,7 +265,7 @@
                             </div>
                         </div>
                     </div>
-                    <span class="text-[11px] text-slate-400 mt-2">주방/잔짐 포장 등 여성인력 반영</span>
+                    <span class="text-[11px] text-slate-400 mt-2">주방 포장 전문 여성인력 반영</span>
                 </div>
 
                 <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-5 flex flex-col justify-between">
@@ -327,7 +360,7 @@
                 </h3>
                 <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs">
                     <div>
-                        <label class="block font-semibold text-slate-600 mb-1">1톤 트럭 기본운임 (원)</label>
+                        <label class="block font-semibold text-slate-600 mb-1">트럭 기본운임 (원)</label>
                         <input type="number" id="setting-truck-cost" value="240000" class="w-full border border-slate-300 rounded-xl p-2.5 text-xs focus:ring-2 focus:ring-indigo-500 focus:outline-none">
                     </div>
                     <div>
@@ -343,6 +376,46 @@
         </div>
 
     </main>
+
+    <!-- Modal: Save Quote -->
+    <div id="save-quote-modal" class="fixed inset-0 bg-slate-900/50 flex items-center justify-center p-4 hidden z-50">
+        <div class="bg-white rounded-2xl max-w-sm w-full p-6 shadow-xl space-y-4">
+            <div class="flex items-center justify-between">
+                <h3 class="text-base font-bold text-slate-900">현재 견적 저장하기</h3>
+                <button onclick="closeSaveQuoteModal()" class="text-slate-400 hover:text-slate-600 cursor-pointer">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+            </div>
+            <p class="text-xs text-slate-600">이삿짐 내역과 트럭 기준 CBM 및 예상 비용을 나중에 다시 볼 수 있도록 저장합니다.</p>
+            <div>
+                <label class="block font-semibold text-slate-700 text-xs mb-1">견적 제목 (예: 서울 역삼동 투룸 이사)</label>
+                <input type="text" id="save-quote-title-input" placeholder="견적 제목 입력" class="w-full border border-slate-300 rounded-xl p-2.5 text-xs focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+            </div>
+            <div class="flex justify-end space-x-2 pt-2">
+                <button onclick="closeSaveQuoteModal()" class="bg-slate-100 text-slate-600 px-4 py-2 rounded-xl text-xs font-semibold hover:bg-slate-200 transition-colors cursor-pointer">취소</button>
+                <button onclick="confirmSaveQuote()" class="bg-indigo-600 text-white px-4 py-2 rounded-xl text-xs font-semibold hover:bg-indigo-700 transition-colors cursor-pointer">저장</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Saved Quotes List -->
+    <div id="saved-quotes-modal" class="fixed inset-0 bg-slate-900/50 flex items-center justify-center p-4 hidden z-50">
+        <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-xl space-y-4 max-h-[85vh] flex flex-col">
+            <div class="flex items-center justify-between shrink-0">
+                <h3 class="text-base font-bold text-slate-900">저장된 견적함 (로컬 저장소)</h3>
+                <button onclick="closeSavedQuotesModal()" class="text-slate-400 hover:text-slate-600 cursor-pointer">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+            </div>
+            <p class="text-xs text-slate-500 shrink-0">저장했던 견적을 불러오거나 삭제할 수 있습니다.</p>
+            <div id="saved-quotes-list-container" class="space-y-3 overflow-y-auto flex-1 pr-1">
+                <!-- Dynamically populated saved quotes -->
+            </div>
+            <div class="flex justify-end pt-2 shrink-0">
+                <button onclick="closeSavedQuotesModal()" class="bg-slate-100 text-slate-600 px-4 py-2 rounded-xl text-xs font-semibold hover:bg-slate-200 transition-colors cursor-pointer">닫기</button>
+            </div>
+        </div>
+    </div>
 
     <!-- Modal: API Key Setup for GitHub Pages -->
     <div id="api-key-modal" class="fixed inset-0 bg-slate-900/50 flex items-center justify-center p-4 hidden z-50">
@@ -386,14 +459,17 @@
                         <option value="거실">거실</option>
                         <option value="안방/침실">안방/침실</option>
                         <option value="주방">주방</option>
+                        <option value="거실 화장실">거실 화장실</option>
+                        <option value="안방 화장실">안방 화장실</option>
                         <option value="베란다">베란다</option>
                         <option value="입구방">입구방</option>
                         <option value="작은방">작은방</option>
                         <option value="팬트리">팬트리</option>
                         <option value="드레스룸">드레스룸</option>
+                        <option value="서재/공부방">서재/공부방</option>
                         <option value="직접입력">직접 입력...</option>
                     </select>
-                    <input type="text" id="new-space-name" placeholder="공간 이름 입력 (예: 서재)" class="w-full border border-slate-300 rounded-xl p-2.5 focus:ring-2 focus:ring-indigo-500 focus:outline-none hidden">
+                    <input type="text" id="new-space-name" placeholder="공간 이름 입력 (예: 다용도실)" class="w-full border border-slate-300 rounded-xl p-2.5 focus:ring-2 focus:ring-indigo-500 focus:outline-none hidden">
                 </div>
             </div>
 
@@ -422,16 +498,16 @@
                     <select id="new-item-category" class="w-full border border-slate-300 rounded-xl p-2.5 bg-white focus:ring-2 focus:ring-indigo-500 focus:outline-none">
                         <option value="appliances">가전 (냉장고, 세탁기 등)</option>
                         <option value="furniture">가구 (침대, 소파 등)</option>
-                        <option value="clutterAndBoxes">잔짐 (표준 박스/바구니)</option>
+                        <option value="clutterAndBoxes">잔짐 (박스/바구니)</option>
                     </select>
                 </div>
                 <div>
-                    <label class="block font-semibold text-slate-600 mb-1">품목명 (예: 의류건조기)</label>
-                    <input type="text" id="new-item-name" placeholder="예: 의류건조기" class="w-full border border-slate-300 rounded-xl p-2.5 focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+                    <label class="block font-semibold text-slate-600 mb-1">품목명 (예: 옷박스 또는 이불박스)</label>
+                    <input type="text" id="new-item-name" placeholder="예: 옷박스" class="w-full border border-slate-300 rounded-xl p-2.5 focus:ring-2 focus:ring-indigo-500 focus:outline-none">
                 </div>
-                <div>
+                <div id="new-item-cbm-wrapper">
                     <label class="block font-semibold text-slate-600 mb-1">개당 부피 (CBM)</label>
-                    <input type="number" id="new-item-cbm" value="0.5" step="0.01" min="0.01" class="w-full border border-slate-300 rounded-xl p-2.5 focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+                    <input type="number" id="new-item-cbm" value="0.116" step="0.001" min="0.001" class="w-full border border-slate-300 rounded-xl p-2.5 focus:ring-2 focus:ring-indigo-500 focus:outline-none">
                 </div>
             </div>
 
@@ -484,6 +560,135 @@
             closeApiKeyModal();
         };
 
+        // Save & Load Quotation Functions (including CBM settings)
+        window.openSaveQuoteModal = function() {
+            const defaultTitle = "이사 견적 (" + new Date().toLocaleDateString() + ")";
+            document.getElementById('save-quote-title-input').value = defaultTitle;
+            document.getElementById('save-quote-modal').classList.remove('hidden');
+        };
+
+        window.closeSaveQuoteModal = function() {
+            document.getElementById('save-quote-modal').classList.add('hidden');
+        };
+
+        window.confirmSaveQuote = function() {
+            const titleInput = document.getElementById('save-quote-title-input');
+            const title = titleInput.value.trim() || "나의 이사 견적";
+            
+            const quoteData = {
+                id: 'quote_' + Date.now(),
+                title: title,
+                date: new Date().toLocaleString(),
+                spaces: spaces,
+                currentAnalysisData: currentAnalysisData,
+                settings: {
+                    truckCbmLimit: truckCbmLimitInput ? truckCbmLimitInput.value : 10,
+                    truckCost: truckCostInput ? truckCostInput.value : 240000,
+                    manWage: manWageInput ? manWageInput.value : 0,
+                    womanWage: womanWageInput ? womanWageInput.value : 150000,
+                    manualTruckCount: manualTruckCountInput ? manualTruckCountInput.value : 1,
+                    manualManCount: manualManCountInput ? manualManCountInput.value : 1,
+                    manualWomanCount: manualWomanCountInput ? manualWomanCountInput.value : 0
+                }
+            };
+
+            let savedQuotes = [];
+            try {
+                const existing = localStorage.getItem('gabong_saved_quotes');
+                if (existing) savedQuotes = JSON.parse(existing);
+            } catch (e) {
+                savedQuotes = [];
+            }
+
+            savedQuotes.unshift(quoteData);
+            localStorage.setItem('gabong_saved_quotes', JSON.stringify(savedQuotes));
+            closeSaveQuoteModal();
+            showModal("저장 성공", `"${title}" 견적이 브라우저에 성공적으로 저장되었습니다.`);
+        };
+
+        window.openSavedQuotesModal = function() {
+            const container = document.getElementById('saved-quotes-list-container');
+            if (!container) return;
+            container.innerHTML = '';
+
+            let savedQuotes = [];
+            try {
+                const existing = localStorage.getItem('gabong_saved_quotes');
+                if (existing) savedQuotes = JSON.parse(existing);
+            } catch (e) {
+                savedQuotes = [];
+            }
+
+            if (savedQuotes.length === 0) {
+                container.innerHTML = '<p class="text-slate-400 text-xs italic text-center py-6">저장된 견적이 없습니다.</p>';
+            } else {
+                savedQuotes.forEach((q, idx) => {
+                    const div = document.createElement('div');
+                    div.className = 'bg-slate-50 border border-slate-200 rounded-xl p-3.5 flex items-center justify-between text-xs';
+                    div.innerHTML = `
+                        <div class="space-y-1">
+                            <h4 class="font-bold text-slate-900">${q.title}</h4>
+                            <p class="text-[11px] text-slate-500">${q.date} • 공간 ${q.spaces ? q.spaces.length : 0}개 • 기준 CBM: ${q.settings ? q.settings.truckCbmLimit : 10}</p>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <button onclick="loadQuote(${idx})" class="bg-indigo-600 hover:bg-indigo-700 text-white px-3 py-1.5 rounded-lg font-semibold transition-colors cursor-pointer">불러오기</button>
+                            <button onclick="deleteQuote(${idx})" class="bg-slate-200 hover:bg-rose-100 text-slate-600 hover:text-rose-600 px-2.5 py-1.5 rounded-lg font-semibold transition-colors cursor-pointer">삭제</button>
+                        </div>
+                    `;
+                    container.appendChild(div);
+                });
+            }
+            document.getElementById('saved-quotes-modal').classList.remove('hidden');
+        };
+
+        window.closeSavedQuotesModal = function() {
+            document.getElementById('saved-quotes-modal').classList.add('hidden');
+        };
+
+        window.loadQuote = function(index) {
+            let savedQuotes = [];
+            try {
+                const existing = localStorage.getItem('gabong_saved_quotes');
+                if (existing) savedQuotes = JSON.parse(existing);
+            } catch (e) {
+                return;
+            }
+
+            const q = savedQuotes[index];
+            if (!q) return;
+
+            if (q.spaces) spaces = q.spaces;
+            if (q.currentAnalysisData) currentAnalysisData = q.currentAnalysisData;
+            if (q.settings) {
+                if (truckCbmLimitInput && q.settings.truckCbmLimit) truckCbmLimitInput.value = q.settings.truckCbmLimit;
+                if (truckCostInput && q.settings.truckCost) truckCostInput.value = q.settings.truckCost;
+                if (manWageInput && q.settings.manWage) manWageInput.value = q.settings.manWage;
+                if (womanWageInput && q.settings.womanWage) womanWageInput.value = q.settings.womanWage;
+                if (manualTruckCountInput && q.settings.manualTruckCount) manualTruckCountInput.value = q.settings.manualTruckCount;
+                if (manualManCountInput && q.settings.manualManCount) manualManCountInput.value = q.settings.manualManCount;
+                if (manualWomanCountInput && q.settings.manualWomanCount) manualWomanCountInput.value = q.settings.manualWomanCount;
+            }
+
+            closeSavedQuotesModal();
+            renderSpaces();
+            recalculateTotals(false);
+            showModal("불러오기 완료", `"${q.title}" 견적을 성공적으로 불러왔습니다.`);
+        };
+
+        window.deleteQuote = function(index) {
+            let savedQuotes = [];
+            try {
+                const existing = localStorage.getItem('gabong_saved_quotes');
+                if (existing) savedQuotes = JSON.parse(existing);
+            } catch (e) {
+                return;
+            }
+
+            savedQuotes.splice(index, 1);
+            localStorage.setItem('gabong_saved_quotes', JSON.stringify(savedQuotes));
+            openSavedQuotesModal();
+        };
+
         // Web Audio API custom chime notification sound
         function playCompletionChime() {
             try {
@@ -523,31 +728,35 @@
             }
         }
 
-        // Speech synthesis helper function with audio chime
         function speakMessage(text) {
             playCompletionChime();
             if ('speechSynthesis' in window) {
-                window.speechSynthesis.cancel();
-                const utterance = new SpeechSynthesisUtterance(text);
-                utterance.lang = 'ko-KR';
-                utterance.rate = 1.0;
-                utterance.pitch = 1.0;
-                
-                const voices = window.speechSynthesis.getVoices();
-                const koreanVoice = voices.find(v => v.lang.includes('ko'));
-                if (koreanVoice) {
-                    utterance.voice = koreanVoice;
-                }
+                try {
+                    window.speechSynthesis.cancel();
+                    const utterance = new SpeechSynthesisUtterance(text);
+                    utterance.lang = 'ko-KR';
+                    utterance.rate = 1.0;
+                    utterance.pitch = 1.0;
+                    
+                    const voices = window.speechSynthesis.getVoices();
+                    const koreanVoice = voices.find(v => v.lang.includes('ko'));
+                    if (koreanVoice) {
+                        utterance.voice = koreanVoice;
+                    }
 
-                window.speechSynthesis.speak(utterance);
+                    window.speechSynthesis.speak(utterance);
+                } catch (e) {
+                    console.log('TTS failed:', e);
+                }
             }
         }
 
-        // Spaces list
         let spaces = [
             { id: 'living', name: '거실', images: [] },
             { id: 'bedroom', name: '안방/침실', images: [] },
             { id: 'kitchen', name: '주방', images: [] },
+            { id: 'living_bath', name: '거실 화장실', images: [] },
+            { id: 'master_bath', name: '안방 화장실', images: [] },
             { id: 'veranda', name: '베란다', images: [] },
             { id: 'entrance', name: '입구방', images: [] },
             { id: 'smallroom', name: '작은방', images: [] },
@@ -555,29 +764,90 @@
             { id: 'dressroom', name: '드레스룸', images: [] }
         ];
 
+        const STANDARD_CBM_BENCHMARKS = {
+            "양문형 냉장고": 1.6,
+            "4도어 냉장고": 1.8,
+            "일반 냉장고": 1.0,
+            "김치냉장고": 0.9,
+            "드럼세탁기": 0.85,
+            "통돌이 세탁기": 0.7,
+            "의류건조기": 0.8,
+            "워시타워": 1.65,
+            "스탠드 에어컨": 1.1,
+            "벽걸이 에어컨": 0.25,
+            "TV (65인치)": 0.45,
+            "TV (75인치)": 0.6,
+            "식기세척기": 0.4,
+            "전자레인지": 0.1,
+            "공기청정기": 0.2,
+            "퀸 침대 및 매트리스": 2.5,
+            "킹 침대 및 매트리스": 2.8,
+            "슈퍼싱글 침대": 1.6,
+            "3인용 소파": 1.6,
+            "4인용 소파": 2.2,
+            "카우치 소파": 2.8,
+            "5단 서랍장": 0.8,
+            "3단 서랍장": 0.45,
+            "거실 TV장": 0.9,
+            "식탁 세트 (4인용)": 1.8,
+            "식탁 세트 (6인용)": 2.4,
+            "장롱 (1통)": 1.1,
+            "책상 세트": 0.9,
+            "책장": 0.8
+        };
+
+        // Strict exact box and basket CBM mapping with max packing density
+        function getStrictBoxCbm(name) {
+            if (!name) return null;
+            if (name.includes("이불박스")) return 0.27;   // 90x50x60 cm max packing density
+            if (name.includes("옷박스")) return 0.18;     // 90x50x40 cm max packing density
+            if (name.includes("대박스")) return 0.158;    // 70x45x50 cm
+            if (name.includes("중박스")) return 0.116;    // 60x41x47 cm
+            if (name.includes("바구니")) return 0.112;    // 72.5x47x33 cm
+            return null;
+        }
+
+        // Clean name normalizer for boxes & baskets so CBM is locked
+        function getCleanItemName(rawName) {
+            if (!rawName) return "품목";
+            if (rawName.includes("이불박스")) return "이불박스";
+            if (rawName.includes("옷박스")) return "옷박스";
+            if (rawName.includes("대박스")) return "대박스";
+            if (rawName.includes("중박스")) return "중박스";
+            if (rawName.includes("바구니")) return "바구니";
+            return rawName;
+        }
+
         let currentAnalysisData = {
             appliances: [
-                { name: "양문형 냉장고", cbm: 1.5, count: 1 },
+                { name: "양문형 냉장고", cbm: 1.6, count: 1 },
                 { name: "드럼세탁기", cbm: 0.85, count: 1 },
-                { name: "의류건조기", cbm: 0.4, count: 1 },
-                { name: "스탠드 에어컨", cbm: 1.2, count: 1 },
-                { name: "TV (65인치)", cbm: 0.4, count: 1 }
+                { name: "의류건조기", cbm: 0.8, count: 1 },
+                { name: "스탠드 에어컨", cbm: 1.1, count: 1 },
+                { name: "TV (65인치)", cbm: 0.45, count: 1 }
             ],
             furniture: [
                 { name: "퀸 침대 및 매트리스", cbm: 2.5, count: 1 },
                 { name: "3인용 소파", cbm: 1.6, count: 1 },
                 { name: "5단 서랍장", cbm: 0.8, count: 1 },
-                { name: "거실 TV장", cbm: 1.0, count: 1 },
-                { name: "식탁 세트 (4인용)", cbm: 2.12, count: 1 }
+                { name: "거실 TV장", cbm: 0.9, count: 1 },
+                { name: "식탁 세트 (4인용)", cbm: 1.8, count: 1 }
             ],
             clutterAndBoxes: [
-                { name: "이불박스", cbm: 0.165, count: 3 },
-                { name: "옷박스", cbm: 0.12, count: 4 },
-                { name: "대박스", cbm: 0.15, count: 2 },
-                { name: "중박스", cbm: 0.1, count: 3 },
-                { name: "바구니", cbm: 0.1, count: 2 }
+                { name: "이불박스", cbm: 0.27, count: 2 },
+                { name: "옷박스", cbm: 0.18, count: 4 },
+                { name: "대박스", cbm: 0.158, count: 2 },
+                { name: "중박스", cbm: 0.116, count: 4 },
+                { name: "바구니", cbm: 0.112, count: 3 }
             ],
-            advice: "국내 표준 이삿짐 샘플 품목이 불러와졌습니다. 공간별 사진을 올리거나 품목을 수정해보세요."
+            clutterReasons: [
+                { boxType: "이불박스", count: "2개", reason: "[안방/침실] 침대 위 겨울 이불 및 토퍼류 수납 (0.27 CBM)" },
+                { boxType: "옷박스", count: "4개", reason: "[드레스룸/장롱] 10자 장롱 평균 수납 기준 의류 및 외투류 균형 포장 (0.18 CBM)" },
+                { boxType: "대박스", count: "2개", reason: "[거실/아이방] 컴퓨터 모니터, 대형 오븐 및 부피 큰 장난감 전담 완충 포장 (0.158 CBM)" },
+                { boxType: "중박스", count: "4개", reason: "[서재/거실] 도서류, 수납장 잡화 및 생활용품 수납 (0.116 CBM)" },
+                { boxType: "바구니", count: "3개", reason: "[주방/서재] 소형가전(밥솥/토스터) 및 파손 위험 식기류 전담 (0.112 CBM)" }
+            ],
+            advice: "10자 장롱 평균 수납 짐 분석 및 모니터·오븐·대형장난감 대박스 배정이 반영된 정밀 CBM이 적용되었습니다."
         };
 
         const analyzeBtn = document.getElementById('analyze-btn');
@@ -620,6 +890,7 @@
                 appliances: [],
                 furniture: [],
                 clutterAndBoxes: [],
+                clutterReasons: [],
                 advice: "초기화되었습니다."
             };
             renderSpaces();
@@ -724,6 +995,56 @@
             renderSpaces();
         };
 
+        function compressImage(file, maxWidth = 800, maxHeight = 800, quality = 0.7) {
+            return new Promise((resolve) => {
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = (event) => {
+                    const img = new Image();
+                    img.src = event.target.result;
+                    img.onload = () => {
+                        let width = img.width;
+                        let height = img.height;
+
+                        if (width > height) {
+                            if (width > maxWidth) {
+                                height = Math.round((height * maxWidth) / width);
+                                width = maxWidth;
+                            }
+                        } else {
+                            if (height > maxHeight) {
+                                width = Math.round((width * maxHeight) / height);
+                                height = maxHeight;
+                            }
+                        }
+
+                        const canvas = document.createElement('canvas');
+                        canvas.width = width;
+                        canvas.height = height;
+                        const ctx = canvas.getContext('2d');
+                        ctx.drawImage(img, 0, 0, width, height);
+
+                        const dataUrl = canvas.toDataURL('image/jpeg', quality);
+                        const base64Data = dataUrl.split(',')[1];
+                        resolve({
+                            base64: base64Data,
+                            previewUrl: dataUrl,
+                            mimeType: 'image/jpeg'
+                        });
+                    };
+                    img.onerror = () => {
+                        const base64Full = event.target.result;
+                        const base64Data = base64Full.includes(',') ? base64Full.split(',')[1] : base64Full;
+                        resolve({
+                            base64: base64Data,
+                            previewUrl: base64Full,
+                            mimeType: file.type || 'image/jpeg'
+                        });
+                    };
+                };
+            });
+        }
+
         window.handleSpaceImageUpload = async function(spaceId, event) {
             const files = Array.from(event.target.files);
             if (files.length === 0) return;
@@ -733,17 +1054,14 @@
 
             for (const file of files) {
                 try {
-                    const base64 = await fileToBase64(file);
-                    const base64Data = base64.includes(',') ? base64.split(',')[1] : base64;
-                    const previewUrl = URL.createObjectURL(file);
-
+                    const compressed = await compressImage(file);
                     space.images.push({
-                        data: base64Data,
-                        mimeType: file.type || 'image/jpeg',
-                        previewUrl: previewUrl
+                        data: compressed.base64,
+                        mimeType: compressed.mimeType,
+                        previewUrl: compressed.previewUrl
                     });
                 } catch (err) {
-                    console.error('File read error:', err);
+                    console.error('Image compression error:', err);
                 }
             }
             event.target.value = '';
@@ -763,15 +1081,6 @@
             if (analyzeBtn) analyzeBtn.disabled = totalImages === 0;
         }
 
-        function fileToBase64(file) {
-            return new Promise((resolve, reject) => {
-                const reader = new FileReader();
-                reader.readAsDataURL(file);
-                reader.onload = () => resolve(reader.result);
-                reader.onerror = error => reject(error);
-            });
-        }
-
         if (analyzeBtn) {
             analyzeBtn.addEventListener('click', async () => {
                 const totalImages = spaces.reduce((acc, s) => acc + s.images.length, 0);
@@ -785,14 +1094,32 @@
                 if (resultsSection) resultsSection.classList.add('opacity-50');
                 analyzeBtn.disabled = true;
 
-                const systemPrompt = `You are a professional Korean moving estimator. 
-Analyze the provided photographs grouped by spaces and return a JSON object with appliances, furniture, and clutterAndBoxes (with name, cbm, count) and advice.
-CRITICAL RULES: 
-1. For clutter and boxes, use precise standard moving items with exact CBM: 이불박스(0.165), 옷박스(0.12), 대박스(0.15), 중박스(0.1), 바구니(0.1).
-2. Reply ONLY with valid JSON structure, with no markdown formatting or markdown backticks around it.`;
+                const systemPrompt = `You are an elite Korean professional moving estimator (이사화물 공인 견적사) with advanced computer vision expertise.
+Analyze all provided space photos with extreme technical precision and high recognition sensitivity.
+
+CRITICAL INSTRUCTIONS FOR RECOGNITION & WARDROBE/STORAGE INFERENCE:
+1. Detect ALL visible appliances, furniture, and clutter items with extreme clarity. Do not miss small or dimly lit items.
+2. WARDROBE & STORAGE INFERENCE (장롱/수납장 추론 지침):
+   - If a wardrobe (장롱) or storage unit is captured with closed doors, apply realistic statistical averages for a standard 10-foot wardrobe (10자 장롱): balanced distribution of clothing, bedding, and storage bins.
+   - If doors are open, inspect the visible hanging clothes and upper shelves directly.
+3. SPECIFIC BOX ASSIGNMENTS:
+   - '옷박스' (0.18 CBM): Wardrobe clothing and folded garments (balanced average for 10-foot wardrobe around 4-5 boxes).
+   - '이불박스' (0.27 CBM): Thick bedding and duvets on beds or top shelves.
+   - '대박스' (0.158 CBM): STRICTLY for computers, computer monitors, large ovens, and bulky children's toys/large plastic bins.
+   - '중박스' (0.116 CBM): General shelf items, toys, books, and medium clutter.
+   - '바구니' (0.112 CBM): Compact kitchen appliances (rice cooker, toaster, microwave), books, and fragile/breakable items.
+
+Return ONLY a pure JSON object structured as:
+{
+  "appliances": [{"name": "string", "cbm": number, "count": number}],
+  "furniture": [{"name": "string", "cbm": number, "count": number}],
+  "clutterAndBoxes": [{"name": "string", "cbm": number, "count": number}],
+  "clutterReasons": [{"boxType": "string", "count": "string", "reason": "string"}],
+  "advice": "string"
+}`;
 
                 const userParts = [
-                    { text: "다음 공간별 사진들을 종합 분석하여 가전, 가구, 잔짐(이불박스, 옷박스, 대박스, 중박스, 바구니 등 규격별 표준 CBM 적용)의 품목명, 개당 CBM, 수량을 순수 JSON으로만 작성해주세요." }
+                    { text: "등록된 모든 공간별 사진을 고정밀 비전 AI로 정밀 분석하여 가전, 가구 CBM을 산출하고, 장롱/수납장 내부 수납짐(옷/이불/중박스)을 현실적으로 추론하여 JSON으로 출력해주세요." }
                 ];
 
                 spaces.forEach(space => {
@@ -811,7 +1138,8 @@ CRITICAL RULES:
                     contents: [{ role: "user", parts: userParts }],
                     systemInstruction: { parts: [{ text: systemPrompt }] },
                     generationConfig: {
-                        responseMimeType: "application/json"
+                        responseMimeType: "application/json",
+                        temperature: 0.1
                     }
                 };
 
@@ -819,7 +1147,7 @@ CRITICAL RULES:
                 let resultJson = null;
 
                 const controller = new AbortController();
-                const timeoutId = setTimeout(() => controller.abort(), 20000);
+                const timeoutId = setTimeout(() => controller.abort(), 35000);
 
                 try {
                     const response = await fetch(apiUrl, {
@@ -853,16 +1181,55 @@ CRITICAL RULES:
                 analyzeBtn.disabled = false;
 
                 if (success && resultJson) {
-                    currentAnalysisData.appliances = resultJson.appliances || [];
-                    currentAnalysisData.furniture = resultJson.furniture || [];
-                    currentAnalysisData.clutterAndBoxes = resultJson.clutterAndBoxes || [];
-                    currentAnalysisData.advice = resultJson.advice || "AI 사진 정밀 분석이 완료되었습니다.";
+                    const sanitizeAppliancesOrFurniture = (items, defaultCbm) => {
+                        if (!Array.isArray(items)) return [];
+                        return items.map(item => {
+                            let itemName = item.name || "품목";
+                            let cbmVal = parseFloat(item.cbm);
+                            if (isNaN(cbmVal) || cbmVal <= 0) {
+                                const matchedKey = Object.keys(STANDARD_CBM_BENCHMARKS).find(k => itemName.includes(k));
+                                cbmVal = matchedKey ? STANDARD_CBM_BENCHMARKS[matchedKey] : defaultCbm;
+                            }
+                            return {
+                                name: itemName,
+                                cbm: Math.round(cbmVal * 1000) / 1000,
+                                count: parseInt(item.count, 10) || 1
+                            };
+                        });
+                    };
+
+                    const sanitizeBoxes = (items) => {
+                        if (!Array.isArray(items)) return [];
+                        return items.map(item => {
+                            let rawName = item.name || "바구니";
+                            let cleanName = getCleanItemName(rawName);
+                            let cbmVal = getStrictBoxCbm(cleanName) || 0.112;
+                            let countVal = parseInt(item.count, 10) || 1;
+
+                            return {
+                                name: cleanName,
+                                cbm: cbmVal,
+                                count: countVal
+                            };
+                        });
+                    };
+
+                    currentAnalysisData.appliances = sanitizeAppliancesOrFurniture(resultJson.appliances, 1.0);
+                    currentAnalysisData.furniture = sanitizeAppliancesOrFurniture(resultJson.furniture, 1.5);
+                    currentAnalysisData.clutterAndBoxes = sanitizeBoxes(resultJson.clutterAndBoxes);
+                    currentAnalysisData.clutterReasons = resultJson.clutterReasons || [];
+                    currentAnalysisData.advice = resultJson.advice || "고정밀 비전 AI 분석 및 장롱 내부 평균 짐 추정치가 반영되었습니다.";
                     
                     recalculateTotals(true);
-                    speakMessage("갑봉이 이사 사진 판독이 완료되었습니다. 총 부피와 예상 견적을 확인하세요.");
+                    
+                    const kitchenDetected = spaces.some(s => (s.name.includes('주방') || s.id === 'kitchen') && s.images.length > 0);
+                    const voiceNotice = kitchenDetected 
+                        ? "갑봉이 이사 고정밀 판독이 완료되었습니다. 주방 공간이 확인되어 주방 포장 여성 인원 1명이 자동 추가되었습니다."
+                        : "갑봉이 이사 고정밀 판독이 완료되었습니다. 장롱 및 부피짐 분석이 반영되었습니다.";
+                    speakMessage(voiceNotice);
                 } else {
-                    showModal("GitHub 배포 안내", "AI 판독에 실패했습니다. 깃허브 페이지에서 사용 중이시라면 우측 상단의 [API 키 설정] 버튼을 눌러 본인의 Gemini API 키를 등록해주세요.");
-                    speakMessage("이사 사진 판독 중 오류가 발생했습니다. API 키 설정을 확인해 주세요.");
+                    showModal("분석 안내", "멀티 공간 판독 중 요청 용량이 초과되었거나 응답이 지연되었습니다. 네트워크 상태를 확인하시거나 API 키 설정을 확인해주세요.");
+                    speakMessage("이사 사진 판독 중 오류가 발생했습니다. 다시 시도해 주세요.");
                 }
             });
         }
@@ -880,7 +1247,7 @@ CRITICAL RULES:
             if (costEl) costEl.innerText = `${totalCost.toLocaleString()}원`;
             if (adviceEl) adviceEl.innerText = data.advice;
 
-            const capacityPerTruck = truckCbmLimitInput ? parseFloat(truckCbmLimitInput.value) || 7.5 : 7.5;
+            const capacityPerTruck = truckCbmLimitInput ? parseFloat(truckCbmLimitInput.value) || 10 : 10;
             const totalTrucksNeeded = totalCbm === 0 ? 1 : Math.ceil(totalCbm / capacityPerTruck);
             const totalCapacity = totalTrucksNeeded * capacityPerTruck;
             const percentage = totalCapacity > 0 ? Math.min(100, Math.round((totalCbm / totalCapacity) * 100)) : 0;
@@ -904,14 +1271,49 @@ CRITICAL RULES:
                 for (let i = 0; i < totalTrucksNeeded; i++) {
                     const truckSpan = document.createElement('span');
                     truckSpan.className = 'inline-flex items-center space-x-0.5 bg-indigo-50 border border-indigo-200 text-indigo-700 px-1.5 py-0.5 rounded text-[10px] font-bold';
-                    truckSpan.innerHTML = `🚚 ${i + 1}톤`;
+                    truckSpan.innerHTML = `🚚 ${i + 1}트럭`;
                     truckIconsContainerEl.appendChild(truckSpan);
                 }
             }
 
+            const sumCat = (arr) => Math.round((arr || []).reduce((acc, it) => {
+                let strictCbm = getStrictBoxCbm(it.name);
+                let cbmVal = strictCbm !== null ? strictCbm : (parseFloat(it.cbm) || 0);
+                return acc + (cbmVal * (parseInt(it.count, 10) || 1));
+            }, 0) * 1000) / 1000;
+
+            const bApp = document.getElementById('badge-appliances-cbm');
+            const bFurn = document.getElementById('badge-furniture-cbm');
+            const bClut = document.getElementById('badge-clutter-cbm');
+            if (bApp) bApp.innerText = `${sumCat(data.appliances)} CBM`;
+            if (bFurn) bFurn.innerText = `${sumCat(data.furniture)} CBM`;
+            if (bClut) bClut.innerText = `${sumCat(data.clutterAndBoxes)} CBM`;
+
             populateList('list-appliances', data.appliances, 'appliances');
             populateList('list-furniture', data.furniture, 'furniture');
             populateList('list-boxes', data.clutterAndBoxes, 'clutterAndBoxes');
+            renderClutterReasons(data.clutterReasons);
+        }
+
+        function renderClutterReasons(reasons) {
+            const container = document.getElementById('list-clutter-reasons');
+            if (!container) return;
+            container.innerHTML = '';
+            if (!reasons || reasons.length === 0) {
+                container.innerHTML = '<li class="text-amber-700/70 italic text-xs">등록된 잔짐 정밀 산출 근거가 없습니다.</li>';
+                return;
+            }
+            reasons.forEach(item => {
+                const li = document.createElement('li');
+                li.className = 'flex flex-col sm:flex-row sm:items-baseline gap-1.5 bg-white p-2.5 rounded-lg border border-amber-200 shadow-sm';
+                li.innerHTML = `
+                    <div class="flex items-center space-x-1.5 shrink-0">
+                        <span class="inline-block px-2 py-0.5 bg-amber-200 text-amber-900 rounded font-bold text-[11px]">${item.boxType || '박스'} ${item.count ? `(${item.count})` : ''}</span>
+                    </div>
+                    <p class="text-slate-700 text-xs leading-relaxed"><span class="font-semibold text-amber-900">산출 이유:</span> ${item.reason || '물품 분할 포장 및 공간 적재'}</p>
+                `;
+                container.appendChild(li);
+            });
         }
 
         function populateList(elementId, items, categoryKey) {
@@ -924,20 +1326,28 @@ CRITICAL RULES:
             }
             items.forEach((item, index) => {
                 const li = document.createElement('li');
-                li.className = 'flex items-center justify-between bg-white p-2 rounded-lg border border-slate-200 shadow-2xs text-xs';
-                const itemCbm = Number(item.cbm) || 0;
-                const itemCount = Number(item.count) || 1;
-                const totalItemCbm = Math.round((itemCbm * itemCount) * 100) / 100;
+                li.className = 'flex items-start justify-between bg-white p-2.5 rounded-lg border border-slate-200 shadow-sm hover:border-indigo-200 transition-colors gap-2';
+                
+                let itemName = categoryKey === 'clutterAndBoxes' ? getCleanItemName(item.name) : (item.name || "");
+                let strictCbm = getStrictBoxCbm(itemName);
+                let itemCbm = strictCbm !== null ? strictCbm : (parseFloat(item.cbm) || 0);
+
+                const itemCount = parseInt(item.count, 10) || 1;
+                const totalItemCbm = Math.round((itemCbm * itemCount) * 1000) / 1000;
+                
                 li.innerHTML = `
-                    <div class="flex items-center space-x-2 overflow-hidden pr-1">
-                        <span class="w-1.5 h-1.5 rounded-full bg-indigo-500 shrink-0"></span>
-                        <span class="truncate text-slate-700 font-medium" title="${item.name} (${totalItemCbm} CBM)">${item.name} (${totalItemCbm}CBM)</span>
+                    <div class="flex items-start space-x-1.5 min-w-0 flex-1">
+                        <span class="w-1.5 h-1.5 rounded-full bg-indigo-600 mt-1.5 shrink-0"></span>
+                        <div class="flex flex-wrap items-baseline gap-x-1.5 gap-y-0.5 min-w-0">
+                            <span class="text-sm font-bold text-slate-900 break-keep leading-snug">${itemName}</span>
+                            <span class="text-[10px] text-slate-400 font-normal bg-slate-100 px-1 py-0.2 rounded shrink-0">${totalItemCbm}m³</span>
+                        </div>
                     </div>
-                    <div class="flex items-center space-x-1 shrink-0">
-                        <button type="button" onclick="adjustItemCount('${categoryKey}', ${index}, -1)" class="w-5 h-5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded font-bold flex items-center justify-center cursor-pointer">-</button>
-                        <span class="w-5 text-center font-bold text-indigo-600">${itemCount}</span>
-                        <button type="button" onclick="adjustItemCount('${categoryKey}', ${index}, 1)" class="w-5 h-5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded font-bold flex items-center justify-center cursor-pointer">+</button>
-                        <button type="button" onclick="removeItem('${categoryKey}', ${index})" class="text-slate-400 hover:text-rose-600 transition-colors ml-1 p-0.5 cursor-pointer" title="품목 삭제">
+                    <div class="flex items-center space-x-1 shrink-0 self-center">
+                        <button type="button" onclick="adjustItemCount('${categoryKey}', ${index}, -1)" class="w-5 h-5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded font-bold flex items-center justify-center cursor-pointer text-xs active:bg-slate-300">-</button>
+                        <span class="w-5 text-center font-bold text-indigo-700 text-xs">${itemCount}</span>
+                        <button type="button" onclick="adjustItemCount('${categoryKey}', ${index}, 1)" class="w-5 h-5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded font-bold flex items-center justify-center cursor-pointer text-xs active:bg-slate-300">+</button>
+                        <button type="button" onclick="removeItem('${categoryKey}', ${index})" class="text-slate-300 hover:text-rose-600 transition-colors ml-1 p-0.5 cursor-pointer" title="품목 삭제">
                             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                             </svg>
@@ -950,7 +1360,7 @@ CRITICAL RULES:
 
         window.adjustItemCount = function(categoryKey, index, amount) {
             if (currentAnalysisData[categoryKey] && currentAnalysisData[categoryKey][index]) {
-                currentAnalysisData[categoryKey][index].count = (Number(currentAnalysisData[categoryKey][index].count) || 1) + amount;
+                currentAnalysisData[categoryKey][index].count = (parseInt(currentAnalysisData[categoryKey][index].count, 10) || 1) + amount;
                 if (currentAnalysisData[categoryKey][index].count < 1) {
                     currentAnalysisData[categoryKey][index].count = 1;
                 }
@@ -968,8 +1378,20 @@ CRITICAL RULES:
         window.openAddItemModal = function() {
             const nameInput = document.getElementById('new-item-name');
             const cbmInput = document.getElementById('new-item-cbm');
+            const catSelect = document.getElementById('new-item-category');
             if (nameInput) nameInput.value = '';
-            if (cbmInput) cbmInput.value = '0.15';
+            if (cbmInput) cbmInput.value = '0.116';
+            if (catSelect) catSelect.value = 'appliances';
+            document.getElementById('new-item-cbm-wrapper').style.display = 'block';
+            
+            catSelect.onchange = function() {
+                if (this.value === 'clutterAndBoxes') {
+                    document.getElementById('new-item-cbm-wrapper').style.display = 'none';
+                } else {
+                    document.getElementById('new-item-cbm-wrapper').style.display = 'block';
+                }
+            };
+
             document.getElementById('add-item-modal').classList.remove('hidden');
         };
 
@@ -985,12 +1407,18 @@ CRITICAL RULES:
             if (!categorySelect || !nameInput || !cbmInput) return;
 
             const category = categorySelect.value;
-            const name = nameInput.value.trim();
-            const cbm = parseFloat(cbmInput.value) || 0.15;
-
+            let name = nameInput.value.trim();
             if (!name) {
                 showModal("입력 오류", "품목명을 입력해주세요.");
                 return;
+            }
+
+            let cbm = 0.112;
+            if (category === 'clutterAndBoxes') {
+                name = getCleanItemName(name);
+                cbm = getStrictBoxCbm(name) || 0.112;
+            } else {
+                cbm = parseFloat(cbmInput.value) || 1.0;
             }
 
             if (!currentAnalysisData[category]) {
@@ -999,7 +1427,7 @@ CRITICAL RULES:
 
             currentAnalysisData[category].push({
                 name: name,
-                cbm: cbm,
+                cbm: Math.round(cbm * 1000) / 1000,
                 count: 1
             });
 
@@ -1022,27 +1450,37 @@ CRITICAL RULES:
         window.recalculateTotals = function(updateManualInputs = false) {
             let totalCbmSum = 0;
 
-            const sumCbm = (arr) => {
+            const sumCbm = (arr, isBox = false) => {
                 if (!arr) return;
                 arr.forEach(item => {
-                    const itemCbm = Number(item.cbm) || 0;
-                    const itemCount = Number(item.count) || 1;
+                    let itemName = isBox ? getCleanItemName(item.name) : item.name;
+                    let strictCbm = getStrictBoxCbm(itemName);
+                    let itemCbm = strictCbm !== null ? strictCbm : (parseFloat(item.cbm) || 0);
+                    const itemCount = parseInt(item.count, 10) || 1;
                     totalCbmSum += itemCbm * itemCount;
                 });
             };
 
-            sumCbm(currentAnalysisData.appliances);
-            sumCbm(currentAnalysisData.furniture);
-            sumCbm(currentAnalysisData.clutterAndBoxes);
+            sumCbm(currentAnalysisData.appliances, false);
+            sumCbm(currentAnalysisData.furniture, false);
+            sumCbm(currentAnalysisData.clutterAndBoxes, true);
 
-            totalCbmSum = Math.round(totalCbmSum * 100) / 100;
+            totalCbmSum = Math.round(totalCbmSum * 1000) / 1000;
 
-            const truckLimit = truckCbmLimitInput ? parseFloat(truckCbmLimitInput.value) || 7.5 : 7.5;
+            const truckLimit = truckCbmLimitInput ? parseFloat(truckCbmLimitInput.value) || 10 : 10;
+
+            const kitchenSpace = spaces.find(s => (s.name.includes('주방') || s.id === 'kitchen'));
+            const hasKitchenImages = kitchenSpace && kitchenSpace.images && kitchenSpace.images.length > 0;
+            const hasKitchenBaskets = (currentAnalysisData.clutterAndBoxes || []).some(b => b.name && b.name.includes('바구니'));
+            const isKitchenPresent = hasKitchenImages || hasKitchenBaskets;
 
             if (updateManualInputs) {
                 const calculatedTrucks = Math.max(1, Math.ceil(totalCbmSum / truckLimit));
                 if (manualTruckCountInput) manualTruckCountInput.value = calculatedTrucks;
                 if (manualManCountInput) manualManCountInput.value = calculatedTrucks >= 2 ? 2 : 1;
+                if (manualWomanCountInput) {
+                    manualWomanCountInput.value = isKitchenPresent ? 1 : 0;
+                }
             }
 
             let truckCount = manualTruckCountInput ? parseInt(manualTruckCountInput.value, 10) : 0;
@@ -1072,7 +1510,8 @@ CRITICAL RULES:
 
             const totalCost = (truckCount * truckUnitCost) + activeLadderCost + activeStairsCost + (manCount * manWage) + (womanCount * womanWage);
             
-            currentAnalysisData.advice = `산정된 총 부피(${totalCbmSum} CBM) 기준, 1톤 트럭 ${truckCount}대와 작업 인력 [남자인부 ${manCount}명, 여자인부 ${womanCount}명]이 반영되었습니다.`;
+            const kitchenAdviceText = isKitchenPresent ? " (주방 포장 전담 여성 인원 1명 자동 반영)" : "";
+            currentAnalysisData.advice = `산정된 총 부피(${totalCbmSum} CBM) 기준, 트럭 ${truckCount}대와 인력 [남자인부 ${manCount}명, 여성인부 ${womanCount}명]이 최적 반영되었습니다.${kitchenAdviceText}`;
 
             displayResults(totalCbmSum, truckCount, totalCost, currentAnalysisData);
         };
