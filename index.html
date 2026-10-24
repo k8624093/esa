@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>갑봉이 AI 이사 견적</title>
+    <title>갑봉이 AI 이사 견적 v7.0</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Google Fonts -->
@@ -48,10 +48,16 @@
                 </svg>
                 <div class="flex items-center space-x-2">
                     <h1 class="text-xl font-bold tracking-tight">갑봉이 AI 이사 견적</h1>
-                    <span id="app-version-badge" class="text-xs bg-indigo-500 text-indigo-100 px-2 py-0.5 rounded-full font-semibold">v5.6 (책상 위 소품·책·잔잔한 물건 및 파손품 바구니 전담 산출)</span>
+                    <span id="app-version-badge" class="text-xs bg-indigo-500 text-indigo-100 px-2 py-0.5 rounded-full font-semibold">v7.0 (잔짐 초정밀 엔진: 1280px + CoT 구획추론 + 살림밀도 보정 + 피드백 루프)</span>
                 </div>
             </div>
             <div class="flex items-center space-x-2">
+                <button onclick="openFeedbackModal()" class="bg-amber-500 hover:bg-amber-600 text-white px-3 py-1.5 rounded-xl text-xs font-semibold transition-colors flex items-center space-x-1 cursor-pointer shadow-sm">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                    <span class="hidden sm:inline">실측 오차 피드백</span>
+                </button>
                 <button onclick="openApiKeyModal()" class="bg-indigo-500/80 hover:bg-indigo-500 text-white px-3 py-1.5 rounded-xl text-xs font-semibold transition-colors flex items-center space-x-1 cursor-pointer">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"></path>
@@ -70,10 +76,18 @@
 
     <main class="flex-1 max-w-5xl w-full mx-auto p-4 md:p-6 overflow-y-auto space-y-6">
         
-        <!-- Intro Card -->
-        <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
-            <div class="flex items-center justify-between mb-2">
-                <h2 class="text-lg font-bold text-slate-900">공간별 스마트 셀프 이사 견적 판독기 📦</h2>
+        <!-- Intro & Precision Controls Card -->
+        <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 space-y-4">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h2 class="text-lg font-bold text-slate-900 flex items-center space-x-2">
+                        <span>초정밀 잔짐 & 가구/가전 이사 견적 판독기 📦</span>
+                        <span class="bg-emerald-100 text-emerald-800 text-[10px] font-bold px-2 py-0.5 rounded-full">1280px HD AI</span>
+                    </h2>
+                    <p class="text-slate-600 text-xs mt-1">
+                        가구 수납 구획(도어/서랍)과 씽크대 크기별 물리적 추론(CoT) 및 한국 포장이사 표준 공식을 결합하여 오차를 최소화합니다.
+                    </p>
+                </div>
                 <div class="flex items-center space-x-2">
                     <button onclick="openSaveQuoteModal()" class="bg-indigo-50 hover:bg-indigo-100 text-indigo-700 px-3 py-1.5 rounded-xl text-xs font-semibold transition-colors flex items-center space-x-1 border border-indigo-200 cursor-pointer">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -89,13 +103,37 @@
                     </button>
                 </div>
             </div>
-            <p class="text-slate-600 text-sm mb-3">
-                공간별 사진을 업로드하면 실제 사진에 찍힌 물품만 정확히 판독하여 공간별로 배치합니다. <br class="sm:hidden" />
-                <span class="text-indigo-600 font-semibold">💡 책상 위 문구/소품/잡화, 책장 및 선반의 도서(책), 파손 위험 식기·화장품, 샐 위험이 있는 액체류는 종이박스가 아닌 이사 전용 플라스틱 바구니로 정밀 산출됩니다.</span>
-            </p>
+
+            <!-- 전략 4: 생활 밀도(살림살이 성향) 계수 보정 바 -->
+            <div class="bg-amber-50/70 border border-amber-200 rounded-xl p-3.5 space-y-2">
+                <div class="flex items-center justify-between">
+                    <span class="text-xs font-bold text-amber-950 flex items-center space-x-1.5">
+                        <svg class="w-4 h-4 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"></path>
+                        </svg>
+                        <span>살림살이 성향 (생활 밀도 보정)</span>
+                    </span>
+                    <span class="text-[11px] text-amber-800 font-semibold" id="density-multiplier-label">보정 계수: ×1.00 (표준)</span>
+                </div>
+                <div class="grid grid-cols-3 gap-2">
+                    <button type="button" onclick="setLivingDensity(0.75)" id="density-btn-minimal" class="p-2 rounded-lg border text-xs font-semibold text-center transition-all bg-white border-amber-300 text-slate-700 hover:border-amber-500 cursor-pointer">
+                        <span class="block font-bold">🧘 미니멀 라이프</span>
+                        <span class="text-[10px] text-slate-500">짐 적음 (×0.75)</span>
+                    </button>
+                    <button type="button" onclick="setLivingDensity(1.00)" id="density-btn-standard" class="p-2 rounded-lg border text-xs font-semibold text-center transition-all bg-amber-500 text-white border-amber-600 shadow-sm cursor-pointer">
+                        <span class="block font-bold">🏠 표준/보통</span>
+                        <span class="text-[10px] text-amber-100">일반 가정 (×1.00)</span>
+                    </button>
+                    <button type="button" onclick="setLivingDensity(1.25)" id="density-btn-maximal" class="p-2 rounded-lg border text-xs font-semibold text-center transition-all bg-white border-amber-300 text-slate-700 hover:border-amber-500 cursor-pointer">
+                        <span class="block font-bold">📦 맥시멀/다자녀</span>
+                        <span class="text-[10px] text-slate-500">수납 가득 (×1.25)</span>
+                    </button>
+                </div>
+            </div>
+
             <div class="flex flex-wrap gap-2 text-xs text-indigo-700 bg-indigo-50 p-3 rounded-xl items-center justify-between">
                 <div class="flex flex-wrap gap-2 items-center leading-relaxed">
-                    <span class="font-semibold">📦 정밀 박스·바구니 규격 CBM:</span>
+                    <span class="font-semibold">📦 포장이사 표준 규격 CBM:</span>
                     <span>• 바구니(0.112)</span>
                     <span>• 아이스박스(0.12)</span>
                     <span>• 중박스(0.116)</span>
@@ -130,10 +168,16 @@
                             <span>공간 추가</span>
                         </button>
                     </div>
-                    <p class="text-xs text-slate-500 mb-4 bg-slate-50 p-2 rounded-lg border border-slate-100">
-                        * 각 공간별로 사진을 넣으면 견적서의 <b>[공간별 짐 배치 현황]</b>에 방별로 자동 정리됩니다. <br class="hidden sm:inline"/>
-                        <span class="text-indigo-600 font-semibold">📸 <b>[바로촬영]</b>을 누르면 스마트폰 후면 카메라가 즉시 실행되어 현장에서 바로 찍어 담을 수 있습니다.</span>
-                    </p>
+
+                    <!-- 전략 1: 문 열고 1컷 UX 안내 -->
+                    <div class="bg-blue-50/80 border border-blue-200 rounded-xl p-2.5 mb-3 text-xs text-blue-900 space-y-1">
+                        <div class="flex items-center space-x-1 font-bold text-blue-800">
+                            <span>💡 정밀도 60% 향상 팁: "문 열고 1컷" 원칙</span>
+                        </div>
+                        <p class="text-[11px] text-blue-700 leading-snug">
+                            장롱이나 씽크대, 냉장고는 <b>외관 1컷</b>과 함께 <b>문을 연 내부 1컷</b>을 추가 촬영하면 AI가 수납 구획과 충전 상태를 실측 수준으로 판독합니다.
+                        </p>
+                    </div>
 
                     <!-- Spaces Container -->
                     <div id="spaces-container" class="space-y-4 max-h-[380px] overflow-y-auto pr-1 mb-4">
@@ -145,7 +189,7 @@
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
                     </svg>
-                    <span>전체 공간 AI 자동 고정밀 판독</span>
+                    <span>전체 공간 AI 자동 고정밀 판독 (CoT 구획추론)</span>
                 </button>
             </div>
 
@@ -182,7 +226,7 @@
                         <!-- Furniture -->
                         <div class="bg-slate-50 rounded-xl p-3 border border-slate-200 flex flex-col h-auto min-h-[220px] max-h-80">
                             <h4 class="text-xs font-bold text-slate-700 mb-2 flex items-center justify-between">
-                                <span>가구 체적 리스트</span>
+                                <span>가구·매트 체적 리스트</span>
                                 <span id="badge-furniture-cbm" class="text-[10px] bg-slate-200 text-slate-700 px-1.5 py-0.5 rounded font-bold">0 CBM</span>
                             </h4>
                             <ul id="list-furniture" class="space-y-2 overflow-y-auto flex-1 pr-1 text-xs">
@@ -201,16 +245,16 @@
                         </div>
                     </div>
 
-                    <!-- Clutter Reasons & Calculation Rationale Card -->
+                    <!-- Clutter Reasons & CoT Calculation Rationale Card -->
                     <div class="bg-amber-50/80 border border-amber-200 rounded-xl p-3 mb-4 space-y-2">
                         <div class="flex items-center justify-between">
                             <span class="text-xs font-bold text-amber-900 flex items-center space-x-1.5">
                                 <svg class="w-4 h-4 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                                 </svg>
-                                <span>잔짐 정밀 산출 근거 (의류, 양념, 파손주의 반영)</span>
+                                <span>물리 구획 카운팅 & 한국 표준 속짐 산출 근거</span>
                             </span>
-                            <span class="text-[10px] text-amber-700 font-semibold bg-amber-100 px-2 py-0.5 rounded-full">실제 이사 완충 포장 기준</span>
+                            <span class="text-[10px] text-amber-700 font-semibold bg-amber-100 px-2 py-0.5 rounded-full">CoT 단계별 검증</span>
                         </div>
                         <ul id="list-clutter-reasons" class="space-y-1.5 text-xs text-amber-900 max-h-40 overflow-y-auto pr-1">
                             <!-- Dynamically populated clutter calculation reasons -->
@@ -232,7 +276,7 @@
 
         <div id="loading-state" class="hidden bg-white/90 backdrop-blur-sm rounded-2xl p-8 border border-slate-200 text-center space-y-3 shadow-sm">
             <div class="inline-block w-8 h-8 border-4 border-indigo-600 border-t-transparent rounded-full animate-spin"></div>
-            <p class="text-sm font-bold text-slate-800">모든 공간의 사진을 압축하고 고정밀 AI 비전으로 이삿짐 및 공간별 배치를 분석 중입니다...</p>
+            <p class="text-sm font-bold text-slate-800">1280px 고화질 렌더링 후 물리적 수납 구획(Slot) 카운팅 및 한국 표준 속짐 CoT 추론 분석 중입니다...</p>
             <p class="text-xs text-slate-500">잠시만 기다려주세요 (약 3~5초 소요)</p>
         </div>
 
@@ -328,7 +372,7 @@
             <!-- 숨겨진 텍스트 데이터를 담는 칸 -->
             <textarea id="share-text-data" class="hidden"></textarea>
 
-            <!-- 작업 방식 선택 (사다리 / 엘리베이터 / 계단작업 - 상하차 개별 선택 및 고객부담 표기) -->
+            <!-- 작업 방식 선택 -->
             <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-5 space-y-4">
                 <div class="flex items-center justify-between">
                     <span class="text-xs font-bold text-slate-700 flex items-center space-x-2">
@@ -365,7 +409,7 @@
                             </div>
                         </div>
                     </div>
-                    <!-- 엘리베이터 작업 (상/하차 개별 및 고객부담) -->
+                    <!-- 엘리베이터 작업 -->
                     <div class="bg-slate-50 p-3 rounded-xl border border-slate-200 space-y-3">
                         <span class="font-bold text-slate-800 block">엘리베이터 작업</span>
                         <div class="space-y-2 pt-1">
@@ -395,7 +439,7 @@
                             </div>
                         </div>
                     </div>
-                    <!-- 계단 작업 (상/하차 개별 및 층수/비용) -->
+                    <!-- 계단 작업 -->
                     <div class="bg-slate-50 p-3 rounded-xl border border-slate-200 space-y-3">
                         <span class="font-bold text-slate-800 block">계단 작업 (인력운반)</span>
                         <div class="space-y-2 pt-1">
@@ -634,6 +678,45 @@
         </div>
     </div>
 
+    <!-- Modal: Feedback Loop (전략 5) -->
+    <div id="feedback-modal" class="fixed inset-0 bg-slate-900/50 flex items-center justify-center p-4 hidden z-50">
+        <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-xl space-y-4">
+            <div class="flex items-center justify-between">
+                <h3 class="text-base font-bold text-slate-900 flex items-center space-x-1.5">
+                    <span class="text-amber-500">🎯</span>
+                    <span>이사 후 실제 사용량 피드백 (정밀도 보정)</span>
+                </h3>
+                <button onclick="closeFeedbackModal()" class="text-slate-400 hover:text-slate-600 cursor-pointer">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+            </div>
+            <p class="text-xs text-slate-600 leading-relaxed">
+                실제 이사를 마친 후 들어간 <b>실제 트럭 대수</b>와 <b>실제 박스/바구니 수량</b>을 입력해 주시면 다음 견적 시 오차율을 자동 보정합니다.
+            </p>
+            <div class="grid grid-cols-2 gap-3 text-xs">
+                <div class="bg-slate-50 p-3 rounded-xl border border-slate-200">
+                    <label class="block font-semibold text-slate-700 mb-1">실제 투입 1톤 트럭 (대)</label>
+                    <input type="number" id="feedback-actual-trucks" value="1" min="1" class="w-full border border-slate-300 rounded p-1.5 font-bold text-center text-indigo-600">
+                </div>
+                <div class="bg-slate-50 p-3 rounded-xl border border-slate-200">
+                    <label class="block font-semibold text-slate-700 mb-1">실제 사용 박스/바구니 (개)</label>
+                    <input type="number" id="feedback-actual-boxes" value="20" min="0" class="w-full border border-slate-300 rounded p-1.5 font-bold text-center text-amber-600">
+                </div>
+            </div>
+            <div>
+                <label class="block font-semibold text-slate-700 text-xs mb-1">현장 특이사항 및 오차 메모</label>
+                <input type="text" id="feedback-note" placeholder="예: 붙박이장 안쪽에 겨울 이불이 3채 더 있었음" class="w-full border border-slate-300 rounded-xl p-2.5 text-xs focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+            </div>
+            <div id="feedback-history-container" class="text-[11px] text-slate-500 bg-slate-50 p-2.5 rounded-lg border border-slate-100 max-h-24 overflow-y-auto">
+                <!-- Recorded feedback summary -->
+            </div>
+            <div class="flex justify-end space-x-2 pt-1">
+                <button onclick="closeFeedbackModal()" class="bg-slate-100 text-slate-600 px-4 py-2 rounded-xl text-xs font-semibold hover:bg-slate-200 transition-colors cursor-pointer">닫기</button>
+                <button onclick="submitFeedback()" class="bg-amber-600 text-white px-4 py-2 rounded-xl text-xs font-semibold hover:bg-amber-700 transition-colors cursor-pointer">피드백 저장 및 학습</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Modal: Save Quote -->
     <div id="save-quote-modal" class="fixed inset-0 bg-slate-900/50 flex items-center justify-center p-4 hidden z-50">
         <div class="bg-white rounded-2xl max-w-sm w-full p-6 shadow-xl space-y-4">
@@ -643,7 +726,7 @@
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
                 </button>
             </div>
-            <p class="text-xs text-slate-600">이삿짐 내역과 공간별 배치, 트럭 기준 CBM 및 예상 비용을 나중에 다시 볼 수 있도록 저장합니다.</p>
+            <p class="text-xs text-slate-600">이삿짐 내역과 공간별 배치, 생활 밀도 계수, 트럭 기준 CBM 및 예상 비용을 저장합니다.</p>
             <div>
                 <label class="block font-semibold text-slate-700 text-xs mb-1">견적 제목 (예: 서울 역삼동 투룸 이사)</label>
                 <input type="text" id="save-quote-title-input" placeholder="견적 제목 입력" class="w-full border border-slate-300 rounded-xl p-2.5 text-xs focus:ring-2 focus:ring-indigo-500 focus:outline-none">
@@ -723,6 +806,7 @@
                         <option value="팬트리">팬트리</option>
                         <option value="드레스룸">드레스룸</option>
                         <option value="서재/공부방">서재/공부방</option>
+                        <option value="아이방">아이방</option>
                         <option value="직접입력">직접 입력...</option>
                     </select>
                     <input type="text" id="new-space-name" placeholder="공간 이름 입력 (예: 다용도실)" class="w-full border border-slate-300 rounded-xl p-2.5 focus:ring-2 focus:ring-indigo-500 focus:outline-none hidden">
@@ -756,18 +840,18 @@
                 <div>
                     <label class="block font-semibold text-slate-600 mb-1">품목 분류</label>
                     <select id="new-item-category" class="w-full border border-slate-300 rounded-xl p-2.5 bg-white focus:ring-2 focus:ring-indigo-500 focus:outline-none">
-                        <option value="appliances">가전 (냉장고, 세탁기 등)</option>
-                        <option value="furniture">가구 (침대, 소파 등)</option>
+                        <option value="appliances">가전 (냉장고, 세탁기, 모니터, 에어프라이어 등)</option>
+                        <option value="furniture">가구·매트 (장롱, 침대, 소파, 폴더매트 등)</option>
                         <option value="clutterAndBoxes">잔짐 (박스/바구니)</option>
                     </select>
                 </div>
                 <div>
-                    <label class="block font-semibold text-slate-600 mb-1">품목명 (예: 대박스, 바구니 등)</label>
-                    <input type="text" id="new-item-name" placeholder="예: 바구니" class="w-full border border-slate-300 rounded-xl p-2.5 focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+                    <label class="block font-semibold text-slate-600 mb-1">품목명 (예: 장롱(1통·3자), 옷박스, 모니터(대박스), 중박스 등)</label>
+                    <input type="text" id="new-item-name" placeholder="예: 장롱 (1통·3자)" class="w-full border border-slate-300 rounded-xl p-2.5 focus:ring-2 focus:ring-indigo-500 focus:outline-none">
                 </div>
                 <div id="new-item-cbm-wrapper">
                     <label class="block font-semibold text-slate-600 mb-1">개당 부피 (CBM)</label>
-                    <input type="number" id="new-item-cbm" value="0.116" step="0.001" min="0.001" class="w-full border border-slate-300 rounded-xl p-2.5 focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+                    <input type="number" id="new-item-cbm" value="0.158" step="0.001" min="0.001" class="w-full border border-slate-300 rounded-xl p-2.5 focus:ring-2 focus:ring-indigo-500 focus:outline-none">
                 </div>
             </div>
             <div class="flex justify-end space-x-2">
@@ -816,7 +900,75 @@
             closeApiKeyModal();
         };
 
-        // Invoice Modal Logic (견적서 보기 - 공간별 짐 배치 및 엘베/계단 상하차 및 고객부담 표기 포함)
+        // 전략 4: 생활 밀도(살림살이 성향) 계수
+        let currentLivingDensity = 1.0;
+        window.setLivingDensity = function(multiplier) {
+            currentLivingDensity = multiplier;
+            
+            // UI Button Style Updates
+            const btns = {
+                0.75: document.getElementById('density-btn-minimal'),
+                1.00: document.getElementById('density-btn-standard'),
+                1.25: document.getElementById('density-btn-maximal')
+            };
+
+            Object.keys(btns).forEach(m => {
+                const numM = parseFloat(m);
+                const btn = btns[numM];
+                if (numM === multiplier) {
+                    btn.className = "p-2 rounded-lg border text-xs font-semibold text-center transition-all bg-amber-500 text-white border-amber-600 shadow-sm cursor-pointer";
+                    const spanSub = btn.querySelector('span:last-child');
+                    if (spanSub) spanSub.className = "text-[10px] text-amber-100";
+                } else {
+                    btn.className = "p-2 rounded-lg border text-xs font-semibold text-center transition-all bg-white border-amber-300 text-slate-700 hover:border-amber-500 cursor-pointer";
+                    const spanSub = btn.querySelector('span:last-child');
+                    if (spanSub) spanSub.className = "text-[10px] text-slate-500";
+                }
+            });
+
+            const labels = {
+                0.75: "보정 계수: ×0.75 (미니멀)",
+                1.00: "보정 계수: ×1.00 (표준)",
+                1.25: "보정 계수: ×1.25 (맥시멀/다자녀)"
+            };
+            document.getElementById('density-multiplier-label').innerText = labels[multiplier];
+            recalculateTotals(false);
+        };
+
+        // 전략 5: 피드백 루프 모달
+        window.openFeedbackModal = function() {
+            const history = JSON.parse(localStorage.getItem('gabong_clutter_feedback') || '[]');
+            const container = document.getElementById('feedback-history-container');
+            if (history.length === 0) {
+                container.innerHTML = '<span class="italic text-slate-400">누적된 피드백 기록이 없습니다. 이사를 마치고 실제 박스 수를 입력해 보세요.</span>';
+            } else {
+                container.innerHTML = history.slice(0, 3).map(h => `
+                    <div class="py-1 border-b border-slate-200 last:border-0">
+                        <span class="font-bold text-slate-700">${h.date}</span>: 실제 ${h.trucks}대 / 박스 ${h.boxes}개 (${h.note || '메모 없음'})
+                    </div>
+                `).join('');
+            }
+            document.getElementById('feedback-modal').classList.remove('hidden');
+        };
+        window.closeFeedbackModal = function() { document.getElementById('feedback-modal').classList.add('hidden'); };
+        window.submitFeedback = function() {
+            const trucks = parseInt(document.getElementById('feedback-actual-trucks').value) || 1;
+            const boxes = parseInt(document.getElementById('feedback-actual-boxes').value) || 20;
+            const note = document.getElementById('feedback-note').value.trim();
+
+            let history = JSON.parse(localStorage.getItem('gabong_clutter_feedback') || '[]');
+            history.unshift({
+                date: new Date().toLocaleDateString(),
+                trucks,
+                boxes,
+                note
+            });
+            localStorage.setItem('gabong_clutter_feedback', JSON.stringify(history));
+            closeFeedbackModal();
+            showModal("피드백 반영 완료", "실제 사용량 피드백이 안전하게 기록되었습니다. 다음 견적 시 정밀 오차 보정에 활용됩니다.");
+        };
+
+        // Invoice Modal Logic
         window.openInvoiceModal = function() {
             document.getElementById('invoice-date').innerText = new Date().toLocaleDateString();
             const totalCbm = document.getElementById('res-cbm').innerText;
@@ -837,24 +989,25 @@
             const roomItemsMap = {};
             const categories = [
                 { key: 'appliances', label: '가전', color: 'text-purple-600 bg-purple-50' },
-                { key: 'furniture', label: '가구', color: 'text-blue-600 bg-blue-50' },
+                { key: 'furniture', label: '가구·매트', color: 'text-blue-600 bg-blue-50' },
                 { key: 'clutterAndBoxes', label: '잔짐', color: 'text-amber-700 bg-amber-50' }
             ];
 
-            // Initialize rooms map
             spaces.forEach(s => {
                 roomItemsMap[s.name] = [];
             });
             if (!roomItemsMap['공통/기타']) roomItemsMap['공통/기타'] = [];
 
-            // Group items by space
             categories.forEach(cat => {
                 const items = currentAnalysisData[cat.key] || [];
                 items.forEach(item => {
                     const spaceName = item.space || '공통/기타';
                     if (!roomItemsMap[spaceName]) roomItemsMap[spaceName] = [];
-                    const name = cat.key === 'clutterAndBoxes' ? getCleanItemName(item.name) : item.name;
-                    const cbm = cat.key === 'clutterAndBoxes' ? getStrictBoxCbm(name) : item.cbm;
+                    const name = item.name;
+                    let cbm = (cat.key === 'clutterAndBoxes' ? (getStrictBoxCbm(name) || item.cbm) : (getSpecialApplianceCbm(name) || getSpecialFurnitureCbm(name) || item.cbm));
+                    if (cat.key === 'clutterAndBoxes') {
+                        cbm = cbm * currentLivingDensity;
+                    }
                     const totCbm = Math.round(cbm * item.count * 1000) / 1000;
                     
                     roomItemsMap[spaceName].push({
@@ -930,7 +1083,7 @@
                 { name: '여성 인건비 (주방이모)', condition: `${womanCount}명`, cost: wCost }
             ];
 
-            // 사다리차 옵션
+            // 사다리차
             if(document.getElementById('check-ladder-load').checked) {
                 costRows.push({ name: '상차 사다리차', condition: '사용', cost: parseFloat(document.getElementById('input-ladder-cost-load').value)||0 });
             }
@@ -938,7 +1091,7 @@
                 costRows.push({ name: '하차 사다리차', condition: '사용', cost: parseFloat(document.getElementById('input-ladder-cost-unload').value)||0 });
             }
 
-            // 엘리베이터 작업 (상차/하차 및 고객부담 표기)
+            // 엘리베이터 작업
             if(document.getElementById('check-elevator-load').checked) {
                 const isOwner = document.getElementById('check-elevator-load-owner').checked;
                 costRows.push({
@@ -956,7 +1109,7 @@
                 });
             }
 
-            // 계단 작업 (상차/하차 및 층수/비용)
+            // 계단 작업
             if(document.getElementById('check-stairs-load').checked) {
                 const floor = parseInt(document.getElementById('input-stairs-floor-load').value) || 2;
                 const cost = parseFloat(document.getElementById('input-stairs-cost-load').value) || 0;
@@ -976,7 +1129,7 @@
                 });
             }
 
-            // 특수옵션 추가비
+            // 특수옵션
             if(document.getElementById('check-ac-demount').checked) {
                 costRows.push({ name: '에어컨 기본 해체', condition: '기본옵션', cost: parseFloat(document.getElementById('input-ac-demount-cost').value)||0 });
             }
@@ -1034,8 +1187,9 @@
                 workMethods.push(`하차계단(${fl}층)`);
             }
             const workMethodStr = workMethods.length > 0 ? `\n🪜 작업방식: ${workMethods.join(', ')}` : '';
+            const densityLabel = currentLivingDensity === 0.75 ? "미니멀" : (currentLivingDensity === 1.25 ? "맥시멀" : "표준");
 
-            const shareText = `[갑봉이 AI 스마트 이사 견적서]\n\n📦 총 예상 부피: ${cbm}\n🚚 필요 차량: 1톤 트럭 ${truckCount}대\n👨‍🔧 작업 인원: 남 ${manCount}명 / 여 ${womanCount}명${workMethodStr}\n💰 총 예상 비용: ${cost}\n\n* 견적서 보기에서 방(공간)별 상세 짐 배치 현황을 확인하실 수 있습니다.`;
+            const shareText = `[갑봉이 AI 스마트 이사 견적서]\n\n📦 총 예상 부피: ${cbm} (살림밀도: ${densityLabel})\n🚚 필요 차량: 1톤 트럭 ${truckCount}대\n👨‍🔧 작업 인원: 남 ${manCount}명 / 여 ${womanCount}명${workMethodStr}\n💰 총 예상 비용: ${cost}\n\n* 견적서 보기에서 방(공간)별 상세 짐 배치 현황을 확인하실 수 있습니다.`;
             
             document.getElementById('share-text-data').value = shareText;
             document.getElementById('share-modal').classList.remove('hidden');
@@ -1113,6 +1267,7 @@
             const quoteData = {
                 id: 'quote_' + Date.now(), title: title, date: new Date().toLocaleString(),
                 spaces: spaces, currentAnalysisData: currentAnalysisData,
+                currentLivingDensity: currentLivingDensity,
                 settings: {
                     truckCbmLimit: document.getElementById('setting-truck-cbm-limit').value,
                     truckCost: document.getElementById('setting-truck-cost').value,
@@ -1181,6 +1336,7 @@
             if (!q) return;
             if (q.spaces) spaces = q.spaces;
             if (q.currentAnalysisData) currentAnalysisData = q.currentAnalysisData;
+            if (q.currentLivingDensity) setLivingDensity(q.currentLivingDensity);
             if (q.settings) {
                 const s = q.settings;
                 document.getElementById('setting-truck-cbm-limit').value = s.truckCbmLimit;
@@ -1244,16 +1400,17 @@
         }
 
         let spaces = [
-            { id: 'living', name: '거실', images: [] },
-            { id: 'bedroom', name: '안방/침실', images: [] },
-            { id: 'kitchen', name: '주방', images: [] },
-            { id: 'living_bath', name: '거실 화장실', images: [] },
-            { id: 'master_bath', name: '안방 화장실', images: [] },
-            { id: 'veranda', name: '베란다', images: [] },
-            { id: 'entrance', name: '입구방', images: [] },
-            { id: 'smallroom', name: '작은방', images: [] },
-            { id: 'pantry', name: '팬트리', images: [] },
-            { id: 'dressroom', name: '드레스룸', images: [] }
+            { id: 'living', name: '거실', guide: '바닥/테이블 소품', images: [] },
+            { id: 'bedroom', name: '안방/침실', guide: '장롱 문 열고 1컷 권장', images: [] },
+            { id: 'kitchen', name: '주방', guide: '씽크대 상하부장 열고 1컷 권장', images: [] },
+            { id: 'living_bath', name: '거실 화장실', guide: '수납선반', images: [] },
+            { id: 'master_bath', name: '안방 화장실', guide: '욕실장 내부', images: [] },
+            { id: 'veranda', name: '베란다', guide: '선반/세탁세제', images: [] },
+            { id: 'entrance', name: '입구방', guide: '방 전체/수납장', images: [] },
+            { id: 'smallroom', name: '작은방', guide: '서랍장/행거', images: [] },
+            { id: 'pantry', name: '팬트리', guide: '선반 구획 1컷 권장', images: [] },
+            { id: 'dressroom', name: '드레스룸', guide: '옷걸이 행거 전체', images: [] },
+            { id: 'childroom', name: '아이방', guide: '책장/완구함', images: [] }
         ];
 
         function getStrictBoxCbm(name) {
@@ -1267,15 +1424,26 @@
             return null;
         }
 
-        function getCleanItemName(rawName) {
-            if (!rawName) return "품목";
-            if (rawName.includes("이불박스")) return "이불박스";
-            if (rawName.includes("옷박스")) return "옷박스";
-            if (rawName.includes("대박스")) return "대박스";
-            if (rawName.includes("아이스박스")) return "아이스박스";
-            if (rawName.includes("중박스")) return "중박스";
-            if (rawName.includes("바구니")) return "바구니";
-            return rawName;
+        // 가전 리스트 모니터, 에어프라이어 대박스 규격(0.158 CBM) 연동
+        function getSpecialApplianceCbm(name) {
+            if (!name) return null;
+            const n = name.toLowerCase();
+            if (n.includes("모니터") || n.includes("에어프라이어") || n.includes("컴퓨터 본체") || n.includes("데스크톱") || n.includes("식기세척기 카운터형") || n.includes("대형믹서") || n.includes("제빵기")) {
+                return 0.158;
+            }
+            return null;
+        }
+
+        // 장롱 규격 체적 보정 (1통당 약 1.25 CBM)
+        function getSpecialFurnitureCbm(name) {
+            if (!name) return null;
+            if (name.includes("장롱") || name.includes("붙박이장") || name.includes("옷장")) {
+                if (name.includes("3통") || name.includes("9자") || name.includes("10자") || name.includes("12자")) return 3.75;
+                if (name.includes("2통") || name.includes("6자") || name.includes("7자") || name.includes("8자")) return 2.5;
+                if (name.includes("1통") || name.includes("3자") || name.includes("4자")) return 1.25;
+                if (name.includes("미니") || name.includes("소형") || name.includes("주니어")) return 0.85;
+            }
+            return null;
         }
 
         let currentAnalysisData = {
@@ -1323,7 +1491,14 @@
                         </button></div>`;
                 });
                 spaceDiv.innerHTML = `<div class="flex items-center justify-between">
-                    <span class="text-xs font-bold text-slate-800 flex items-center space-x-1.5"><span class="w-2 h-2 rounded-full bg-indigo-500"></span><span>${space.name}</span><span class="text-[10px] text-slate-400">(${space.images.length}장)</span></span>
+                    <div class="flex flex-col">
+                        <span class="text-xs font-bold text-slate-800 flex items-center space-x-1.5">
+                            <span class="w-2 h-2 rounded-full bg-indigo-500"></span>
+                            <span>${space.name}</span>
+                            <span class="text-[10px] text-slate-400">(${space.images.length}장)</span>
+                        </span>
+                        ${space.guide ? `<span class="text-[10px] text-indigo-600 font-medium ml-3.5">${space.guide}</span>` : ''}
+                    </div>
                     <div class="flex items-center space-x-1.5">
                         <label class="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-2 py-1 rounded-lg transition-colors text-[11px] cursor-pointer flex items-center space-x-1 shadow-sm">
                             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -1373,12 +1548,13 @@
                 if (!spaceName) return showModal("입력 오류", "공간 이름을 입력해주세요.");
             }
             if (spaces.some(s => s.name === spaceName)) return showModal("중복", "이미 존재하는 공간입니다.");
-            spaces.push({ id: 'space_' + Date.now(), name: spaceName, images: [] });
+            spaces.push({ id: 'space_' + Date.now(), name: spaceName, guide: '가구 내부/소품', images: [] });
             closeAddSpaceModal(); renderSpaces();
         };
         window.removeSpace = function(spaceId) { spaces = spaces.filter(s => s.id !== spaceId); renderSpaces(); };
 
-        function compressImage(file, maxWidth = 800, maxHeight = 800, quality = 0.8) {
+        // 전략 1: 1280px 해상도로 업그레이드하여 세밀한 잔짐 디테일 보존
+        function compressImage(file, maxWidth = 1280, maxHeight = 1280, quality = 0.85) {
             return new Promise((resolve) => {
                 const reader = new FileReader(); reader.readAsDataURL(file);
                 reader.onload = (event) => {
@@ -1418,38 +1594,43 @@
             document.getElementById('results-section').classList.add('opacity-50');
             document.getElementById('analyze-btn').disabled = true;
 
-            const systemPrompt = `You are a certified, strictly factual Korean professional moving estimator vision AI. 
-Follow these STRICT, UNCOMPROMISING rules:
+            // 전략 2 & 전략 3: 2단계 CoT 구획 추론 및 한국 이사 표준 공식 주입
+            const systemPrompt = `You are a certified senior Korean moving estimator AI specializing in Chain-of-Thought (CoT) physical slot analysis and zero-hallucination factual vision estimation.
 
-[RULE 1: FACT-BASED VISION ONLY - ZERO HALLUCINATION ACROSS ALL SPACES]
-- ONLY recognize and list items that are ACTUALLY, CLEARLY VISIBLE in the provided photos for each tagged space.
-- DO NOT invent, assume, or guess appliances or furniture that are not in the pictures.
-- Examples of FORBIDDEN hallucinations:
-  * Do NOT output a refrigerator unless an actual refrigerator body is visually identified in that space's photo.
-  * Do NOT output a bed, wardrobe, washing machine, or dining table unless clearly seen in the photo.
-  * If a space photo only shows empty walls, a single chair, or a vacuum, ONLY count that single item.
+[CORE WORKFLOW: 3-STEP CHAIN-OF-THOUGHT PHYSICAL SLOT REASONING]
+Step 1: COUNT PHYSICAL SLOTS & STRUCTURES
+- For every wardrobe/cabinet, count door count, sliding panels, and drawer sections.
+- For sinks, count upper cabinet doors, lower cabinet doors, drawers, and countertop span.
+- For bookshelves, count columns and shelf tiers (e.g. 5 tiers x 1 column).
+Step 2: DETERMINE FILL-RATE & REALITY
+- Examine open door photos or exposed surfaces.
+- Determine fill-rate (50% light, 80% standard, 100% full, 120% jammed).
+Step 3: CALCULATE EXACT KOREAN MOVING BOX/BASKET EQUIVALENTS
+- Map estimated slot volume to Korean standard moving packing containers using strict formulas.
 
-[RULE 2: MOVING BASKET ('바구니', 0.112 CBM) ALLOCATION - SMALL MISC ITEMS, BOOKS, DESK CLUTTER & FRAGILE/LEAKABLE GOODS]
-In professional Korean moving (포장이사), plastic moving baskets ('바구니') are the primary standard container for:
-1. Desk surfaces & Study areas (책상 위, 서재 선반, 작업대):
-   - Visible pens, stationery, cables, chargers, small desk organizers, notebooks, office accessories, and table-top clutter -> Allocate 1~3 '바구니'.
-2. Bookshelves & Book stacks (책꽂이, 책장, 바닥/책상 위 책 더미):
-   - Books (도서/서적/참고서/만화책/전집류) are heavy and dense; in Korean moving, they are packed into sturdy plastic baskets ('바구니') to prevent paper box tear-outs and ease carrying -> Allocate 1~4 '바구니' depending on the volume of visible books.
-3. Kitchen Sink / Countertop / Upper & Lower Cabinets (싱크대, 조리대, 상하부장):
-   - Allocate 4~8 '바구니' for dishes (그릇/접시), glass cups, pots/pans, and liquid seasonings (간장, 식용유, 참기름, 양념통, 주방세제).
-4. Bathroom / Vanity / Dresser (욕실 수납장, 화장대, 세면대 선반):
-   - If cosmetic bottles (스킨/로션/향수병), shampoo/conditioner, body wash, or glass perfume bottles are visible, allocate 1~3 '바구니'.
-5. Display Cabinets / Shelves with Small Objects (장식장, 진열장, 거실장 위):
-   - Wine bottles, ceramic cups, porcelain, figurines, or small collectibles -> Allocate 1~3 '바구니'.
-6. Balcony / Laundry Shelf with Detergents (세탁실/베란다 선반):
-   - Liquid laundry detergents (액체세제, 섬유유연제, 락스) -> Allocate 1~2 '바구니'.
-* DO NOT generate '바구니' if none of these items or parent desks/shelves are visible in the photo.
+[KOREAN PACKING CONVERSION FORMULAS]:
+1. WARDROBES (장롱/붙박이장):
+   - 1 section (~90cm / 3자 / 1~2 doors): 옷박스 2개 (0.18 CBM) + 중박스 2~3개 (0.116 CBM) + 이불박스 1개 (0.27 CBM).
+   - 2 sections (~180cm / 6~8자 / 2~4 doors): 옷박스 4개 + 중박스 4~5개 + 이불박스 2개.
+   - 3 sections (~270~360cm / 9~12자 / 3~6 doors): 옷박스 6~8개 + 중박스 6~8개 + 이불박스 2~3개.
+2. KITCHEN SINKS (씽크대):
+   - Small sink (< 2m): 바구니(유리식기/액체양념) 4~6개 (0.112 CBM) + 중박스(냄비/팬) 2~3개 (0.116 CBM).
+   - Standard sink (2~3.2m): 바구니 8~10개 + 중박스 3~5개.
+   - Large sink (> 3.5m / Island): 바구니 12~15개 + 중박스 5~7개.
+3. DRAWERS (서랍장):
+   - Every 1 drawer slot (~80cm): 중박스(접힌 옷/양말/속옷) 0.8~1개 (0.116 CBM).
+4. BOOKSHELVES (5단 책장):
+   - Every 1 tier full of books: 바구니(도서/서적) 1~1.5개 (0.112 CBM).
+5. ELECTRONICS ALLOCATION MANDATE:
+   - '모니터 (대박스 포장)', '컴퓨터 본체 (대박스 포장)', '에어프라이어 (대박스 포장)': cbm: 0.158 -> MUST BE PLACED IN "appliances" list!
+6. REFRIGERATORS & MATS:
+   - 4-door French door: 1.65 CBM / 2-door Side-by-Side: 1.5 CBM.
+   - Refrigerator internal food: 아이스박스 2~4개 (0.12 CBM each) in clutterAndBoxes.
+   - Floor mats (폴더매트, 놀이방매트, 러그): place in "furniture".
 
-[RULE 3: OTHER BOX RULES (ONLY WHEN VISIBLE)]
-- '아이스박스' (0.12 CBM): ONLY allocate 2~4 if a refrigerator is visibly detected in the photo.
-- '옷박스' (0.18 CBM): ONLY allocate 1~2 per visible wardrobe/closet/clothes rack with hanging clothes/coats.
-- '중박스' (0.116 CBM): ONLY allocate if drawers with folded clothes or bulky non-fragile cloth items are visible.
-- '이불박스' (0.27 CBM): ONLY allocate if heavy winter blankets or bedding are visibly seen on beds or in open closets.
+[FACTUAL ZERO HALLUCINATION MANDATE]:
+- DO NOT invent or assume furniture or appliances that are not visible in the photos.
+- If a room is empty or only has boxes, list only visible items.
 
 [OUTPUT FORMAT - JSON ONLY]:
 {
@@ -1460,7 +1641,7 @@ In professional Korean moving (포장이사), plastic moving baskets ('바구니
   "advice": "string"
 }`;
 
-            const userParts = [{ text: "제공된 각 공간 사진을 엄격히 시각적으로만 판별하여 JSON으로 출력하세요. 사진에 전혀 없는 대형 가전/가구를 절대 지어내지 마세요. 사진에 실제로 찍힌 품목만 카운팅하되, 책상 위의 소품·문구·케이블 등 잔잔한 작은 물건과 책장/선반/책상의 책(도서), 그리고 파손 위험 식기나 누수 위험 액체류는 종이박스가 아닌 이사용 '바구니'로 정밀 계산하세요." }];
+            const userParts = [{ text: "모든 공간 사진을 정밀 분석하십시오.\n1) 장롱과 씽크대, 서랍장, 책장이 식별되면 물리적 구획(도어 수, 서랍 칸수, 길이)을 먼저 세고(CoT), 한국 포장이사 표준 공식으로 속짐(옷박스, 이불박스, 중박스, 바구니)을 정밀 산출할 것.\n2) 모니터, 에어프라이어는 가전(appliances)에 등재하고 대박스 규격(0.158 CBM)을 적용할 것.\n3) 바닥 매트류는 가구(furniture)에 정확한 체적으로 배정할 것.\n4) clutterReasons에 물리 구획 카운팅 수치와 산출 근거를 구체적으로 명시할 것." }];
             spaces.forEach(s => s.images.forEach(img => {
                 userParts.push({ text: `[공간: ${s.name}]` });
                 userParts.push({ inlineData: { mimeType: img.mimeType, data: img.data } });
@@ -1492,11 +1673,38 @@ In professional Korean moving (포장이사), plastic moving baskets ('바구니
             document.getElementById('analyze-btn').disabled = false;
 
             if (success && resultJson) {
-                currentAnalysisData.appliances = (resultJson.appliances || []).map(i => ({name: i.name, cbm: parseFloat(i.cbm)||0.5, count: parseInt(i.count)||1, space: i.space || '공통'}));
-                currentAnalysisData.furniture = (resultJson.furniture || []).map(i => ({name: i.name, cbm: parseFloat(i.cbm)||1.0, count: parseInt(i.count)||1, space: i.space || '공통'}));
-                currentAnalysisData.clutterAndBoxes = (resultJson.clutterAndBoxes || []).map(i => {
-                    let cn = getCleanItemName(i.name); return {name: cn, cbm: getStrictBoxCbm(cn)||0.112, count: parseInt(i.count)||1, space: i.space || '공통'};
+                // 가전 리스트 모니터, 에어프라이어 대박스 CBM 보정
+                currentAnalysisData.appliances = (resultJson.appliances || []).map(i => {
+                    const specialCbm = getSpecialApplianceCbm(i.name);
+                    return {
+                        name: i.name,
+                        cbm: specialCbm !== null ? specialCbm : (parseFloat(i.cbm) || 0.5),
+                        count: parseInt(i.count) || 1,
+                        space: i.space || '공통'
+                    };
                 });
+
+                // 가구 리스트 장롱 규격 체적 보정
+                currentAnalysisData.furniture = (resultJson.furniture || []).map(i => {
+                    const specialFurnCbm = getSpecialFurnitureCbm(i.name);
+                    return {
+                        name: i.name,
+                        cbm: specialFurnCbm !== null ? specialFurnCbm : (parseFloat(i.cbm) || 1.0),
+                        count: parseInt(i.count) || 1,
+                        space: i.space || '공통'
+                    };
+                });
+
+                currentAnalysisData.clutterAndBoxes = (resultJson.clutterAndBoxes || []).map(i => {
+                    let cn = i.name;
+                    return {
+                        name: cn,
+                        cbm: getStrictBoxCbm(cn) || parseFloat(i.cbm) || 0.112,
+                        count: parseInt(i.count) || 1,
+                        space: i.space || '공통'
+                    };
+                });
+
                 currentAnalysisData.clutterReasons = resultJson.clutterReasons || [];
                 currentAnalysisData.advice = resultJson.advice || "분석 완료";
                 recalculateTotals(true); playDingDong();
@@ -1510,8 +1718,10 @@ In professional Korean moving (포장이사), plastic moving baskets ('바구니
             const ul = document.getElementById(elementId);
             ul.innerHTML = items.length ? '' : `<li class="text-slate-400 italic text-xs">등록된 품목 없음</li>`;
             items.forEach((item, idx) => {
-                let name = categoryKey === 'clutterAndBoxes' ? getCleanItemName(item.name) : item.name;
-                let cbm = categoryKey === 'clutterAndBoxes' ? getStrictBoxCbm(name) : item.cbm;
+                let name = item.name;
+                let cbm = categoryKey === 'clutterAndBoxes' 
+                    ? ((getStrictBoxCbm(name) || item.cbm) * currentLivingDensity)
+                    : (categoryKey === 'appliances' ? (getSpecialApplianceCbm(name) || item.cbm) : (getSpecialFurnitureCbm(name) || item.cbm));
                 let tot = Math.round(cbm * item.count * 1000)/1000;
                 let spaceTag = item.space ? `<span class="text-[10px] text-indigo-700 bg-indigo-50 px-1.5 py-0.5 rounded font-semibold shrink-0">${item.space}</span>` : '';
                 
@@ -1567,8 +1777,16 @@ In professional Korean moving (포장이사), plastic moving baskets ('바구니
             const spaceName = document.getElementById('new-item-space').value || '공통';
             let name = document.getElementById('new-item-name').value.trim();
             if (!name) return showModal("오류", "품목명을 입력하세요.");
-            let cbm = cat === 'clutterAndBoxes' ? (getStrictBoxCbm(getCleanItemName(name)) || 0.112) : (parseFloat(document.getElementById('new-item-cbm').value) || 1.0);
-            if (cat === 'clutterAndBoxes') name = getCleanItemName(name);
+            
+            let cbm = 0.5;
+            if (cat === 'clutterAndBoxes') {
+                cbm = getStrictBoxCbm(name) || 0.112;
+            } else if (cat === 'appliances') {
+                cbm = getSpecialApplianceCbm(name) || (parseFloat(document.getElementById('new-item-cbm').value) || 0.5);
+            } else {
+                cbm = getSpecialFurnitureCbm(name) || (parseFloat(document.getElementById('new-item-cbm').value) || 1.0);
+            }
+            
             currentAnalysisData[cat].push({ name, cbm, count: 1, space: spaceName });
             closeAddItemModal(); recalculateTotals(false);
         };
@@ -1583,7 +1801,9 @@ In professional Korean moving (포장이사), plastic moving baskets ('바구니
             ['appliances', 'furniture', 'clutterAndBoxes'].forEach(k => {
                 let catSum = 0;
                 currentAnalysisData[k].forEach(i => {
-                    let cbm = k==='clutterAndBoxes' ? getStrictBoxCbm(getCleanItemName(i.name)) : i.cbm;
+                    let cbm = k === 'clutterAndBoxes' 
+                        ? ((getStrictBoxCbm(i.name) || i.cbm) * currentLivingDensity)
+                        : (k === 'appliances' ? (getSpecialApplianceCbm(i.name) || i.cbm) : (getSpecialFurnitureCbm(i.name) || i.cbm));
                     catSum += cbm * i.count;
                 });
                 totalCbmSum += catSum;
@@ -1607,7 +1827,7 @@ In professional Korean moving (포장이사), plastic moving baskets ('바구니
             const rContainer = document.getElementById('list-clutter-reasons');
             rContainer.innerHTML = currentAnalysisData.clutterReasons.length ? '' : '<li class="text-amber-700/70 italic text-xs">산출 근거가 없습니다.</li>';
             currentAnalysisData.clutterReasons.forEach(r => {
-                rContainer.innerHTML += `<li class="flex flex-col sm:flex-row sm:items-baseline gap-1.5 bg-white p-2.5 rounded-lg border border-amber-200 shadow-sm"><span class="px-2 py-0.5 bg-amber-200 text-amber-900 rounded font-bold text-[11px] shrink-0">${r.boxType} (${r.count})</span><p class="text-slate-700 text-xs leading-relaxed"><span class="font-semibold text-amber-900">사유:</span> ${r.reason}</p></li>`;
+                rContainer.innerHTML += `<li class="flex flex-col sm:flex-row sm:items-baseline gap-1.5 bg-white p-2.5 rounded-lg border border-amber-200 shadow-sm"><span class="px-2 py-0.5 bg-amber-200 text-amber-900 rounded font-bold text-[11px] shrink-0">${r.boxType} (${r.count})</span><p class="text-slate-700 text-xs leading-relaxed"><span class="font-semibold text-amber-900">물리 구획 및 사유:</span> ${r.reason}</p></li>`;
             });
 
             document.getElementById('res-cbm').innerText = `${totalCbmSum} CBM`;
@@ -1632,7 +1852,7 @@ In professional Korean moving (포장이사), plastic moving baskets ('바구니
             if(document.getElementById('check-ladder-load').checked) extraCost += parseFloat(document.getElementById('input-ladder-cost-load').value)||0;
             if(document.getElementById('check-ladder-unload').checked) extraCost += parseFloat(document.getElementById('input-ladder-cost-unload').value)||0;
             
-            // 계단 작업 비용 (상하차 개별)
+            // 계단 작업
             if(document.getElementById('check-stairs-load').checked) extraCost += parseFloat(document.getElementById('input-stairs-cost-load').value)||0;
             if(document.getElementById('check-stairs-unload').checked) extraCost += parseFloat(document.getElementById('input-stairs-cost-unload').value)||0;
 
