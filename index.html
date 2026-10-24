@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>갑봉이 AI 이사 견적 v7.3</title>
+    <title>갑봉이 AI 이사 견적 v7.7</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Google Fonts -->
@@ -48,7 +48,7 @@
                 </svg>
                 <div class="flex items-center space-x-2">
                     <h1 class="text-xl font-bold tracking-tight">갑봉이 AI 이사 견적</h1>
-                    <span id="app-version-badge" class="text-xs bg-indigo-500 text-indigo-100 px-2 py-0.5 rounded-full font-semibold">v7.6 (TV 정확한 인치수 자동 계측 & 특수포장 연동)</span>
+                    <span id="app-version-badge" class="text-xs bg-indigo-500 text-indigo-100 px-2 py-0.5 rounded-full font-semibold">v7.7 (공간별 가전·가구 분리 & 잔짐 통합 집계)</span>
                 </div>
             </div>
             <div class="flex items-center space-x-2">
@@ -104,7 +104,7 @@
                 </div>
             </div>
 
-            <!-- v7.3 핵심 기능: 주거 형태 및 평수 규모 선택 상태 관리 -->
+            <!-- 주거 형태 및 평수 규모 선택 상태 관리 -->
             <div class="bg-indigo-50/70 border border-indigo-200 rounded-xl p-3.5 space-y-2">
                 <div class="flex items-center justify-between">
                     <span class="text-xs font-bold text-indigo-950 flex items-center space-x-1.5">
@@ -135,7 +135,7 @@
                 </div>
             </div>
 
-            <!-- 전략 4: 생활 밀도(살림살이 성향) 계수 보정 바 -->
+            <!-- 생활 밀도(살림살이 성향) 계수 보정 바 -->
             <div class="bg-amber-50/70 border border-amber-200 rounded-xl p-3.5 space-y-2">
                 <div class="flex items-center justify-between">
                     <span class="text-xs font-bold text-amber-950 flex items-center space-x-1.5">
@@ -391,7 +391,7 @@
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
                     </svg>
-                    <span>📄 정밀 견적서 보기 (공간별 짐 배치 포함)</span>
+                    <span>📄 정밀 견적서 보기 (가전·가구 공간배치 & 전체잔짐 통합)</span>
                 </button>
                 <button onclick="openShareModal()" class="w-full bg-indigo-50 hover:bg-indigo-100 border border-indigo-200 text-indigo-700 font-bold py-3.5 px-4 rounded-xl text-sm transition-colors flex items-center justify-center space-x-2 shadow-sm cursor-pointer">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -632,20 +632,39 @@
                 </div>
             </div>
 
-            <!-- Section 1: 공간별 이삿짐 상세 배치 현황 -->
+            <!-- Section 1: 공간(방)별 가전·가구 상세 배치 현황 (잔짐 제외) -->
             <div class="space-y-3 print-break-inside-avoid">
                 <div class="flex items-center justify-between border-l-4 border-indigo-600 pl-2">
-                    <h3 class="text-xs sm:text-sm font-bold text-slate-800 uppercase tracking-wider">1. 공간(방)별 이삿짐 상세 배치 현황</h3>
-                    <span class="text-[10px] text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded font-semibold">현장 운반 및 상하차 가이드</span>
+                    <div>
+                        <h3 class="text-xs sm:text-sm font-bold text-slate-800 uppercase tracking-wider">1. 공간(방)별 가전·가구 상세 배치 현황</h3>
+                        <p class="text-[10px] text-slate-500">방별 주요 가구 및 대·소형 가전 현장 배치 가이드</p>
+                    </div>
+                    <span class="text-[10px] text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded font-semibold">가구 & 가전 전용</span>
                 </div>
                 <div id="inv-spaces-breakdown" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-                    <!-- Dynamically populated room-by-room items -->
+                    <!-- Dynamically populated room-by-room appliances & furniture only -->
                 </div>
             </div>
 
-            <!-- Section 2: 견적 산출 금액 내역 -->
+            <!-- Section 2: 전체 잔짐(박스·바구니) 통합 집계 현황 (전체 공간 합산) -->
             <div class="space-y-3 print-break-inside-avoid">
-                <h3 class="text-xs sm:text-sm font-bold text-slate-800 uppercase tracking-wider border-l-4 border-indigo-600 pl-2">2. 견적 산출 금액 내역</h3>
+                <div class="flex items-center justify-between border-l-4 border-amber-500 pl-2">
+                    <div>
+                        <h3 class="text-xs sm:text-sm font-bold text-slate-800 uppercase tracking-wider">2. 전체 잔짐(박스·바구니) 통합 집계 현황</h3>
+                        <p class="text-[10px] text-slate-500">모든 공간의 단프라 박스, 주방 바구니, 아이스박스 등 전체 물량 합산</p>
+                    </div>
+                    <span id="inv-clutter-total-badge" class="text-[10px] text-amber-800 bg-amber-100 px-2 py-0.5 rounded font-bold">총 0개 (0 CBM)</span>
+                </div>
+                <div class="border border-amber-200 bg-amber-50/40 rounded-xl p-3 sm:p-4">
+                    <div id="inv-clutter-unified-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 text-xs">
+                        <!-- Dynamically populated consolidated clutter list across all rooms -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section 3: 견적 산출 금액 내역 -->
+            <div class="space-y-3 print-break-inside-avoid">
+                <h3 class="text-xs sm:text-sm font-bold text-slate-800 uppercase tracking-wider border-l-4 border-indigo-600 pl-2">3. 견적 산출 금액 내역</h3>
                 <div class="border border-slate-200 rounded-xl overflow-x-auto">
                     <table class="w-full text-left text-xs min-w-[320px]">
                         <thead class="bg-slate-100 text-slate-700 font-bold border-b border-slate-200">
@@ -757,7 +776,7 @@
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
                 </button>
             </div>
-            <p class="text-xs text-slate-600">이삿짐 내역과 공간별 배치, 평수 규모, 생활 밀도 계수 및 예상 비용을 저장합니다.</p>
+            <p class="text-xs text-slate-600">이삿짐 내역과 공간별 가전·가구 배치, 전체 잔짐 집계, 평수 규모 및 예상 비용을 저장합니다.</p>
             <div>
                 <label class="block font-semibold text-slate-700 text-xs mb-1">견적 제목 (예: 신림동 원룸 이사 / 역삼 32평 이사)</label>
                 <input type="text" id="save-quote-title-input" placeholder="견적 제목 입력" class="w-full border border-slate-300 rounded-xl p-2.5 text-xs focus:ring-2 focus:ring-indigo-500 focus:outline-none">
@@ -932,7 +951,7 @@
             closeApiKeyModal();
         };
 
-        // v7.3 핵심 기능: 주거 형태 및 평수 규모 선택 상태 관리
+        // 주거 형태 및 평수 규모 선택 상태 관리
         let currentHousingScale = 'medium'; // 'oneroom', 'small', 'medium', 'large'
         const HOUSING_SCALE_CONFIG = {
             oneroom: {
@@ -1012,7 +1031,7 @@
             document.getElementById('space-tip-text').innerHTML = config.tip;
         };
 
-        // 전략 4: 생활 밀도(살림살이 성향) 계수
+        // 생활 밀도(살림살이 성향) 계수
         let currentLivingDensity = 1.0;
         window.setLivingDensity = function(multiplier) {
             currentLivingDensity = multiplier;
@@ -1046,7 +1065,7 @@
             recalculateTotals(false);
         };
 
-        // 전략 5: 피드백 루프 모달
+        // 피드백 루프 모달
         window.openFeedbackModal = function() {
             const history = JSON.parse(localStorage.getItem('gabong_clutter_feedback') || '[]');
             const container = document.getElementById('feedback-history-container');
@@ -1079,7 +1098,7 @@
             showModal("피드백 반영 완료", "실제 사용량 피드백이 안전하게 기록되었습니다. 다음 견적 시 정밀 오차 보정에 활용됩니다.");
         };
 
-        // Invoice Modal Logic
+        // v7.7: Invoice Modal Logic (공간별 가전·가구 전담 & 전체 잔짐 통합 집계)
         window.openInvoiceModal = function() {
             document.getElementById('invoice-date').innerText = new Date().toLocaleDateString();
             document.getElementById('inv-scale-desc').innerText = HOUSING_SCALE_CONFIG[currentHousingScale].label;
@@ -1094,34 +1113,31 @@
             document.getElementById('inv-total-labor').innerText = `남 ${manCount}명 / 여 ${womanCount}명`;
             document.getElementById('inv-final-cost').innerText = finalCost;
 
+            // 1. 공간(방)별 가전·가구 전담 렌더링 (잔짐은 여기서 제외)
             const spacesBreakdownContainer = document.getElementById('inv-spaces-breakdown');
             spacesBreakdownContainer.innerHTML = '';
 
-            const roomItemsMap = {};
-            const categories = [
+            const roomBigItemsMap = {};
+            spaces.forEach(s => {
+                roomBigItemsMap[s.name] = [];
+            });
+            if (!roomBigItemsMap['공통/기타']) roomBigItemsMap['공통/기타'] = [];
+
+            const majorCategories = [
                 { key: 'appliances', label: '가전', color: 'text-purple-600 bg-purple-50' },
-                { key: 'furniture', label: '가구·매트', color: 'text-blue-600 bg-blue-50' },
-                { key: 'clutterAndBoxes', label: '잔짐', color: 'text-amber-700 bg-amber-50' }
+                { key: 'furniture', label: '가구·매트', color: 'text-blue-600 bg-blue-50' }
             ];
 
-            spaces.forEach(s => {
-                roomItemsMap[s.name] = [];
-            });
-            if (!roomItemsMap['공통/기타']) roomItemsMap['공통/기타'] = [];
-
-            categories.forEach(cat => {
+            majorCategories.forEach(cat => {
                 const items = currentAnalysisData[cat.key] || [];
                 items.forEach(item => {
                     const spaceName = item.space || '공통/기타';
-                    if (!roomItemsMap[spaceName]) roomItemsMap[spaceName] = [];
+                    if (!roomBigItemsMap[spaceName]) roomBigItemsMap[spaceName] = [];
                     const name = item.name;
-                    let cbm = (cat.key === 'clutterAndBoxes' ? (getStrictBoxCbm(name) || item.cbm) : (getSpecialApplianceCbm(name) || getSpecialFurnitureCbm(name) || item.cbm));
-                    if (cat.key === 'clutterAndBoxes') {
-                        cbm = cbm * currentLivingDensity;
-                    }
+                    let cbm = (cat.key === 'appliances' ? (getSpecialApplianceCbm(name) || item.cbm) : (getSpecialFurnitureCbm(name) || item.cbm));
                     const totCbm = Math.round(cbm * item.count * 1000) / 1000;
                     
-                    roomItemsMap[spaceName].push({
+                    roomBigItemsMap[spaceName].push({
                         catLabel: cat.label,
                         catColor: cat.color,
                         name: name,
@@ -1132,8 +1148,8 @@
             });
 
             let activeRoomCount = 0;
-            Object.keys(roomItemsMap).forEach(roomName => {
-                const items = roomItemsMap[roomName];
+            Object.keys(roomBigItemsMap).forEach(roomName => {
+                const items = roomBigItemsMap[roomName];
                 if (items && items.length > 0) {
                     activeRoomCount++;
                     const roomCard = document.createElement('div');
@@ -1173,9 +1189,59 @@
             });
 
             if (activeRoomCount === 0) {
-                spacesBreakdownContainer.innerHTML = `<div class="col-span-2 p-4 text-center text-slate-400 text-xs italic bg-slate-50 rounded-xl border border-dashed border-slate-200">배치된 공간별 이삿짐 내역이 없습니다.</div>`;
+                spacesBreakdownContainer.innerHTML = `<div class="col-span-3 p-4 text-center text-slate-400 text-xs italic bg-slate-50 rounded-xl border border-dashed border-slate-200">배치된 가구·가전 품목이 없습니다.</div>`;
             }
 
+            // 2. 전체 잔짐(박스·바구니) 통합 합산 집계 렌더링
+            const clutterUnifiedContainer = document.getElementById('inv-clutter-unified-grid');
+            clutterUnifiedContainer.innerHTML = '';
+
+            const clutterMap = {};
+            let totalClutterBoxesCount = 0;
+            let totalClutterCbmSum = 0;
+
+            const clutterList = currentAnalysisData.clutterAndBoxes || [];
+            clutterList.forEach(item => {
+                const name = item.name;
+                const unitCbm = (getStrictBoxCbm(name) || item.cbm) * currentLivingDensity;
+                const count = item.count || 1;
+                const totCbm = unitCbm * count;
+
+                if (!clutterMap[name]) {
+                    clutterMap[name] = { name: name, count: 0, cbmSum: 0 };
+                }
+                clutterMap[name].count += count;
+                clutterMap[name].cbmSum += totCbm;
+                totalClutterBoxesCount += count;
+                totalClutterCbmSum += totCbm;
+            });
+
+            totalClutterCbmSum = Math.round(totalClutterCbmSum * 1000) / 1000;
+            document.getElementById('inv-clutter-total-badge').innerText = `총 ${totalClutterBoxesCount}개 (${totalClutterCbmSum} CBM)`;
+
+            const clutterEntries = Object.values(clutterMap);
+            if (clutterEntries.length === 0) {
+                clutterUnifiedContainer.innerHTML = `<div class="col-span-3 text-slate-400 italic text-center py-2">등록된 잔짐 내역이 없습니다.</div>`;
+            } else {
+                clutterEntries.forEach(entry => {
+                    const rowDiv = document.createElement('div');
+                    rowDiv.className = 'bg-white p-2.5 rounded-lg border border-amber-200/80 flex items-center justify-between shadow-xs';
+                    const cbmRounded = Math.round(entry.cbmSum * 1000) / 1000;
+                    rowDiv.innerHTML = `
+                        <div class="flex items-center space-x-1.5 truncate">
+                            <span class="w-1.5 h-1.5 rounded-full bg-amber-500 shrink-0"></span>
+                            <span class="font-bold text-slate-800 truncate">${entry.name}</span>
+                        </div>
+                        <div class="flex items-center space-x-1.5 shrink-0">
+                            <span class="font-extrabold text-amber-700 bg-amber-50 px-2 py-0.5 rounded text-[11px]">${entry.count}개</span>
+                            <span class="text-[10px] text-slate-400">(${cbmRounded}m³)</span>
+                        </div>
+                    `;
+                    clutterUnifiedContainer.appendChild(rowDiv);
+                });
+            }
+
+            // 3. 견적 산출 금액 내역
             const costsTbody = document.getElementById('inv-costs-tbody');
             costsTbody.innerHTML = '';
 
@@ -1296,7 +1362,7 @@
             const densityLabel = currentLivingDensity === 0.75 ? "미니멀" : (currentLivingDensity === 1.25 ? "맥시멀" : "표준");
             const scaleLabel = HOUSING_SCALE_CONFIG[currentHousingScale].label;
 
-            const shareText = `[갑봉이 AI 스마트 이사 견적서]\n\n🏠 평형규모: ${scaleLabel}\n📦 총 예상 부피: ${cbm} (살림밀도: ${densityLabel})\n🚚 필요 차량: 1톤 트럭 ${truckCount}대\n👨‍🔧 작업 인원: 남 ${manCount}명 / 여 ${womanCount}명${workMethodStr}\n💰 총 예상 비용: ${cost}\n\n* 견적서 보기에서 방(공간)별 상세 짐 배치 현황을 확인하실 수 있습니다.`;
+            const shareText = `[갑봉이 AI 스마트 이사 견적서]\n\n🏠 평형규모: ${scaleLabel}\n📦 총 예상 부피: ${cbm} (살림밀도: ${densityLabel})\n🚚 필요 차량: 1톤 트럭 ${truckCount}대\n👨‍🔧 작업 인원: 남 ${manCount}명 / 여 ${womanCount}명${workMethodStr}\n💰 총 예상 비용: ${cost}\n\n* 견적서 보기에서 방(공간)별 가전·가구 배치 및 전체 잔짐 통합 내역을 확인하실 수 있습니다.`;
             
             document.getElementById('share-text-data').value = shareText;
             document.getElementById('share-modal').classList.remove('hidden');
@@ -1728,7 +1794,6 @@
             const densityName = currentLivingDensity === 0.75 ? "미니멀 (짐 적음, 75%)" : (currentLivingDensity === 1.25 ? "맥시멀/수납가득 (수납 가득, 125%)" : "표준 (보통 가정집, 100%)");
             const scaleConfig = HOUSING_SCALE_CONFIG[currentHousingScale];
 
-            // v7.5: 편차 제로(결정론적) & 실물 증거 필수 규칙 주입
             const systemPrompt = `You are an elite, certified Korean professional moving master estimator.
 Your evaluation must be DETERMINISTIC, OBJECTIVE, FACTUAL, and COMPLETELY FREE OF HALLUCINATIONS.
 
@@ -1871,7 +1936,7 @@ When a TV screen is detected, calculate its exact screen size in INCHES based on
                         generationConfig: {
                             responseMimeType: "application/json",
                             responseSchema: strictJsonSchema,
-                            temperature: 0.0, // 완전 결정론적: 실행 시마다 동일한 픽셀 판독 결과 출력
+                            temperature: 0.0,
                             topP: 0.1
                         }
                     }),
@@ -2087,8 +2152,8 @@ When a TV screen is detected, calculate its exact screen size in INCHES based on
             if(document.getElementById('check-ladder-load').checked) extraCost += parseFloat(document.getElementById('input-ladder-cost-load').value)||0;
             if(document.getElementById('check-ladder-unload').checked) extraCost += parseFloat(document.getElementById('input-ladder-cost-unload').value)||0;
             
-            if(document.getElementById('check-stairs-load').checked) extraCost += parseFloat(document.getElementById('input-stairs-floor-load').value||2) * 20000;
-            if(document.getElementById('check-stairs-unload').checked) extraCost += parseFloat(document.getElementById('input-stairs-floor-unload').value||2) * 20000;
+            if(document.getElementById('check-stairs-load').checked) extraCost += parseFloat(document.getElementById('input-stairs-cost-load').value||50000);
+            if(document.getElementById('check-stairs-unload').checked) extraCost += parseFloat(document.getElementById('input-stairs-cost-unload').value||50000);
 
             if(document.getElementById('check-ac-demount').checked) extraCost += parseFloat(document.getElementById('input-ac-demount-cost').value)||0;
             if(document.getElementById('check-tv-extra').checked) extraCost += parseFloat(document.getElementById('input-tv-extra-cost').value)||0;
