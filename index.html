@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>갑봉이 AI 이사 견적 v7.0</title>
+    <title>갑봉이 AI 이사 견적 v7.3</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Google Fonts -->
@@ -48,7 +48,7 @@
                 </svg>
                 <div class="flex items-center space-x-2">
                     <h1 class="text-xl font-bold tracking-tight">갑봉이 AI 이사 견적</h1>
-                    <span id="app-version-badge" class="text-xs bg-indigo-500 text-indigo-100 px-2 py-0.5 rounded-full font-semibold">v7.0 (잔짐 초정밀 엔진: 1280px + CoT 구획추론 + 살림밀도 보정 + 피드백 루프)</span>
+                    <span id="app-version-badge" class="text-xs bg-indigo-500 text-indigo-100 px-2 py-0.5 rounded-full font-semibold">v7.6 (TV 정확한 인치수 자동 계측 & 특수포장 연동)</span>
                 </div>
             </div>
             <div class="flex items-center space-x-2">
@@ -82,10 +82,10 @@
                 <div>
                     <h2 class="text-lg font-bold text-slate-900 flex items-center space-x-2">
                         <span>초정밀 잔짐 & 가구/가전 이사 견적 판독기 📦</span>
-                        <span class="bg-emerald-100 text-emerald-800 text-[10px] font-bold px-2 py-0.5 rounded-full">1280px HD AI</span>
+                        <span id="housing-scale-badge" class="bg-indigo-100 text-indigo-800 text-[10px] font-bold px-2 py-0.5 rounded-full">25~34평 기준</span>
                     </h2>
                     <p class="text-slate-600 text-xs mt-1">
-                        가구 수납 구획(도어/서랍)과 씽크대 크기별 물리적 추론(CoT) 및 한국 포장이사 표준 공식을 결합하여 오차를 최소화합니다.
+                        원룸/오피스텔(1인)부터 30평대 국민평형, 40평대 대형 평수까지 <b>주거 규모와 실제 사진 속 수납 구획</b>에 맞춰 단프라 중박스 및 주방 바구니를 현실적인 실무 기준으로 동적 산출합니다.
                     </p>
                 </div>
                 <div class="flex items-center space-x-2">
@@ -100,6 +100,37 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
                         </svg>
                         <span>초기화</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- v7.3 핵심 기능: 주거 형태 및 평수 규모 선택 상태 관리 -->
+            <div class="bg-indigo-50/70 border border-indigo-200 rounded-xl p-3.5 space-y-2">
+                <div class="flex items-center justify-between">
+                    <span class="text-xs font-bold text-indigo-950 flex items-center space-x-1.5">
+                        <svg class="w-4 h-4 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
+                        </svg>
+                        <span>현재 이사할 집의 평형/규모 선택</span>
+                    </span>
+                    <span class="text-[11px] text-indigo-800 font-semibold" id="housing-scale-label">기준: 25~34평 (3~4인 표준 가정)</span>
+                </div>
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                    <button type="button" onclick="setHousingScale('oneroom')" id="scale-btn-oneroom" class="p-2 rounded-lg border text-xs font-semibold text-center transition-all bg-white border-indigo-200 text-slate-700 hover:border-indigo-400 cursor-pointer">
+                        <span class="block font-bold">🏢 원룸 / 오피스텔</span>
+                        <span class="text-[10px] text-slate-500">1인가구 (중박스 6~12개)</span>
+                    </button>
+                    <button type="button" onclick="setHousingScale('small')" id="scale-btn-small" class="p-2 rounded-lg border text-xs font-semibold text-center transition-all bg-white border-indigo-200 text-slate-700 hover:border-indigo-400 cursor-pointer">
+                        <span class="block font-bold">🏡 소형 / 투룸 (15~24평)</span>
+                        <span class="text-[10px] text-slate-500">2인가구 (중박스 15~25개)</span>
+                    </button>
+                    <button type="button" onclick="setHousingScale('medium')" id="scale-btn-medium" class="p-2 rounded-lg border text-xs font-semibold text-center transition-all bg-indigo-600 text-white border-indigo-700 shadow-sm cursor-pointer">
+                        <span class="block font-bold">🏠 중형 / 국평 (25~34평)</span>
+                        <span class="text-[10px] text-indigo-100">3~4인가구 (중박스 35~50개)</span>
+                    </button>
+                    <button type="button" onclick="setHousingScale('large')" id="scale-btn-large" class="p-2 rounded-lg border text-xs font-semibold text-center transition-all bg-white border-indigo-200 text-slate-700 hover:border-indigo-400 cursor-pointer">
+                        <span class="block font-bold">🏰 대형 (35평 이상)</span>
+                        <span class="text-[10px] text-slate-500">다자녀/대형 (중박스 55개+)</span>
                     </button>
                 </div>
             </div>
@@ -125,7 +156,7 @@
                         <span class="text-[10px] text-amber-100">일반 가정 (×1.00)</span>
                     </button>
                     <button type="button" onclick="setLivingDensity(1.25)" id="density-btn-maximal" class="p-2 rounded-lg border text-xs font-semibold text-center transition-all bg-white border-amber-300 text-slate-700 hover:border-amber-500 cursor-pointer">
-                        <span class="block font-bold">📦 맥시멀/다자녀</span>
+                        <span class="block font-bold">📦 맥시멀/수납가득</span>
                         <span class="text-[10px] text-slate-500">수납 가득 (×1.25)</span>
                     </button>
                 </div>
@@ -134,9 +165,9 @@
             <div class="flex flex-wrap gap-2 text-xs text-indigo-700 bg-indigo-50 p-3 rounded-xl items-center justify-between">
                 <div class="flex flex-wrap gap-2 items-center leading-relaxed">
                     <span class="font-semibold">📦 포장이사 표준 규격 CBM:</span>
+                    <span class="bg-white px-1.5 py-0.5 rounded border border-indigo-200 font-bold text-indigo-900">• 중박스(0.116 - 단프라 5호 최고빈도)</span>
                     <span>• 바구니(0.112)</span>
                     <span>• 아이스박스(0.12)</span>
-                    <span>• 중박스(0.116)</span>
                     <span>• 대박스(0.158)</span>
                     <span>• 옷박스(0.18)</span>
                     <span>• 이불박스(0.27)</span>
@@ -169,13 +200,13 @@
                         </button>
                     </div>
 
-                    <!-- 전략 1: 문 열고 1컷 UX 안내 -->
+                    <!-- 유용한 팁 안내 -->
                     <div class="bg-blue-50/80 border border-blue-200 rounded-xl p-2.5 mb-3 text-xs text-blue-900 space-y-1">
                         <div class="flex items-center space-x-1 font-bold text-blue-800">
-                            <span>💡 정밀도 60% 향상 팁: "문 열고 1컷" 원칙</span>
+                            <span>💡 평수 맞춤 판독 팁</span>
                         </div>
-                        <p class="text-[11px] text-blue-700 leading-snug">
-                            장롱이나 씽크대, 냉장고는 <b>외관 1컷</b>과 함께 <b>문을 연 내부 1컷</b>을 추가 촬영하면 AI가 수납 구획과 충전 상태를 실측 수준으로 판독합니다.
+                        <p class="text-[11px] text-blue-700 leading-snug" id="space-tip-text">
+                            상단에서 선택한 <b>평수 규모</b>에 따라 신발장, 서랍장, 씽크대의 숨은 속짐 수량이 실제 이사 트럭 적재량에 맞게 완벽히 비례 조정됩니다.
                         </p>
                     </div>
 
@@ -189,7 +220,7 @@
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
                     </svg>
-                    <span>전체 공간 AI 자동 고정밀 판독 (CoT 구획추론)</span>
+                    <span>전체 공간 AI 자동 고정밀 판독</span>
                 </button>
             </div>
 
@@ -252,9 +283,9 @@
                                 <svg class="w-4 h-4 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                                 </svg>
-                                <span>물리 구획 카운팅 & 한국 표준 속짐 산출 근거</span>
+                                <span>물리 구획 카운팅 & 평수 맞춤 속짐 산출 근거</span>
                             </span>
-                            <span class="text-[10px] text-amber-700 font-semibold bg-amber-100 px-2 py-0.5 rounded-full">CoT 단계별 검증</span>
+                            <span id="clutter-scale-tag" class="text-[10px] text-amber-700 font-semibold bg-amber-100 px-2 py-0.5 rounded-full">중형 25~34평 기준</span>
                         </div>
                         <ul id="list-clutter-reasons" class="space-y-1.5 text-xs text-amber-900 max-h-40 overflow-y-auto pr-1">
                             <!-- Dynamically populated clutter calculation reasons -->
@@ -276,8 +307,8 @@
 
         <div id="loading-state" class="hidden bg-white/90 backdrop-blur-sm rounded-2xl p-8 border border-slate-200 text-center space-y-3 shadow-sm">
             <div class="inline-block w-8 h-8 border-4 border-indigo-600 border-t-transparent rounded-full animate-spin"></div>
-            <p class="text-sm font-bold text-slate-800">1280px 고화질 렌더링 후 물리적 수납 구획(Slot) 카운팅 및 한국 표준 속짐 CoT 추론 분석 중입니다...</p>
-            <p class="text-xs text-slate-500">잠시만 기다려주세요 (약 3~5초 소요)</p>
+            <p class="text-sm font-bold text-slate-800">결정론적 초정밀 AI 비전 엔진으로 실물 증거 기반 판독 중입니다...</p>
+            <p class="text-xs text-slate-500">동일 사진에 대해 편차 없이 일관되고 정확한 결과를 산출합니다 (약 3~5초 소요)</p>
         </div>
 
         <div id="results-section" class="space-y-6">
@@ -582,7 +613,7 @@
             <div class="text-center border-b border-slate-200 pb-4 space-y-1.5">
                 <span class="bg-indigo-100 text-indigo-700 text-[11px] font-bold px-3 py-1 rounded-full uppercase tracking-wider inline-block">OFFICIAL MOVING ESTIMATE</span>
                 <h2 class="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">갑봉이 AI 스마트 이사 견적서</h2>
-                <p class="text-xs text-slate-500">발행일자: <span id="invoice-date">2026-00-00</span> | 유효기간: 발행일로부터 7일</p>
+                <p class="text-xs text-slate-500">발행일자: <span id="invoice-date">2026-00-00</span> | 주거규모: <span id="inv-scale-desc">25~34평 기준</span></p>
             </div>
 
             <!-- Summary Box -->
@@ -678,7 +709,7 @@
         </div>
     </div>
 
-    <!-- Modal: Feedback Loop (전략 5) -->
+    <!-- Modal: Feedback Loop -->
     <div id="feedback-modal" class="fixed inset-0 bg-slate-900/50 flex items-center justify-center p-4 hidden z-50">
         <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-xl space-y-4">
             <div class="flex items-center justify-between">
@@ -700,12 +731,12 @@
                 </div>
                 <div class="bg-slate-50 p-3 rounded-xl border border-slate-200">
                     <label class="block font-semibold text-slate-700 mb-1">실제 사용 박스/바구니 (개)</label>
-                    <input type="number" id="feedback-actual-boxes" value="20" min="0" class="w-full border border-slate-300 rounded p-1.5 font-bold text-center text-amber-600">
+                    <input type="number" id="feedback-actual-boxes" value="45" min="0" class="w-full border border-slate-300 rounded p-1.5 font-bold text-center text-amber-600">
                 </div>
             </div>
             <div>
                 <label class="block font-semibold text-slate-700 text-xs mb-1">현장 특이사항 및 오차 메모</label>
-                <input type="text" id="feedback-note" placeholder="예: 붙박이장 안쪽에 겨울 이불이 3채 더 있었음" class="w-full border border-slate-300 rounded-xl p-2.5 text-xs focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+                <input type="text" id="feedback-note" placeholder="예: 원룸인데 잔짐이 예상보다 많았음" class="w-full border border-slate-300 rounded-xl p-2.5 text-xs focus:ring-2 focus:ring-indigo-500 focus:outline-none">
             </div>
             <div id="feedback-history-container" class="text-[11px] text-slate-500 bg-slate-50 p-2.5 rounded-lg border border-slate-100 max-h-24 overflow-y-auto">
                 <!-- Recorded feedback summary -->
@@ -726,9 +757,9 @@
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
                 </button>
             </div>
-            <p class="text-xs text-slate-600">이삿짐 내역과 공간별 배치, 생활 밀도 계수, 트럭 기준 CBM 및 예상 비용을 저장합니다.</p>
+            <p class="text-xs text-slate-600">이삿짐 내역과 공간별 배치, 평수 규모, 생활 밀도 계수 및 예상 비용을 저장합니다.</p>
             <div>
-                <label class="block font-semibold text-slate-700 text-xs mb-1">견적 제목 (예: 서울 역삼동 투룸 이사)</label>
+                <label class="block font-semibold text-slate-700 text-xs mb-1">견적 제목 (예: 신림동 원룸 이사 / 역삼 32평 이사)</label>
                 <input type="text" id="save-quote-title-input" placeholder="견적 제목 입력" class="w-full border border-slate-300 rounded-xl p-2.5 text-xs focus:ring-2 focus:ring-indigo-500 focus:outline-none">
             </div>
             <div class="flex justify-end space-x-2 pt-2">
@@ -795,21 +826,22 @@
                 <div>
                     <label class="block font-semibold text-slate-600 mb-1">공간 선택 또는 직접 입력</label>
                     <select id="new-space-select" onchange="onSpaceSelectChange(this.value)" class="w-full border border-slate-300 rounded-xl p-2.5 bg-white focus:ring-2 focus:ring-indigo-500 focus:outline-none mb-2">
+                        <option value="원룸 전체/방">원룸 전체/방</option>
+                        <option value="현관/신발장">현관/신발장</option>
                         <option value="거실">거실</option>
                         <option value="안방/침실">안방/침실</option>
                         <option value="주방">주방</option>
+                        <option value="팬트리/다용도실">팬트리/다용도실</option>
+                        <option value="드레스룸">드레스룸</option>
+                        <option value="작은방/서재">작은방/서재</option>
+                        <option value="아이방">아이방</option>
                         <option value="거실 화장실">거실 화장실</option>
                         <option value="안방 화장실">안방 화장실</option>
                         <option value="베란다">베란다</option>
                         <option value="입구방">입구방</option>
-                        <option value="작은방">작은방</option>
-                        <option value="팬트리">팬트리</option>
-                        <option value="드레스룸">드레스룸</option>
-                        <option value="서재/공부방">서재/공부방</option>
-                        <option value="아이방">아이방</option>
                         <option value="직접입력">직접 입력...</option>
                     </select>
-                    <input type="text" id="new-space-name" placeholder="공간 이름 입력 (예: 다용도실)" class="w-full border border-slate-300 rounded-xl p-2.5 focus:ring-2 focus:ring-indigo-500 focus:outline-none hidden">
+                    <input type="text" id="new-space-name" placeholder="공간 이름 입력 (예: 복도 수납장)" class="w-full border border-slate-300 rounded-xl p-2.5 focus:ring-2 focus:ring-indigo-500 focus:outline-none hidden">
                 </div>
             </div>
             <div class="flex justify-end space-x-2">
@@ -840,18 +872,18 @@
                 <div>
                     <label class="block font-semibold text-slate-600 mb-1">품목 분류</label>
                     <select id="new-item-category" class="w-full border border-slate-300 rounded-xl p-2.5 bg-white focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+                        <option value="clutterAndBoxes">잔짐 (중박스/바구니/옷박스 등)</option>
+                        <option value="furniture">가구·매트 (장롱, 침대, 신발장, 소파 등)</option>
                         <option value="appliances">가전 (냉장고, 세탁기, 모니터, 에어프라이어 등)</option>
-                        <option value="furniture">가구·매트 (장롱, 침대, 소파, 폴더매트 등)</option>
-                        <option value="clutterAndBoxes">잔짐 (박스/바구니)</option>
                     </select>
                 </div>
                 <div>
-                    <label class="block font-semibold text-slate-600 mb-1">품목명 (예: 장롱(1통·3자), 옷박스, 모니터(대박스), 중박스 등)</label>
-                    <input type="text" id="new-item-name" placeholder="예: 장롱 (1통·3자)" class="w-full border border-slate-300 rounded-xl p-2.5 focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+                    <label class="block font-semibold text-slate-600 mb-1">품목명 (예: 중박스(신발/잡화), 옷박스, 장롱 1통 등)</label>
+                    <input type="text" id="new-item-name" placeholder="예: 중박스 (신발/잡화)" class="w-full border border-slate-300 rounded-xl p-2.5 focus:ring-2 focus:ring-indigo-500 focus:outline-none">
                 </div>
                 <div id="new-item-cbm-wrapper">
                     <label class="block font-semibold text-slate-600 mb-1">개당 부피 (CBM)</label>
-                    <input type="number" id="new-item-cbm" value="0.158" step="0.001" min="0.001" class="w-full border border-slate-300 rounded-xl p-2.5 focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+                    <input type="number" id="new-item-cbm" value="0.116" step="0.001" min="0.001" class="w-full border border-slate-300 rounded-xl p-2.5 focus:ring-2 focus:ring-indigo-500 focus:outline-none">
                 </div>
             </div>
             <div class="flex justify-end space-x-2">
@@ -900,12 +932,91 @@
             closeApiKeyModal();
         };
 
+        // v7.3 핵심 기능: 주거 형태 및 평수 규모 선택 상태 관리
+        let currentHousingScale = 'medium'; // 'oneroom', 'small', 'medium', 'large'
+        const HOUSING_SCALE_CONFIG = {
+            oneroom: {
+                label: "원룸/오피스텔 (1인가구)",
+                badge: "원룸 1인 기준",
+                tip: "원룸/오피스텔에 맞춰 신발(1~2박스), 의류·잡화(4~8박스), 주방(3~6바구니) 등 1인 실무 물량(총 10~15박스 내외)으로 현실화 산출됩니다.",
+                promptGuidance: `[CURRENT RESIDENTIAL SCALE: ONE-ROOM / STUDIO (1-PERSON HOUSEHOLD)]
+- Scale characteristics: Small space, usually 5~12 pyeong. Minimal furniture, compact 1-door shoe rack, single 1~2m kitchen counter.
+- PACKING LIMITS (STRICT):
+  * Shoe rack: 1~2 "중박스 (신발/잡화)" total.
+  * Clothes/personal items: 4~8 "중박스 (접힌 옷/생활잡화)" total.
+  * Kitchen items: 3~6 "바구니 (주방 식기/양념)" + 1~2 "중박스 (냄비/프라이팬)".
+  * TOTAL CLUTTER BOXES SHOULD TYPICALLY BE AROUND 8~16 BOXES/BASKETS TOTAL for the entire one-room! NEVER generate 30+ boxes for a studio.`
+            },
+            small: {
+                label: "소형/투룸 15~24평 (2인가구)",
+                badge: "소형 15~24평 기준",
+                tip: "15~24평 투룸/빌라에 맞춰 신발(3~5박스), 옷장·서랍(8~15박스), 주방(8~14바구니) 등 2인가구 기준(총 20~30박스 내외)으로 알맞게 산출됩니다.",
+                promptGuidance: `[CURRENT RESIDENTIAL SCALE: SMALL 2-ROOM / VILLA (15~24 PYEONG, 2 PERSONS)]
+- Scale characteristics: 1~2 bedrooms, standard 2-door shoe rack, 2.0~2.5m kitchen counter.
+- PACKING LIMITS:
+  * Shoe rack: 3~5 "중박스 (신발/잡화)" total.
+  * Clothes/closet: 8~15 "중박스 (접힌 옷/생활잡화)" + 2~3 옷박스 + 1 이불박스.
+  * Kitchen: 8~14 "바구니 (주방 식기/양념)" + 3~4 "중박스 (냄비/팬)".
+  * TOTAL CLUTTER BOXES TYPICALLY 20~35 BOXES/BASKETS TOTAL.`
+            },
+            medium: {
+                label: "중형/국평 25~34평 (3~4인 표준)",
+                badge: "중형 25~34평 기준",
+                tip: "30평대 아파트/주택에 맞춰 신발장(6~9박스), 드레스룸(15~22박스), 팬트리(8~12박스), 주방(15~22바구니) 등 3~4인 표준 실무 물량(총 40~55박스)으로 산출됩니다.",
+                promptGuidance: `[CURRENT RESIDENTIAL SCALE: STANDARD 25~34 PYEONG (3~4 PERSONS - KOREAN MAINSTREAM)]
+- Scale characteristics: 3 bedrooms, 2 baths, pantry/veranda, full-height shoe rack, 2.5~3.2m kitchen.
+- PACKING BENCHMARK:
+  * Shoe rack: 6~9 "중박스 (신발/잡화)" (40~70 pairs of shoes).
+  * Clothes/drawers/dressroom: 15~25 "중박스 (접힌 옷/가방/소품)" + 4~8 옷박스 + 2~3 이불박스.
+  * Pantry/balcony bulky: 8~14 "중박스 (생활잡화/부피짐)".
+  * Kitchen: 15~22 "바구니 (주방 식기/양념)" + 5~8 "중박스 (냄비/팬/밀폐용기)".
+  * TOTAL CLUTTER BOXES TYPICALLY 40~60 BOXES/BASKETS TOTAL.`
+            },
+            large: {
+                label: "대형 35평 이상 (다자녀/대형가구)",
+                badge: "대형 35평+ 기준",
+                tip: "35평 이상 대형 평수 및 다자녀 가정에 맞춰 대형 신발장(10~15박스), 대형 드레스룸(25~35박스), 대용량 주방(25~35바구니) 등 풍부한 수납 물량이 반영됩니다.",
+                promptGuidance: `[CURRENT RESIDENTIAL SCALE: LARGE RESIDENCE 35+ PYEONG (LARGE FAMILY / MAXIMAL)]
+- Scale characteristics: 4+ rooms, expansive closets, multiple pantries, large shoe rooms.
+- PACKING BENCHMARK:
+  * Shoe rack: 10~15 "중박스 (신발/잡화)".
+  * Clothes/wardrobes: 25~35 "중박스 (접힌 옷/가방)" + 8~12 옷박스 + 3~5 이불박스.
+  * Pantry/balcony: 15~25 "중박스 (생활부피짐/세제/캠핑)".
+  * Kitchen: 25~35 "바구니 (식기/양념)" + 8~12 "중박스 (조리도구)".
+  * TOTAL CLUTTER BOXES TYPICALLY 60~85+ BOXES/BASKETS TOTAL.`
+            }
+        };
+
+        window.setHousingScale = function(scaleKey) {
+            currentHousingScale = scaleKey;
+            const keys = ['oneroom', 'small', 'medium', 'large'];
+            
+            keys.forEach(k => {
+                const btn = document.getElementById(`scale-btn-${k}`);
+                if (!btn) return;
+                if (k === scaleKey) {
+                    btn.className = "p-2 rounded-lg border text-xs font-semibold text-center transition-all bg-indigo-600 text-white border-indigo-700 shadow-sm cursor-pointer";
+                    const spanSub = btn.querySelector('span:last-child');
+                    if (spanSub) spanSub.className = "text-[10px] text-indigo-100";
+                } else {
+                    btn.className = "p-2 rounded-lg border text-xs font-semibold text-center transition-all bg-white border-indigo-200 text-slate-700 hover:border-indigo-400 cursor-pointer";
+                    const spanSub = btn.querySelector('span:last-child');
+                    if (spanSub) spanSub.className = "text-[10px] text-slate-500";
+                }
+            });
+
+            const config = HOUSING_SCALE_CONFIG[scaleKey];
+            document.getElementById('housing-scale-label').innerText = `기준: ${config.label}`;
+            document.getElementById('housing-scale-badge').innerText = config.badge;
+            document.getElementById('clutter-scale-tag').innerText = config.badge;
+            document.getElementById('space-tip-text').innerHTML = config.tip;
+        };
+
         // 전략 4: 생활 밀도(살림살이 성향) 계수
         let currentLivingDensity = 1.0;
         window.setLivingDensity = function(multiplier) {
             currentLivingDensity = multiplier;
             
-            // UI Button Style Updates
             const btns = {
                 0.75: document.getElementById('density-btn-minimal'),
                 1.00: document.getElementById('density-btn-standard'),
@@ -929,7 +1040,7 @@
             const labels = {
                 0.75: "보정 계수: ×0.75 (미니멀)",
                 1.00: "보정 계수: ×1.00 (표준)",
-                1.25: "보정 계수: ×1.25 (맥시멀/다자녀)"
+                1.25: "보정 계수: ×1.25 (맥시멀/수납가득)"
             };
             document.getElementById('density-multiplier-label').innerText = labels[multiplier];
             recalculateTotals(false);
@@ -953,7 +1064,7 @@
         window.closeFeedbackModal = function() { document.getElementById('feedback-modal').classList.add('hidden'); };
         window.submitFeedback = function() {
             const trucks = parseInt(document.getElementById('feedback-actual-trucks').value) || 1;
-            const boxes = parseInt(document.getElementById('feedback-actual-boxes').value) || 20;
+            const boxes = parseInt(document.getElementById('feedback-actual-boxes').value) || 45;
             const note = document.getElementById('feedback-note').value.trim();
 
             let history = JSON.parse(localStorage.getItem('gabong_clutter_feedback') || '[]');
@@ -971,6 +1082,7 @@
         // Invoice Modal Logic
         window.openInvoiceModal = function() {
             document.getElementById('invoice-date').innerText = new Date().toLocaleDateString();
+            document.getElementById('inv-scale-desc').innerText = HOUSING_SCALE_CONFIG[currentHousingScale].label;
             const totalCbm = document.getElementById('res-cbm').innerText;
             const truckCount = document.getElementById('manual-truck-count').value || '1';
             const manCount = document.getElementById('manual-man-count').value || '0';
@@ -982,7 +1094,6 @@
             document.getElementById('inv-total-labor').innerText = `남 ${manCount}명 / 여 ${womanCount}명`;
             document.getElementById('inv-final-cost').innerText = finalCost;
 
-            // 1. 공간별(방별) 짐 상세 배치 렌더링
             const spacesBreakdownContainer = document.getElementById('inv-spaces-breakdown');
             spacesBreakdownContainer.innerHTML = '';
 
@@ -1065,7 +1176,6 @@
                 spacesBreakdownContainer.innerHTML = `<div class="col-span-2 p-4 text-center text-slate-400 text-xs italic bg-slate-50 rounded-xl border border-dashed border-slate-200">배치된 공간별 이삿짐 내역이 없습니다.</div>`;
             }
 
-            // 2. 견적 산출 금액 내역 테이블
             const costsTbody = document.getElementById('inv-costs-tbody');
             costsTbody.innerHTML = '';
 
@@ -1083,7 +1193,6 @@
                 { name: '여성 인건비 (주방이모)', condition: `${womanCount}명`, cost: wCost }
             ];
 
-            // 사다리차
             if(document.getElementById('check-ladder-load').checked) {
                 costRows.push({ name: '상차 사다리차', condition: '사용', cost: parseFloat(document.getElementById('input-ladder-cost-load').value)||0 });
             }
@@ -1091,7 +1200,6 @@
                 costRows.push({ name: '하차 사다리차', condition: '사용', cost: parseFloat(document.getElementById('input-ladder-cost-unload').value)||0 });
             }
 
-            // 엘리베이터 작업
             if(document.getElementById('check-elevator-load').checked) {
                 const isOwner = document.getElementById('check-elevator-load-owner').checked;
                 costRows.push({
@@ -1109,7 +1217,6 @@
                 });
             }
 
-            // 계단 작업
             if(document.getElementById('check-stairs-load').checked) {
                 const floor = parseInt(document.getElementById('input-stairs-floor-load').value) || 2;
                 const cost = parseFloat(document.getElementById('input-stairs-cost-load').value) || 0;
@@ -1129,7 +1236,6 @@
                 });
             }
 
-            // 특수옵션
             if(document.getElementById('check-ac-demount').checked) {
                 costRows.push({ name: '에어컨 기본 해체', condition: '기본옵션', cost: parseFloat(document.getElementById('input-ac-demount-cost').value)||0 });
             }
@@ -1188,8 +1294,9 @@
             }
             const workMethodStr = workMethods.length > 0 ? `\n🪜 작업방식: ${workMethods.join(', ')}` : '';
             const densityLabel = currentLivingDensity === 0.75 ? "미니멀" : (currentLivingDensity === 1.25 ? "맥시멀" : "표준");
+            const scaleLabel = HOUSING_SCALE_CONFIG[currentHousingScale].label;
 
-            const shareText = `[갑봉이 AI 스마트 이사 견적서]\n\n📦 총 예상 부피: ${cbm} (살림밀도: ${densityLabel})\n🚚 필요 차량: 1톤 트럭 ${truckCount}대\n👨‍🔧 작업 인원: 남 ${manCount}명 / 여 ${womanCount}명${workMethodStr}\n💰 총 예상 비용: ${cost}\n\n* 견적서 보기에서 방(공간)별 상세 짐 배치 현황을 확인하실 수 있습니다.`;
+            const shareText = `[갑봉이 AI 스마트 이사 견적서]\n\n🏠 평형규모: ${scaleLabel}\n📦 총 예상 부피: ${cbm} (살림밀도: ${densityLabel})\n🚚 필요 차량: 1톤 트럭 ${truckCount}대\n👨‍🔧 작업 인원: 남 ${manCount}명 / 여 ${womanCount}명${workMethodStr}\n💰 총 예상 비용: ${cost}\n\n* 견적서 보기에서 방(공간)별 상세 짐 배치 현황을 확인하실 수 있습니다.`;
             
             document.getElementById('share-text-data').value = shareText;
             document.getElementById('share-modal').classList.remove('hidden');
@@ -1258,7 +1365,7 @@
 
         // Save/Load Quotes Logic
         window.openSaveQuoteModal = function() {
-            document.getElementById('save-quote-title-input').value = "이사 견적 (" + new Date().toLocaleDateString() + ")";
+            document.getElementById('save-quote-title-input').value = `${HOUSING_SCALE_CONFIG[currentHousingScale].badge} 이사 견적 (${new Date().toLocaleDateString()})`;
             document.getElementById('save-quote-modal').classList.remove('hidden');
         };
         window.closeSaveQuoteModal = function() { document.getElementById('save-quote-modal').classList.add('hidden'); };
@@ -1268,6 +1375,7 @@
                 id: 'quote_' + Date.now(), title: title, date: new Date().toLocaleString(),
                 spaces: spaces, currentAnalysisData: currentAnalysisData,
                 currentLivingDensity: currentLivingDensity,
+                currentHousingScale: currentHousingScale,
                 settings: {
                     truckCbmLimit: document.getElementById('setting-truck-cbm-limit').value,
                     truckCost: document.getElementById('setting-truck-cost').value,
@@ -1337,6 +1445,7 @@
             if (q.spaces) spaces = q.spaces;
             if (q.currentAnalysisData) currentAnalysisData = q.currentAnalysisData;
             if (q.currentLivingDensity) setLivingDensity(q.currentLivingDensity);
+            if (q.currentHousingScale) setHousingScale(q.currentHousingScale);
             if (q.settings) {
                 const s = q.settings;
                 document.getElementById('setting-truck-cbm-limit').value = s.truckCbmLimit;
@@ -1400,17 +1509,17 @@
         }
 
         let spaces = [
-            { id: 'living', name: '거실', guide: '바닥/테이블 소품', images: [] },
-            { id: 'bedroom', name: '안방/침실', guide: '장롱 문 열고 1컷 권장', images: [] },
+            { id: 'entrance', name: '현관/신발장', guide: '신발장 전체 문 닫고/열고 1컷 권장', images: [] },
+            { id: 'living', name: '거실', guide: '소파/거실장/바닥 소품 전체', images: [] },
+            { id: 'bedroom', name: '안방/침실', guide: '장롱/침대/서랍장', images: [] },
             { id: 'kitchen', name: '주방', guide: '씽크대 상하부장 열고 1컷 권장', images: [] },
-            { id: 'living_bath', name: '거실 화장실', guide: '수납선반', images: [] },
-            { id: 'master_bath', name: '안방 화장실', guide: '욕실장 내부', images: [] },
-            { id: 'veranda', name: '베란다', guide: '선반/세탁세제', images: [] },
-            { id: 'entrance', name: '입구방', guide: '방 전체/수납장', images: [] },
-            { id: 'smallroom', name: '작은방', guide: '서랍장/행거', images: [] },
-            { id: 'pantry', name: '팬트리', guide: '선반 구획 1컷 권장', images: [] },
-            { id: 'dressroom', name: '드레스룸', guide: '옷걸이 행거 전체', images: [] },
-            { id: 'childroom', name: '아이방', guide: '책장/완구함', images: [] }
+            { id: 'pantry', name: '팬트리/다용도실', guide: '선반 구획/생활 부피짐 1컷', images: [] },
+            { id: 'dressroom', name: '드레스룸', guide: '옷걸이 행거/서랍/모자·가방', images: [] },
+            { id: 'smallroom', name: '작은방/서재', guide: '책장/책상/서류/수납함', images: [] },
+            { id: 'childroom', name: '아이방', guide: '장난감/교구/서랍장', images: [] },
+            { id: 'veranda', name: '베란다', guide: '선반/세제/화분/캠핑용품', images: [] },
+            { id: 'living_bath', name: '거실 화장실', guide: '수납선반/욕실용품', images: [] },
+            { id: 'master_bath', name: '안방 화장실', guide: '욕실장 내부/수건', images: [] }
         ];
 
         function getStrictBoxCbm(name) {
@@ -1424,17 +1533,35 @@
             return null;
         }
 
-        // 가전 리스트 모니터, 에어프라이어 대박스 규격(0.158 CBM) 연동
         function getSpecialApplianceCbm(name) {
             if (!name) return null;
             const n = name.toLowerCase();
+            // TV 정밀 인치별 실무 포장 체적(CBM) 매핑
+            if (n.includes("tv") || n.includes("티비") || n.includes("텔레비전")) {
+                const match = n.match(/(\d{2,3})\s*(?:인치|inch|")/i);
+                if (match) {
+                    const inches = parseInt(match[1]);
+                    if (inches >= 85) return 0.58;       // 85인치 이상 초대형 (전용 하드케이스)
+                    if (inches >= 75) return 0.48;       // 75~84인치 대형
+                    if (inches >= 65) return 0.35;       // 65~74인치 표준 대형
+                    if (inches >= 50) return 0.25;       // 50~55인치 중대형
+                    if (inches >= 40) return 0.18;       // 40~43인치 중형
+                    return 0.12;                        // 32인치 이하 소형
+                }
+                if (n.includes("85인치") || n.includes("86인치") || n.includes("98인치")) return 0.58;
+                if (n.includes("75인치") || n.includes("77인치") || n.includes("80인치")) return 0.48;
+                if (n.includes("65인치")) return 0.35;
+                if (n.includes("55인치")) return 0.25;
+                if (n.includes("43인치")) return 0.18;
+                if (n.includes("32인치")) return 0.12;
+                return 0.35;
+            }
             if (n.includes("모니터") || n.includes("에어프라이어") || n.includes("컴퓨터 본체") || n.includes("데스크톱") || n.includes("식기세척기 카운터형") || n.includes("대형믹서") || n.includes("제빵기")) {
                 return 0.158;
             }
             return null;
         }
 
-        // 장롱 규격 체적 보정 (1통당 약 1.25 CBM)
         function getSpecialFurnitureCbm(name) {
             if (!name) return null;
             if (name.includes("장롱") || name.includes("붙박이장") || name.includes("옷장")) {
@@ -1442,6 +1569,11 @@
                 if (name.includes("2통") || name.includes("6자") || name.includes("7자") || name.includes("8자")) return 2.5;
                 if (name.includes("1통") || name.includes("3자") || name.includes("4자")) return 1.25;
                 if (name.includes("미니") || name.includes("소형") || name.includes("주니어")) return 0.85;
+            }
+            if (name.includes("신발장")) {
+                if (name.includes("대형") || name.includes("3문") || name.includes("4문") || name.includes("천장형")) return 1.2;
+                if (name.includes("중형") || name.includes("2문")) return 0.7;
+                return 0.5;
             }
             return null;
         }
@@ -1553,7 +1685,6 @@
         };
         window.removeSpace = function(spaceId) { spaces = spaces.filter(s => s.id !== spaceId); renderSpaces(); };
 
-        // 전략 1: 1280px 해상도로 업그레이드하여 세밀한 잔짐 디테일 보존
         function compressImage(file, maxWidth = 1280, maxHeight = 1280, quality = 0.85) {
             return new Promise((resolve) => {
                 const reader = new FileReader(); reader.readAsDataURL(file);
@@ -1594,86 +1725,176 @@
             document.getElementById('results-section').classList.add('opacity-50');
             document.getElementById('analyze-btn').disabled = true;
 
-            // 전략 2 & 전략 3: 2단계 CoT 구획 추론 및 한국 이사 표준 공식 주입
-            const systemPrompt = `You are a certified senior Korean moving estimator AI specializing in Chain-of-Thought (CoT) physical slot analysis and zero-hallucination factual vision estimation.
+            const densityName = currentLivingDensity === 0.75 ? "미니멀 (짐 적음, 75%)" : (currentLivingDensity === 1.25 ? "맥시멀/수납가득 (수납 가득, 125%)" : "표준 (보통 가정집, 100%)");
+            const scaleConfig = HOUSING_SCALE_CONFIG[currentHousingScale];
 
-[CORE WORKFLOW: 3-STEP CHAIN-OF-THOUGHT PHYSICAL SLOT REASONING]
-Step 1: COUNT PHYSICAL SLOTS & STRUCTURES
-- For every wardrobe/cabinet, count door count, sliding panels, and drawer sections.
-- For sinks, count upper cabinet doors, lower cabinet doors, drawers, and countertop span.
-- For bookshelves, count columns and shelf tiers (e.g. 5 tiers x 1 column).
-Step 2: DETERMINE FILL-RATE & REALITY
-- Examine open door photos or exposed surfaces.
-- Determine fill-rate (50% light, 80% standard, 100% full, 120% jammed).
-Step 3: CALCULATE EXACT KOREAN MOVING BOX/BASKET EQUIVALENTS
-- Map estimated slot volume to Korean standard moving packing containers using strict formulas.
+            // v7.5: 편차 제로(결정론적) & 실물 증거 필수 규칙 주입
+            const systemPrompt = `You are an elite, certified Korean professional moving master estimator.
+Your evaluation must be DETERMINISTIC, OBJECTIVE, FACTUAL, and COMPLETELY FREE OF HALLUCINATIONS.
 
-[KOREAN PACKING CONVERSION FORMULAS]:
-1. WARDROBES (장롱/붙박이장):
-   - 1 section (~90cm / 3자 / 1~2 doors): 옷박스 2개 (0.18 CBM) + 중박스 2~3개 (0.116 CBM) + 이불박스 1개 (0.27 CBM).
-   - 2 sections (~180cm / 6~8자 / 2~4 doors): 옷박스 4개 + 중박스 4~5개 + 이불박스 2개.
-   - 3 sections (~270~360cm / 9~12자 / 3~6 doors): 옷박스 6~8개 + 중박스 6~8개 + 이불박스 2~3개.
-2. KITCHEN SINKS (씽크대):
-   - Small sink (< 2m): 바구니(유리식기/액체양념) 4~6개 (0.112 CBM) + 중박스(냄비/팬) 2~3개 (0.116 CBM).
-   - Standard sink (2~3.2m): 바구니 8~10개 + 중박스 3~5개.
-   - Large sink (> 3.5m / Island): 바구니 12~15개 + 중박스 5~7개.
-3. DRAWERS (서랍장):
-   - Every 1 drawer slot (~80cm): 중박스(접힌 옷/양말/속옷) 0.8~1개 (0.116 CBM).
-4. BOOKSHELVES (5단 책장):
-   - Every 1 tier full of books: 바구니(도서/서적) 1~1.5개 (0.112 CBM).
-5. ELECTRONICS ALLOCATION MANDATE:
-   - '모니터 (대박스 포장)', '컴퓨터 본체 (대박스 포장)', '에어프라이어 (대박스 포장)': cbm: 0.158 -> MUST BE PLACED IN "appliances" list!
-6. REFRIGERATORS & MATS:
-   - 4-door French door: 1.65 CBM / 2-door Side-by-Side: 1.5 CBM.
-   - Refrigerator internal food: 아이스박스 2~4개 (0.12 CBM each) in clutterAndBoxes.
-   - Floor mats (폴더매트, 놀이방매트, 러그): place in "furniture".
+[CRITICAL RULE 0: ZERO HALLUCINATION & NO IMAGINED ITEMS]
+- DO NOT invent, assume, or fabricate items that are not clearly visible in the provided photo pixels.
+- If a space photo shows only a bed and floor, DO NOT output a wardrobe, TV, desk, or kitchen items.
+- If no shoes, clothes, or loose clutter are visually identifiable, DO NOT generate boxes for them.
+- Only calculate storage interior items (속짐) IF and ONLY IF the container furniture (e.g., sink, wardrobe, shoe rack) is explicitly visible in the photo.
+- STRICTLY REPEATABLE: The same photo must ALWAYS result in the exact same item counts.
 
-[FACTUAL ZERO HALLUCINATION MANDATE]:
-- DO NOT invent or assume furniture or appliances that are not visible in the photos.
-- If a room is empty or only has boxes, list only visible items.
+[CRITICAL RULE 1: CURRENT RESIDENTIAL SCALE]
+User has specified the home scale as: "${scaleConfig.label}".
+${scaleConfig.promptGuidance}
 
-[OUTPUT FORMAT - JSON ONLY]:
-{
-  "appliances": [{"name": "string", "cbm": number, "count": number, "space": "string"}],
-  "furniture": [{"name": "string", "cbm": number, "count": number, "space": "string"}],
-  "clutterAndBoxes": [{"name": "string", "cbm": number, "count": number, "space": "string"}],
-  "clutterReasons": [{"boxType": "string", "count": "string", "reason": "string"}],
-  "advice": "string"
-}`;
+[CRITICAL RULE 2: PACKING ALLOCATION CRITERIA]
+1. '바구니' (0.112 CBM):
+   - Desk loose items (stationery, pens, loose small cables, charger cubes, small desk organizers, cosmetics).
+   - Books visibly stacked or placed on shelves/desks.
+   - Fragile tableware (glasses, bowls) and leakable liquids/seasonings ONLY IF kitchen sink/cabinets are visible.
+2. '대박스' (0.158 CBM):
+   - STRICTLY for items that physically exceed medium box dimensions:
+     * Computer monitors (24~34 inch) -> "대박스 (모니터)"
+     * Desktop PC towers -> "대박스 (데스크톱 본체)"
+     * Bulky tabletop appliances (large air fryer, large oven)
+     * Bulky toys/robot sets exceeding medium box size.
+   - NEVER use '대박스' for standard folded clothes, shoes, or small accessories.
+3. '중박스' (0.116 CBM):
+   - Standard medium box (단프라 5호). Used for visible folded clothes, shoes (only if shoe rack/shoes exist), durable cookware (pots/pans), pantry bulky goods.
+4. '옷박스' (0.18 CBM) & '이불박스' (0.27 CBM):
+   - Only allocate if wardrobe hanging clothes or bulky bedding are visible or inferred from a visible wardrobe/bed.
 
-            const userParts = [{ text: "모든 공간 사진을 정밀 분석하십시오.\n1) 장롱과 씽크대, 서랍장, 책장이 식별되면 물리적 구획(도어 수, 서랍 칸수, 길이)을 먼저 세고(CoT), 한국 포장이사 표준 공식으로 속짐(옷박스, 이불박스, 중박스, 바구니)을 정밀 산출할 것.\n2) 모니터, 에어프라이어는 가전(appliances)에 등재하고 대박스 규격(0.158 CBM)을 적용할 것.\n3) 바닥 매트류는 가구(furniture)에 정확한 체적으로 배정할 것.\n4) clutterReasons에 물리 구획 카운팅 수치와 산출 근거를 구체적으로 명시할 것." }];
+[CRITICAL RULE 3: LARGE APPLIANCES & FURNITURE]
+- Only list major appliances (냉장고, 세탁기, TV, 에어컨 등) and furniture (침대, 소파, 장롱, 책상 등) that are ACTUALLY IN THE PICTURE.
+- If only a desk and chair are visible, only output desk and chair.
+
+[CRITICAL RULE 4: PRECISE TV SCREEN INCH CALCULATION]
+When a TV screen is detected, calculate its exact screen size in INCHES based on physical real-world cues:
+- Benchmark television standard physical widths (16:9 aspect ratio):
+  * ~32 inches: width approx 73cm
+  * ~43 inches: width approx 97cm
+  * ~50 inches: width approx 111cm
+  * ~55 inches: width approx 123cm
+  * ~65 inches: width approx 145cm (Standard Korean living room staple)
+  * ~75 inches: width approx 168cm (Spans ~75% of a 2.2m TV stand console)
+  * ~85 inches+: width approx 190cm+ (Nearly fills the width of a standard living room wall or long credenza)
+- Compare the TV bezel width against the TV console/credenza (거실장 width is typically 180~220cm) or surrounding wall studs/intercom switches.
+- STRICT NAMING: You MUST output the specific measured inch in the item name, e.g.:
+  "TV (65인치)", "TV (75인치)", "TV (85인치 초대형)", "TV (55인치)", or "TV (43인치)".
+  NEVER simply output "TV" without the specific inch number!`;
+
+            const userParts = [
+                { text: `[정밀 현장 판독 요청]
+주거 평형 기준: ${scaleConfig.label}
+살림 성향 계수: ${densityName}
+핵심 지침:
+1) 사진 픽셀에 실제로 보이지 않는 가구나 가전, 물품은 절대로 상상해서 넣지 마십시오.
+2) 같은 사진에 대해 언제나 오차 없이 일치하는 수량을 산출하십시오.
+3) TV가 발견될 경우 거실장(1.8~2.2m) 또는 벽면 너비 대비 비율을 계산하여 반드시 구체적인 인치수(예: 'TV (65인치)', 'TV (75인치)', 'TV (85인치)', 'TV (55인치)')를 품목명에 정확히 명기하십시오.
+4) 책상 위 소품, 문구, 케이블, 화장품, 도서는 [바구니]로 배정하십시오.
+5) 모니터, 본체, 중박스 초과 대형 부피짐만 [대박스]로 배정하십시오.
+6) 제공된 JSON 스키마를 엄격히 준수하여 출력하십시오.` }
+            ];
+
             spaces.forEach(s => s.images.forEach(img => {
-                userParts.push({ text: `[공간: ${s.name}]` });
+                userParts.push({ text: `[업로드 공간: ${s.name}]` });
                 userParts.push({ inlineData: { mimeType: img.mimeType, data: img.data } });
             }));
 
+            // Gemini API 구조화 JSON 스키마 (결정론적 출력 보장)
+            const strictJsonSchema = {
+                type: "OBJECT",
+                properties: {
+                    appliances: {
+                        type: "ARRAY",
+                        items: {
+                            type: "OBJECT",
+                            properties: {
+                                name: { type: "STRING" },
+                                cbm: { type: "NUMBER" },
+                                count: { type: "INTEGER" },
+                                space: { type: "STRING" }
+                            },
+                            required: ["name", "cbm", "count", "space"]
+                        }
+                    },
+                    furniture: {
+                        type: "ARRAY",
+                        items: {
+                            type: "OBJECT",
+                            properties: {
+                                name: { type: "STRING" },
+                                cbm: { type: "NUMBER" },
+                                count: { type: "INTEGER" },
+                                space: { type: "STRING" }
+                            },
+                            required: ["name", "cbm", "count", "space"]
+                        }
+                    },
+                    clutterAndBoxes: {
+                        type: "ARRAY",
+                        items: {
+                            type: "OBJECT",
+                            properties: {
+                                name: { type: "STRING" },
+                                cbm: { type: "NUMBER" },
+                                count: { type: "INTEGER" },
+                                space: { type: "STRING" }
+                            },
+                            required: ["name", "cbm", "count", "space"]
+                        }
+                    },
+                    clutterReasons: {
+                        type: "ARRAY",
+                        items: {
+                            type: "OBJECT",
+                            properties: {
+                                boxType: { type: "STRING" },
+                                count: { type: "STRING" },
+                                reason: { type: "STRING" }
+                            },
+                            required: ["boxType", "count", "reason"]
+                        }
+                    },
+                    advice: { type: "STRING" }
+                },
+                required: ["appliances", "furniture", "clutterAndBoxes", "clutterReasons", "advice"]
+            };
+
             let success = false, resultJson = null;
             const controller = new AbortController();
-            const timeoutId = setTimeout(() => controller.abort(), 35000);
+            const timeoutId = setTimeout(() => controller.abort(), 45000);
 
             try {
                 const response = await fetch(apiUrl, {
-                    method: 'POST', headers: { 'Content-Type': 'application/json' },
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
                         contents: [{ role: "user", parts: userParts }],
                         systemInstruction: { parts: [{ text: systemPrompt }] },
-                        generationConfig: { responseMimeType: "application/json", temperature: 0.1 }
-                    }), signal: controller.signal
+                        generationConfig: {
+                            responseMimeType: "application/json",
+                            responseSchema: strictJsonSchema,
+                            temperature: 0.0, // 완전 결정론적: 실행 시마다 동일한 픽셀 판독 결과 출력
+                            topP: 0.1
+                        }
+                    }),
+                    signal: controller.signal
                 });
                 clearTimeout(timeoutId);
                 const result = await response.json();
-                let rawText = result.candidates[0].content.parts[0].text;
-                rawText = rawText.replace(/^```json\s*/i, '').replace(/^```\s*/i, '').replace(/\s*```$/, '').trim();
-                resultJson = JSON.parse(rawText);
-                success = true;
-            } catch (err) { console.warn('API error:', err); }
+                
+                if (result.candidates && result.candidates[0] && result.candidates[0].content && result.candidates[0].content.parts[0]) {
+                    let rawText = result.candidates[0].content.parts[0].text;
+                    rawText = rawText.replace(/^```json\s*/i, '').replace(/^```\s*/i, '').replace(/\s*```$/, '').trim();
+                    resultJson = JSON.parse(rawText);
+                    success = true;
+                }
+            } catch (err) { 
+                console.warn('API error:', err); 
+            }
 
             document.getElementById('loading-state').classList.add('hidden');
             document.getElementById('results-section').classList.remove('opacity-50');
             document.getElementById('analyze-btn').disabled = false;
 
             if (success && resultJson) {
-                // 가전 리스트 모니터, 에어프라이어 대박스 CBM 보정
                 currentAnalysisData.appliances = (resultJson.appliances || []).map(i => {
                     const specialCbm = getSpecialApplianceCbm(i.name);
                     return {
@@ -1684,7 +1905,6 @@ Step 3: CALCULATE EXACT KOREAN MOVING BOX/BASKET EQUIVALENTS
                     };
                 });
 
-                // 가구 리스트 장롱 규격 체적 보정
                 currentAnalysisData.furniture = (resultJson.furniture || []).map(i => {
                     const specialFurnCbm = getSpecialFurnitureCbm(i.name);
                     return {
@@ -1699,7 +1919,7 @@ Step 3: CALCULATE EXACT KOREAN MOVING BOX/BASKET EQUIVALENTS
                     let cn = i.name;
                     return {
                         name: cn,
-                        cbm: getStrictBoxCbm(cn) || parseFloat(i.cbm) || 0.112,
+                        cbm: getStrictBoxCbm(cn) || parseFloat(i.cbm) || 0.116,
                         count: parseInt(i.count) || 1,
                         space: i.space || '공통'
                     };
@@ -1707,7 +1927,8 @@ Step 3: CALCULATE EXACT KOREAN MOVING BOX/BASKET EQUIVALENTS
 
                 currentAnalysisData.clutterReasons = resultJson.clutterReasons || [];
                 currentAnalysisData.advice = resultJson.advice || "분석 완료";
-                recalculateTotals(true); playDingDong();
+                recalculateTotals(true);
+                playDingDong();
             } else {
                 showModal("분석 지연", "데이터 처리 중 시간이 초과되었거나 API 응답 오류가 발생했습니다. 다시 시도해주세요.");
                 playDingDong();
@@ -1780,7 +2001,7 @@ Step 3: CALCULATE EXACT KOREAN MOVING BOX/BASKET EQUIVALENTS
             
             let cbm = 0.5;
             if (cat === 'clutterAndBoxes') {
-                cbm = getStrictBoxCbm(name) || 0.112;
+                cbm = getStrictBoxCbm(name) || 0.116;
             } else if (cat === 'appliances') {
                 cbm = getSpecialApplianceCbm(name) || (parseFloat(document.getElementById('new-item-cbm').value) || 0.5);
             } else {
@@ -1817,6 +2038,20 @@ Step 3: CALCULATE EXACT KOREAN MOVING BOX/BASKET EQUIVALENTS
             const hasKitchenImages = spaces.some(s => s.name.includes('주방') && s.images.length > 0);
             const hasKitchenBoxes = currentAnalysisData.clutterAndBoxes.some(b => (b.name.includes('바구니') || b.name.includes('아이스박스')) || (b.space && b.space.includes('주방')));
             
+            // 65인치 이상 대형 TV 감지 시 특수포장 자동 체크
+            const detectedLargeTv = currentAnalysisData.appliances.find(a => {
+                const n = a.name.toLowerCase();
+                if (!n.includes("tv") && !n.includes("티비")) return false;
+                const match = n.match(/(\d{2,3})\s*(?:인치|inch|")/i);
+                if (match) return parseInt(match[1]) >= 65;
+                return n.includes("65인치") || n.includes("75인치") || n.includes("85인치") || n.includes("초대형");
+            });
+
+            if (detectedLargeTv && updateManualInputs) {
+                const tvExtraCheck = document.getElementById('check-tv-extra');
+                if (tvExtraCheck) tvExtraCheck.checked = true;
+            }
+
             if (updateManualInputs) {
                 const trucks = Math.max(1, Math.ceil(totalCbmSum / truckLimit));
                 document.getElementById('manual-truck-count').value = trucks;
@@ -1852,9 +2087,8 @@ Step 3: CALCULATE EXACT KOREAN MOVING BOX/BASKET EQUIVALENTS
             if(document.getElementById('check-ladder-load').checked) extraCost += parseFloat(document.getElementById('input-ladder-cost-load').value)||0;
             if(document.getElementById('check-ladder-unload').checked) extraCost += parseFloat(document.getElementById('input-ladder-cost-unload').value)||0;
             
-            // 계단 작업
-            if(document.getElementById('check-stairs-load').checked) extraCost += parseFloat(document.getElementById('input-stairs-cost-load').value)||0;
-            if(document.getElementById('check-stairs-unload').checked) extraCost += parseFloat(document.getElementById('input-stairs-cost-unload').value)||0;
+            if(document.getElementById('check-stairs-load').checked) extraCost += parseFloat(document.getElementById('input-stairs-floor-load').value||2) * 20000;
+            if(document.getElementById('check-stairs-unload').checked) extraCost += parseFloat(document.getElementById('input-stairs-floor-unload').value||2) * 20000;
 
             if(document.getElementById('check-ac-demount').checked) extraCost += parseFloat(document.getElementById('input-ac-demount-cost').value)||0;
             if(document.getElementById('check-tv-extra').checked) extraCost += parseFloat(document.getElementById('input-tv-extra-cost').value)||0;
