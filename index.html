@@ -48,7 +48,7 @@
                 </svg>
                 <div class="flex items-center space-x-2">
                     <h1 class="text-xl font-bold tracking-tight">갑봉이 AI 이사 견적</h1>
-                    <span id="app-version-badge" class="text-xs bg-indigo-500 text-indigo-100 px-2 py-0.5 rounded-full font-semibold">v5.3 (공간별 즉시 카메라 촬영 지원)</span>
+                    <span id="app-version-badge" class="text-xs bg-indigo-500 text-indigo-100 px-2 py-0.5 rounded-full font-semibold">v5.6 (책상 위 소품·책·잔잔한 물건 및 파손품 바구니 전담 산출)</span>
                 </div>
             </div>
             <div class="flex items-center space-x-2">
@@ -90,7 +90,8 @@
                 </div>
             </div>
             <p class="text-slate-600 text-sm mb-3">
-                공간별 사진을 업로드하면 공간(방)별 짐 배치가 자동으로 분류되어 견적서에 표시됩니다. <br class="sm:hidden" /><span class="text-indigo-600 font-semibold">💡 액체류/양념류는 바구니, 옷걸이 옷은 옷박스, 접힌 옷은 중박스로 정밀 배정됩니다.</span>
+                공간별 사진을 업로드하면 실제 사진에 찍힌 물품만 정확히 판독하여 공간별로 배치합니다. <br class="sm:hidden" />
+                <span class="text-indigo-600 font-semibold">💡 책상 위 문구/소품/잡화, 책장 및 선반의 도서(책), 파손 위험 식기·화장품, 샐 위험이 있는 액체류는 종이박스가 아닌 이사 전용 플라스틱 바구니로 정밀 산출됩니다.</span>
             </p>
             <div class="flex flex-wrap gap-2 text-xs text-indigo-700 bg-indigo-50 p-3 rounded-xl items-center justify-between">
                 <div class="flex flex-wrap gap-2 items-center leading-relaxed">
@@ -1278,32 +1279,11 @@
         }
 
         let currentAnalysisData = {
-            appliances: [
-                { name: "양문형 냉장고", cbm: 1.5, count: 1, space: "주방" },
-                { name: "워시타워", cbm: 1.1, count: 1, space: "베란다" },
-                { name: "TV (65인치)", cbm: 0.35, count: 1, space: "거실" }
-            ],
-            furniture: [
-                { name: "퀸 침대", cbm: 1.6, count: 1, space: "안방/침실" },
-                { name: "장롱 (1통)", cbm: 1.25, count: 2, space: "안방/침실" }
-            ],
-            clutterAndBoxes: [
-                { name: "이불박스", cbm: 0.27, count: 1, space: "안방/침실" },
-                { name: "옷박스", cbm: 0.18, count: 2, space: "안방/침실" },
-                { name: "대박스", cbm: 0.158, count: 2, space: "거실" },
-                { name: "아이스박스", cbm: 0.12, count: 2, space: "주방" },
-                { name: "중박스", cbm: 0.116, count: 4, space: "드레스룸" },
-                { name: "바구니", cbm: 0.112, count: 10, space: "주방" }
-            ],
-            clutterReasons: [
-                { boxType: "바구니", count: "10개", reason: "[주방 식기 및 양념류] 파손 위험이 있는 그릇/유리잔 완충 포장, 그리고 액체가 샐 위험이 있는 실온 양념(간장/식용유 등) 및 세제류 등 전용 플라스틱 바구니 배정 (0.112 CBM)" },
-                { boxType: "아이스박스", count: "2개", reason: "[냉장고 음식물] 냉장/냉동 식재료 부패 방지를 위해 전용 아이스박스 보냉 포장 (0.12 CBM)" },
-                { boxType: "옷박스", count: "2개", reason: "[옷장/행거] 구겨지면 안 되는 롱코트, 정장 등 걸어두는 외투 전담 (장롱 1통당 1~2개로 엄격 제한 산출)" },
-                { boxType: "중박스", count: "4개", reason: "[서랍장 접힌 옷/잡화] 파손이나 누수 위험이 없는 생활 잡화 및 서랍장에 뉘어둔 접힌 옷 분할 포장 (0.116 CBM)" },
-                { boxType: "이불박스", count: "1개", reason: "[침실/이불칸] 부피가 큰 겨울 이불 및 차렵이불 꽉 채워 수납 (0.27 CBM)" },
-                { boxType: "대박스", count: "2개", reason: "[거실/아이방] 컴퓨터 본체/모니터 및 대형 오븐, 특대형 장난감 전담 (0.158 CBM)" }
-            ],
-            advice: "액체가 샐 수 있는 양념류와 주방 식기류가 안전한 바구니로 정밀하게 분할 배정되었습니다."
+            appliances: [],
+            furniture: [],
+            clutterAndBoxes: [],
+            clutterReasons: [],
+            advice: "공간별 사진을 등록하고 [전체 공간 AI 자동 고정밀 판독]을 눌러주세요."
         };
 
         const setupInputs = [
@@ -1438,31 +1418,49 @@
             document.getElementById('results-section').classList.add('opacity-50');
             document.getElementById('analyze-btn').disabled = true;
 
-            const systemPrompt = `You are an elite Korean moving estimator. Output JSON exactly matching:
+            const systemPrompt = `You are a certified, strictly factual Korean professional moving estimator vision AI. 
+Follow these STRICT, UNCOMPROMISING rules:
+
+[RULE 1: FACT-BASED VISION ONLY - ZERO HALLUCINATION ACROSS ALL SPACES]
+- ONLY recognize and list items that are ACTUALLY, CLEARLY VISIBLE in the provided photos for each tagged space.
+- DO NOT invent, assume, or guess appliances or furniture that are not in the pictures.
+- Examples of FORBIDDEN hallucinations:
+  * Do NOT output a refrigerator unless an actual refrigerator body is visually identified in that space's photo.
+  * Do NOT output a bed, wardrobe, washing machine, or dining table unless clearly seen in the photo.
+  * If a space photo only shows empty walls, a single chair, or a vacuum, ONLY count that single item.
+
+[RULE 2: MOVING BASKET ('바구니', 0.112 CBM) ALLOCATION - SMALL MISC ITEMS, BOOKS, DESK CLUTTER & FRAGILE/LEAKABLE GOODS]
+In professional Korean moving (포장이사), plastic moving baskets ('바구니') are the primary standard container for:
+1. Desk surfaces & Study areas (책상 위, 서재 선반, 작업대):
+   - Visible pens, stationery, cables, chargers, small desk organizers, notebooks, office accessories, and table-top clutter -> Allocate 1~3 '바구니'.
+2. Bookshelves & Book stacks (책꽂이, 책장, 바닥/책상 위 책 더미):
+   - Books (도서/서적/참고서/만화책/전집류) are heavy and dense; in Korean moving, they are packed into sturdy plastic baskets ('바구니') to prevent paper box tear-outs and ease carrying -> Allocate 1~4 '바구니' depending on the volume of visible books.
+3. Kitchen Sink / Countertop / Upper & Lower Cabinets (싱크대, 조리대, 상하부장):
+   - Allocate 4~8 '바구니' for dishes (그릇/접시), glass cups, pots/pans, and liquid seasonings (간장, 식용유, 참기름, 양념통, 주방세제).
+4. Bathroom / Vanity / Dresser (욕실 수납장, 화장대, 세면대 선반):
+   - If cosmetic bottles (스킨/로션/향수병), shampoo/conditioner, body wash, or glass perfume bottles are visible, allocate 1~3 '바구니'.
+5. Display Cabinets / Shelves with Small Objects (장식장, 진열장, 거실장 위):
+   - Wine bottles, ceramic cups, porcelain, figurines, or small collectibles -> Allocate 1~3 '바구니'.
+6. Balcony / Laundry Shelf with Detergents (세탁실/베란다 선반):
+   - Liquid laundry detergents (액체세제, 섬유유연제, 락스) -> Allocate 1~2 '바구니'.
+* DO NOT generate '바구니' if none of these items or parent desks/shelves are visible in the photo.
+
+[RULE 3: OTHER BOX RULES (ONLY WHEN VISIBLE)]
+- '아이스박스' (0.12 CBM): ONLY allocate 2~4 if a refrigerator is visibly detected in the photo.
+- '옷박스' (0.18 CBM): ONLY allocate 1~2 per visible wardrobe/closet/clothes rack with hanging clothes/coats.
+- '중박스' (0.116 CBM): ONLY allocate if drawers with folded clothes or bulky non-fragile cloth items are visible.
+- '이불박스' (0.27 CBM): ONLY allocate if heavy winter blankets or bedding are visibly seen on beds or in open closets.
+
+[OUTPUT FORMAT - JSON ONLY]:
 {
   "appliances": [{"name": "string", "cbm": number, "count": number, "space": "string"}],
   "furniture": [{"name": "string", "cbm": number, "count": number, "space": "string"}],
   "clutterAndBoxes": [{"name": "string", "cbm": number, "count": number, "space": "string"}],
   "clutterReasons": [{"boxType": "string", "count": "string", "reason": "string"}],
   "advice": "string"
-}
+}`;
 
-1. ROOM-BY-ROOM ALLOCATION (CRITICAL):
-- For every item in appliances, furniture, and clutterAndBoxes, specify the exact 'space' (room name) where it was found (e.g. '거실', '주방', '안방/침실', etc.).
-
-2. CLUTTER/BOX RULES (CRITICAL):
-- '아이스박스' (0.12 CBM): MUST add 2~4 for refrigerators (cold food) in 주방.
-- '바구니' (0.112 CBM): ALL LEAKABLE LIQUIDS (간장/식용유/세제 등 실온 양념류) MUST go in baskets, NEVER boxes. Also fragile dishes. Kitchen needs 6~10 baskets.
-- '옷박스' (0.18 CBM): ONLY for hanging coats/suits. Max 1-2 per wardrobe.
-- '중박스' (0.116 CBM): Folded clothes in drawers, non-fragile items.
-- '이불박스' (0.27 CBM): Heavy winter bedding (1-2 per bedroom).
-- '대박스' (0.158 CBM): Computers, monitors, ovens, large toys.
-
-3. CBM BENCHMARKS:
-- 장롱 1통: 1.25, 퀸침대: 1.6, 킹침대: 1.9, 서랍장 5단: 0.5, 3단: 0.3
-- 양문형 냉장고: 1.5, 드럼세탁기: 0.55, 워시타워: 1.1, 에어컨(스탠드): 0.5, TV(65): 0.35, 4인 식탁세트: 1.2`;
-
-            const userParts = [{ text: "모든 공간 사진 정밀 분석. 방별 짐 배치(space 필드 포함) 필수 출력. 액체류/양념/세제는 종이박스 금지, 무조건 플라스틱 바구니 배정. 옷박스는 최소화하고 접힌 옷은 중박스로. JSON 출력" }];
+            const userParts = [{ text: "제공된 각 공간 사진을 엄격히 시각적으로만 판별하여 JSON으로 출력하세요. 사진에 전혀 없는 대형 가전/가구를 절대 지어내지 마세요. 사진에 실제로 찍힌 품목만 카운팅하되, 책상 위의 소품·문구·케이블 등 잔잔한 작은 물건과 책장/선반/책상의 책(도서), 그리고 파손 위험 식기나 누수 위험 액체류는 종이박스가 아닌 이사용 '바구니'로 정밀 계산하세요." }];
             spaces.forEach(s => s.images.forEach(img => {
                 userParts.push({ text: `[공간: ${s.name}]` });
                 userParts.push({ inlineData: { mimeType: img.mimeType, data: img.data } });
