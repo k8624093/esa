@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>갑봉이 AI 이사 견적 v7.7</title>
+    <title>갑봉이 AI 이사 견적 v7.8</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Google Fonts -->
@@ -48,7 +48,7 @@
                 </svg>
                 <div class="flex items-center space-x-2">
                     <h1 class="text-xl font-bold tracking-tight">갑봉이 AI 이사 견적</h1>
-                    <span id="app-version-badge" class="text-xs bg-indigo-500 text-indigo-100 px-2 py-0.5 rounded-full font-semibold">v7.7 (공간별 가전·가구 분리 & 잔짐 통합 집계)</span>
+                    <span id="app-version-badge" class="text-xs bg-indigo-500 text-indigo-100 px-2 py-0.5 rounded-full font-semibold">v7.8 (자가 학습형 오차 보정 & 실측 데이터 AI 주입)</span>
                 </div>
             </div>
             <div class="flex items-center space-x-2">
@@ -106,14 +106,17 @@
 
             <!-- 주거 형태 및 평수 규모 선택 상태 관리 -->
             <div class="bg-indigo-50/70 border border-indigo-200 rounded-xl p-3.5 space-y-2">
-                <div class="flex items-center justify-between">
+                <div class="flex flex-wrap items-center justify-between gap-1">
                     <span class="text-xs font-bold text-indigo-950 flex items-center space-x-1.5">
                         <svg class="w-4 h-4 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
                         </svg>
                         <span>현재 이사할 집의 평형/규모 선택</span>
                     </span>
-                    <span class="text-[11px] text-indigo-800 font-semibold" id="housing-scale-label">기준: 25~34평 (3~4인 표준 가정)</span>
+                    <div class="flex items-center space-x-2">
+                        <span class="text-[11px] text-indigo-800 font-semibold" id="housing-scale-label">기준: 25~34평 (3~4인 표준 가정)</span>
+                        <span id="learned-alpha-badge" class="text-[10px] bg-emerald-100 text-emerald-800 border border-emerald-300 px-2 py-0.5 rounded-full font-bold">학습 보정: ×1.00</span>
+                    </div>
                 </div>
                 <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
                     <button type="button" onclick="setHousingScale('oneroom')" id="scale-btn-oneroom" class="p-2 rounded-lg border text-xs font-semibold text-center transition-all bg-white border-indigo-200 text-slate-700 hover:border-indigo-400 cursor-pointer">
@@ -741,8 +744,12 @@
                 </button>
             </div>
             <p class="text-xs text-slate-600 leading-relaxed">
-                실제 이사를 마친 후 들어간 <b>실제 트럭 대수</b>와 <b>실제 박스/바구니 수량</b>을 입력해 주시면 다음 견적 시 오차율을 자동 보정합니다.
+                실제 이사를 마친 후 들어간 <b>실제 트럭 대수</b>와 <b>실제 박스/바구니 수량</b>을 입력해 주시면 현재 평형(<span id="feedback-current-scale-name" class="font-bold text-indigo-600">중형 25~34평</span>)의 오차 보정 계수(α)가 자동 학습되며 다음 AI 판독 프롬프트에 즉시 반영됩니다.
             </p>
+            <div class="bg-indigo-50/70 border border-indigo-200 rounded-xl p-2.5 flex items-center justify-between text-xs">
+                <span class="text-indigo-900 font-semibold">현재 AI 예측 총 잔짐: <b id="feedback-predicted-boxes-display" class="text-indigo-700">0개</b></span>
+                <span id="feedback-alpha-status" class="text-[11px] font-bold text-emerald-700 bg-white px-2 py-0.5 rounded border border-emerald-200">누적 보정계수: ×1.00</span>
+            </div>
             <div class="grid grid-cols-2 gap-3 text-xs">
                 <div class="bg-slate-50 p-3 rounded-xl border border-slate-200">
                     <label class="block font-semibold text-slate-700 mb-1">실제 투입 1톤 트럭 (대)</label>
@@ -754,15 +761,15 @@
                 </div>
             </div>
             <div>
-                <label class="block font-semibold text-slate-700 text-xs mb-1">현장 특이사항 및 오차 메모</label>
-                <input type="text" id="feedback-note" placeholder="예: 원룸인데 잔짐이 예상보다 많았음" class="w-full border border-slate-300 rounded-xl p-2.5 text-xs focus:ring-2 focus:ring-indigo-500 focus:outline-none">
-            </div>
-            <div id="feedback-history-container" class="text-[11px] text-slate-500 bg-slate-50 p-2.5 rounded-lg border border-slate-100 max-h-24 overflow-y-auto">
+            <div id="feedback-history-container" class="text-[11px] text-slate-500 bg-slate-50 p-2.5 rounded-lg border border-slate-100 max-h-28 overflow-y-auto">
                 <!-- Recorded feedback summary -->
             </div>
-            <div class="flex justify-end space-x-2 pt-1">
-                <button onclick="closeFeedbackModal()" class="bg-slate-100 text-slate-600 px-4 py-2 rounded-xl text-xs font-semibold hover:bg-slate-200 transition-colors cursor-pointer">닫기</button>
-                <button onclick="submitFeedback()" class="bg-amber-600 text-white px-4 py-2 rounded-xl text-xs font-semibold hover:bg-amber-700 transition-colors cursor-pointer">피드백 저장 및 학습</button>
+            <div class="flex items-center justify-between pt-1">
+                <button type="button" onclick="resetLearnedCalibration()" class="text-[11px] text-rose-500 hover:text-rose-700 underline font-semibold cursor-pointer">학습 계수 초기화</button>
+                <div class="flex space-x-2">
+                    <button onclick="closeFeedbackModal()" class="bg-slate-100 text-slate-600 px-4 py-2 rounded-xl text-xs font-semibold hover:bg-slate-200 transition-colors cursor-pointer">닫기</button>
+                    <button onclick="submitFeedback()" class="bg-amber-600 text-white px-4 py-2 rounded-xl text-xs font-semibold hover:bg-amber-700 transition-colors cursor-pointer">피드백 저장 및 학습</button>
+                </div>
             </div>
         </div>
     </div>
@@ -953,6 +960,41 @@
 
         // 주거 형태 및 평수 규모 선택 상태 관리
         let currentHousingScale = 'medium'; // 'oneroom', 'small', 'medium', 'large'
+
+        // 1. 평형별 오차 보정 계수(α) 자가 학습 관리 (EMA 알고리즘)
+        function getCalibrationMap() {
+            const defaultMap = { oneroom: 1.0, small: 1.0, medium: 1.0, large: 1.0 };
+            try {
+                const saved = JSON.parse(localStorage.getItem('gabong_scale_calibration_alpha') || '{}');
+                return { ...defaultMap, ...saved };
+            } catch (e) {
+                return defaultMap;
+            }
+        }
+
+        function getLearnedScaleAlpha(scaleKey = currentHousingScale) {
+            const map = getCalibrationMap();
+            return parseFloat(map[scaleKey]) || 1.0;
+        }
+
+        function getEffectiveClutterCount(baseCount) {
+            const alpha = getLearnedScaleAlpha();
+            return Math.max(1, Math.round((baseCount || 1) * alpha));
+        }
+
+        function updateLearnedAlphaBadge() {
+            const alpha = getLearnedScaleAlpha();
+            const badge = document.getElementById('learned-alpha-badge');
+            if (badge) {
+                badge.innerText = `학습 보정: ×${alpha.toFixed(2)}`;
+                if (alpha !== 1.0) {
+                    badge.className = "text-[10px] bg-emerald-600 text-white px-2 py-0.5 rounded-full font-bold shadow-xs";
+                } else {
+                    badge.className = "text-[10px] bg-emerald-100 text-emerald-800 border border-emerald-300 px-2 py-0.5 rounded-full font-bold";
+                }
+            }
+        }
+
         const HOUSING_SCALE_CONFIG = {
             oneroom: {
                 label: "원룸/오피스텔 (1인가구)",
@@ -1029,73 +1071,96 @@
             document.getElementById('housing-scale-badge').innerText = config.badge;
             document.getElementById('clutter-scale-tag').innerText = config.badge;
             document.getElementById('space-tip-text').innerHTML = config.tip;
+            updateLearnedAlphaBadge();
+            if (typeof recalculateTotals === 'function' && typeof currentAnalysisData !== 'undefined') {
+                recalculateTotals(false);
+            }
         };
 
         // 생활 밀도(살림살이 성향) 계수
-        let currentLivingDensity = 1.0;
-        window.setLivingDensity = function(multiplier) {
-            currentLivingDensity = multiplier;
-            
-            const btns = {
-                0.75: document.getElementById('density-btn-minimal'),
-                1.00: document.getElementById('density-btn-standard'),
-                1.25: document.getElementById('density-btn-maximal')
-            };
+        // 피드백 루프 모달 (실측 오차 자동 학습 및 이력 조회)
+        function getCurrentPredictedTotalBoxes() {
+            const clutterList = (typeof currentAnalysisData !== 'undefined' && currentAnalysisData.clutterAndBoxes) ? currentAnalysisData.clutterAndBoxes : [];
+            return clutterList.reduce((acc, item) => acc + getEffectiveClutterCount(item.count || 1), 0);
+        }
 
-            Object.keys(btns).forEach(m => {
-                const numM = parseFloat(m);
-                const btn = btns[numM];
-                if (numM === multiplier) {
-                    btn.className = "p-2 rounded-lg border text-xs font-semibold text-center transition-all bg-amber-500 text-white border-amber-600 shadow-sm cursor-pointer";
-                    const spanSub = btn.querySelector('span:last-child');
-                    if (spanSub) spanSub.className = "text-[10px] text-amber-100";
-                } else {
-                    btn.className = "p-2 rounded-lg border text-xs font-semibold text-center transition-all bg-white border-amber-300 text-slate-700 hover:border-amber-500 cursor-pointer";
-                    const spanSub = btn.querySelector('span:last-child');
-                    if (spanSub) spanSub.className = "text-[10px] text-slate-500";
-                }
-            });
-
-            const labels = {
-                0.75: "보정 계수: ×0.75 (미니멀)",
-                1.00: "보정 계수: ×1.00 (표준)",
-                1.25: "보정 계수: ×1.25 (맥시멀/수납가득)"
-            };
-            document.getElementById('density-multiplier-label').innerText = labels[multiplier];
-            recalculateTotals(false);
-        };
-
-        // 피드백 루프 모달
         window.openFeedbackModal = function() {
             const history = JSON.parse(localStorage.getItem('gabong_clutter_feedback') || '[]');
             const container = document.getElementById('feedback-history-container');
+            const predictedBoxes = getCurrentPredictedTotalBoxes();
+            const currentAlpha = getLearnedScaleAlpha();
+
+            document.getElementById('feedback-current-scale-name').innerText = HOUSING_SCALE_CONFIG[currentHousingScale].badge;
+            document.getElementById('feedback-predicted-boxes-display').innerText = `${predictedBoxes}개`;
+            document.getElementById('feedback-alpha-status').innerText = `누적 보정계수: ×${currentAlpha.toFixed(2)}`;
+            if (predictedBoxes > 0) {
+                document.getElementById('feedback-actual-boxes').value = predictedBoxes;
+            }
+            const curTrucks = parseInt(document.getElementById('manual-truck-count').value) || 1;
+            document.getElementById('feedback-actual-trucks').value = curTrucks;
+
             if (history.length === 0) {
                 container.innerHTML = '<span class="italic text-slate-400">누적된 피드백 기록이 없습니다. 이사를 마치고 실제 박스 수를 입력해 보세요.</span>';
             } else {
-                container.innerHTML = history.slice(0, 3).map(h => `
-                    <div class="py-1 border-b border-slate-200 last:border-0">
-                        <span class="font-bold text-slate-700">${h.date}</span>: 실제 ${h.trucks}대 / 박스 ${h.boxes}개 (${h.note || '메모 없음'})
+                container.innerHTML = history.slice(0, 5).map(h => `
+                    <div class="py-1 border-b border-slate-200 last:border-0 flex flex-col">
+                        <div>
+                            <span class="font-bold text-slate-700">${h.date}</span>
+                            <span class="text-[10px] bg-indigo-50 text-indigo-700 px-1.5 py-0.2 rounded font-semibold ml-1">${h.scaleLabel || '표준'}</span>
+                        </div>
+                        <span class="text-slate-600">예측 ${h.predictedBoxes ?? '-'}개 → <b>실제 ${h.boxes}개</b> (트럭 ${h.trucks}대) ${h.note ? `· ${h.note}` : ''}</span>
                     </div>
                 `).join('');
             }
             document.getElementById('feedback-modal').classList.remove('hidden');
         };
         window.closeFeedbackModal = function() { document.getElementById('feedback-modal').classList.add('hidden'); };
+        window.resetLearnedCalibration = function() {
+            localStorage.removeItem('gabong_scale_calibration_alpha');
+            updateLearnedAlphaBadge();
+            recalculateTotals(false);
+            closeFeedbackModal();
+            showModal("초기화 완료", "모든 평형의 자가 학습 보정 계수가 기본값(×1.00)으로 초기화되었습니다.");
+        };
         window.submitFeedback = function() {
             const trucks = parseInt(document.getElementById('feedback-actual-trucks').value) || 1;
-            const boxes = parseInt(document.getElementById('feedback-actual-boxes').value) || 45;
+            const actualBoxes = Math.max(1, parseInt(document.getElementById('feedback-actual-boxes').value) || 1);
             const note = document.getElementById('feedback-note').value.trim();
+
+            // 현재 AI 순수 예측치(보정 전 기본 수량 합계) 기준으로 실제 사용 비율 산출
+            const clutterList = (currentAnalysisData && currentAnalysisData.clutterAndBoxes) ? currentAnalysisData.clutterAndBoxes : [];
+            const rawPredictedBoxes = clutterList.reduce((acc, item) => acc + (item.count || 1), 0);
+            const displayedPredictedBoxes = getCurrentPredictedTotalBoxes();
+
+            let newAlpha = getLearnedScaleAlpha();
+            let learningMsg = "";
+
+            if (rawPredictedBoxes > 0) {
+                // 극단적 이상치 방지를 위해 오차 비율을 0.65 ~ 1.55 범위로 클램핑 후 지수이동평균(EMA 30%) 반영
+                const observedRatio = Math.min(1.55, Math.max(0.65, actualBoxes / rawPredictedBoxes));
+                newAlpha = Number(((newAlpha * 0.7) + (observedRatio * 0.3)).toFixed(3));
+                const alphaMap = getCalibrationMap();
+                alphaMap[currentHousingScale] = newAlpha;
+                localStorage.setItem('gabong_scale_calibration_alpha', JSON.stringify(alphaMap));
+                learningMsg = `\n[${HOUSING_SCALE_CONFIG[currentHousingScale].badge}] 오차 보정 계수가 ×${newAlpha.toFixed(2)}로 자동 업데이트되었습니다.`;
+            }
 
             let history = JSON.parse(localStorage.getItem('gabong_clutter_feedback') || '[]');
             history.unshift({
                 date: new Date().toLocaleDateString(),
+                scale: currentHousingScale,
+                scaleLabel: HOUSING_SCALE_CONFIG[currentHousingScale].badge,
+                predictedBoxes: displayedPredictedBoxes,
                 trucks,
-                boxes,
+                boxes: actualBoxes,
                 note
             });
             localStorage.setItem('gabong_clutter_feedback', JSON.stringify(history));
+
+            updateLearnedAlphaBadge();
+            recalculateTotals(false);
             closeFeedbackModal();
-            showModal("피드백 반영 완료", "실제 사용량 피드백이 안전하게 기록되었습니다. 다음 견적 시 정밀 오차 보정에 활용됩니다.");
+            showModal("피드백 학습 완료", `실제 사용량(트럭 ${trucks}대 / 박스 ${actualBoxes}개)이 저장되었으며 AI 프롬프트 예시 데이터에 즉시 등록되었습니다.${learningMsg}`);
         };
 
         // v7.7: Invoice Modal Logic (공간별 가전·가구 전담 & 전체 잔짐 통합 집계)
@@ -1204,7 +1269,7 @@
             clutterList.forEach(item => {
                 const name = item.name;
                 const unitCbm = (getStrictBoxCbm(name) || item.cbm) * currentLivingDensity;
-                const count = item.count || 1;
+                const count = getEffectiveClutterCount(item.count || 1);
                 const totCbm = unitCbm * count;
 
                 if (!clutterMap[name]) {
@@ -1794,6 +1859,25 @@
             const densityName = currentLivingDensity === 0.75 ? "미니멀 (짐 적음, 75%)" : (currentLivingDensity === 1.25 ? "맥시멀/수납가득 (수납 가득, 125%)" : "표준 (보통 가정집, 100%)");
             const scaleConfig = HOUSING_SCALE_CONFIG[currentHousingScale];
 
+            // 2. 과거 실측 데이터(Dynamic Few-Shot) 추출 및 AI 프롬프트 실시간 주입
+            const feedbackHistory = JSON.parse(localStorage.getItem('gabong_clutter_feedback') || '[]');
+            const sameScaleRecords = feedbackHistory.filter(f => f.scale === currentHousingScale);
+            const selectedRecords = (sameScaleRecords.length > 0 ? sameScaleRecords : feedbackHistory).slice(0, 3);
+
+            let dynamicFewShotSection = "";
+            if (selectedRecords.length > 0) {
+                const examplesText = selectedRecords.map((rec, i) => {
+                    const predStr = rec.predictedBoxes ? `초기 예측 ${rec.predictedBoxes}박스 → ` : '';
+                    const noteStr = rec.note ? ` (현장메모: ${rec.note})` : '';
+                    return `- 실측사례 ${i + 1} [${rec.scaleLabel || '표준'}]: ${predStr}실제 현장 투입 ${rec.boxes}박스 / 1톤 트럭 ${rec.trucks}대${noteStr}`;
+                }).join('\n');
+
+                dynamicFewShotSection = `\n[PAST ACTUAL FIELD BENCHMARKS (DYNAMIC FEW-SHOT CALIBRATION)]
+Learn from our company's verified post-move field records below so your box estimation aligns closely with real-world packing habits:
+${examplesText}
+* Use these verified field outcomes as realistic calibration references when estimating hidden storage contents, while still strictly obeying ZERO HALLUCINATION for visible furniture/appliances.`;
+            }
+
             const systemPrompt = `You are an elite, certified Korean professional moving master estimator.
 Your evaluation must be DETERMINISTIC, OBJECTIVE, FACTUAL, and COMPLETELY FREE OF HALLUCINATIONS.
 
@@ -1842,7 +1926,7 @@ When a TV screen is detected, calculate its exact screen size in INCHES based on
 - Compare the TV bezel width against the TV console/credenza (거실장 width is typically 180~220cm) or surrounding wall studs/intercom switches.
 - STRICT NAMING: You MUST output the specific measured inch in the item name, e.g.:
   "TV (65인치)", "TV (75인치)", "TV (85인치 초대형)", "TV (55인치)", or "TV (43인치)".
-  NEVER simply output "TV" without the specific inch number!`;
+  NEVER simply output "TV" without the specific inch number!${dynamicFewShotSection}`;
 
             const userParts = [
                 { text: `[정밀 현장 판독 요청]
@@ -2002,14 +2086,19 @@ When a TV screen is detected, calculate its exact screen size in INCHES based on
 
         function populateList(elementId, items, categoryKey) {
             const ul = document.getElementById(elementId);
+            const learnedAlpha = getLearnedScaleAlpha();
             ul.innerHTML = items.length ? '' : `<li class="text-slate-400 italic text-xs">등록된 품목 없음</li>`;
             items.forEach((item, idx) => {
                 let name = item.name;
+                let displayCount = categoryKey === 'clutterAndBoxes' ? getEffectiveClutterCount(item.count) : item.count;
                 let cbm = categoryKey === 'clutterAndBoxes' 
                     ? ((getStrictBoxCbm(name) || item.cbm) * currentLivingDensity)
                     : (categoryKey === 'appliances' ? (getSpecialApplianceCbm(name) || item.cbm) : (getSpecialFurnitureCbm(name) || item.cbm));
-                let tot = Math.round(cbm * item.count * 1000)/1000;
+                let tot = Math.round(cbm * displayCount * 1000)/1000;
                 let spaceTag = item.space ? `<span class="text-[10px] text-indigo-700 bg-indigo-50 px-1.5 py-0.5 rounded font-semibold shrink-0">${item.space}</span>` : '';
+                let alphaTag = (categoryKey === 'clutterAndBoxes' && learnedAlpha !== 1.0)
+                    ? `<span class="text-[9px] text-emerald-700 bg-emerald-50 border border-emerald-200 px-1 rounded font-bold shrink-0">학습×${learnedAlpha.toFixed(2)}</span>`
+                    : '';
                 
                 const li = document.createElement('li');
                 li.className = 'flex items-start justify-between bg-white p-2.5 rounded-lg border border-slate-200 shadow-sm hover:border-indigo-200 transition-colors gap-2';
@@ -2020,13 +2109,14 @@ When a TV screen is detected, calculate its exact screen size in INCHES based on
                             <div class="flex items-center gap-1.5 flex-wrap">
                                 <span class="text-sm font-bold text-slate-900 break-keep leading-snug">${name}</span>
                                 ${spaceTag}
+                                ${alphaTag}
                             </div>
                             <span class="text-[10px] text-slate-400">${tot} m³</span>
                         </div>
                     </div>
                     <div class="flex items-center space-x-1 shrink-0 self-center">
                         <button type="button" onclick="adjustItemCount('${categoryKey}', ${idx}, -1)" class="w-5 h-5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded font-bold text-xs">-</button>
-                        <span class="w-5 text-center font-bold text-indigo-700 text-xs">${item.count}</span>
+                        <span class="w-5 text-center font-bold text-indigo-700 text-xs">${displayCount}</span>
                         <button type="button" onclick="adjustItemCount('${categoryKey}', ${idx}, 1)" class="w-5 h-5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded font-bold text-xs">+</button>
                         <button type="button" onclick="removeItem('${categoryKey}', ${idx})" class="text-slate-300 hover:text-rose-600 ml-1 p-0.5"><svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg></button>
                     </div>`;
@@ -2087,10 +2177,11 @@ When a TV screen is detected, calculate its exact screen size in INCHES based on
             ['appliances', 'furniture', 'clutterAndBoxes'].forEach(k => {
                 let catSum = 0;
                 currentAnalysisData[k].forEach(i => {
+                    let countVal = k === 'clutterAndBoxes' ? getEffectiveClutterCount(i.count) : i.count;
                     let cbm = k === 'clutterAndBoxes' 
                         ? ((getStrictBoxCbm(i.name) || i.cbm) * currentLivingDensity)
                         : (k === 'appliances' ? (getSpecialApplianceCbm(i.name) || i.cbm) : (getSpecialFurnitureCbm(i.name) || i.cbm));
-                    catSum += cbm * i.count;
+                    catSum += cbm * countVal;
                 });
                 totalCbmSum += catSum;
                 const badge = document.getElementById(`badge-${k === 'clutterAndBoxes' ? 'clutter' : k}-cbm`);
@@ -2166,6 +2257,7 @@ When a TV screen is detected, calculate its exact screen size in INCHES based on
             document.getElementById('res-cost').innerText = `${(tCost + mCost + wCost + extraCost).toLocaleString()}원`;
         };
 
+        updateLearnedAlphaBadge();
         renderSpaces(); recalculateTotals(true);
     </script>
 </body>
